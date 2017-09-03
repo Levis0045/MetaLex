@@ -1,0 +1,5 @@
+/__init__.pyc
+/makeOcr.pyc
+/normalizeImage.pyc
+/normalizeText.pyc
+/wordsCorrection.pyc

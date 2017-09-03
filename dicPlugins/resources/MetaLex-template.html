@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+	<title>MetaLex</title>
+	<meta charset="utf-8"/>
+	<meta content="width=device-width, initial-scale=1" name="viewport"/>
+	<link href="https://www.w3schools.com/lib/w3.css" rel="stylesheet"/>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+	<style type="text/css">
+		html, body, h1, h2, h3, h4, h5, h6 {
+		  font-family: "Comic Sans MS", cursive, sans-serif;
+		}
+		.w3-myfont {
+		  font-family: "Comic Sans MS", cursive, sans-serif;
+		}
+        .lemme{cursor:pointer}
+        #visual{
+            height:100%;
+            margin-right:-12pt;
+            margin-bottom:-16pt;
+            text-overflow: overflow;
+			overflow-y: scroll;
+        }
+        #edit{
+            height:100%;
+            margin-right:-12pt;
+            margin-bottom:-13pt;
+            text-overflow: overflow;
+			overflow-y: scroll;
+        }
+	</style>
+	</head>
+
+	<body>
+		<div class="w3-container w3-light-grey" id="all-articles" style="top:0; bottom:0">
+			<div class="w3-container w3-padding w3-display-left w3-light-grey" style="width:15%;height:100%">
+				<div class="w3-text-green w3-light-blue w3-center w3-xxlarge"><h4>MetaLex Viewer Editor</h4></div>
+				<section class="w3-card w3-light-grey w3-padding w3-center">
+					<h3 class="w3-">Mémoire Master 2 LTTAC</h3>
+					<h4 class="w3-section">Vers une métalexicographie outillée : conception d'un outil pour le métalexicographe et application aux dictionnaires Larousse de 1856 à 1966.</h4>
+				</section>
+				<div class="w3-text-green w3-light-blue w3-center w3-xxlarge"><h4>Configuration du projet</h4></div>
+				<section class="w3-card w3-light-grey w3-padding w3-center" id="projetname">
+					<h4 class="w3-" id="projetname"></h4>
+					<h5 class="w3-" id="date"></h5>
+					<p id="description"></p>
+				</section>
+				<div class="w3-text-green w3-light-blue w3-center w3-xxlarge"><h4>Auteur(s)</h4></div>
+				<section class="w3-card w3-light-grey w3-padding w3-center ">
+					<h3 class="w3-" id="author">
+                        <!-- Ici le nom du porteur de projet -->
+                    </h3>
+					<h4 class="w3-" id="function">
+                        <!-- Ici la fonction principale du nom du porteur de projet -->
+                    </h4>
+					<h4 class="w3-" id="institution">
+                        <!-- Ici l'intitulé de l'institution de travail du porteur de projet -->
+                    </h4>
+					<h4 class="w3-" id="contributors">
+                        <!-- Ici la liste des contributeurs du projet -->
+                    </h4>
+				</section>
+			</div>
+			<div class="w3-container w3-gray w3-display-right w3-light-grey " style="width:85%;height:100%">
+				<div class="w3-container w3-padding w3-display-left w3-light-grey" style="width:20%;height:100%">
+					<div class="w3-text-green w3-light-blue w3-center w3-xxlarge">Rechercher</div>
+					<section class="w3-card w3-dark-grey w3-padding w3-center">
+						<span class="w3-bar"><input class="w3-left w3-input" type="text"/>
+						<button class="w3-btn w3-light-grey w3-round w3-center w3-right"><i class="fa fa-search w3-large"></i></button>
+						<button class="w3-btn w3-light-grey w3-round w3-center w3-left">Recherche avancée &gt; </button>
+						</span>
+					</section>
+					<div class="w3-container w3-dark-grey w3-padding w3-section" style="width:100%;height:80%; overflow-y:scroll">
+						<ul class="w3-ul w3-hoverable w3-xlarge " id="list-articles">
+                             <!-- Ici la liste des lemmes en adresse d'article -->
+						</ul>
+					</div>
+					<div id="mtl:articles" class="w3-hide">
+                           <!-- Ici la liste des articles  -->
+					</div>
+				</div>
+
+				<div class="w3-container w3-padding w3-display-right w3-light-grey" id="contenu-article" style="width:80%;height:86% ; overflow:auto; text-overflow:hidden">
+					<div class="w3-text-green w3-light-blue w3-center w3-xxlarge"><i class="fa fa-arrow-left w3-left w3-padding w3-btn w3-light-blue"></i>
+					  <div class="w3-dropdown-hover w3-left w3-light-grey w3-xxlarge">
+						<span>Mode <i class="fa fa-caret-down"></i></span>
+						<div class="w3-dropdown-content w3-white w3-card-4 w3-left">
+						  <a href="#" id="mod-visual" onclick="document.getElementById('visualisation').style.display='block'">Visualisation</a>
+						  <a href="#" id="mod-edit" onclick="document.getElementById('edition').style.display='block'">Edition</a>
+						  <a href="#" id="mod-stat" onclick="document.getElementById('stat').style.display='block'">Statistique</a>
+						</div>
+					  </div>MetaLex : Interfaces de visualisation &amp; d'édition<i class="fa fa-arrow-right w3-right w3-padding w3-btn w3-light-blue"></i>
+					</div>
+					<div class="w3-container w3-dark-grey w3-padding w3-center" style="width:100%;height:100%">
+						<div class="w3-container w3-middle w3-section " style="height:100%">
+							<div class="w3-container w3-section w3-left" style="width:40%;height:100%" id="visualisation">
+								<span class="w3-closebtn w3-padding w3-red w3-medium w3-card-4" onclick="this.parentElement.style.display='none'">X</span>
+								<div class="w3-text-green w3-light-grey w3-xlarge">Interface de visualisation</div>
+								<div class="w3-container w3-padding w3-white" style="width:100%;height:60%">
+									<div id="visual" class="w3-xlarge w3-left-align"> </div>
+								</div>
+							</div>
+							<div class="w3-container w3-section w3-right"   style="display:None;width:50%;height:40%" id="edition">
+								<span class="w3-closebtn w3-padding w3-marging w3-red w3-medium w3-card-4" onclick="this.parentElement.style.display='none'">X</span>
+								<span class="w3-closebtn w3-padding w3-marging w3-light-grey w3-large w3-card-4 fa fa-floppy-o"  onclick="saved()" style="fontsize:15pt"></span>
+								<span class="w3-closebtn w3-padding w3-marging w3-light-grey w3-large w3-card-4 fa fa-pencil"  onclick="editor()" style="fontsize:15pt"></span>
+								<div class="w3-text-green w3-light-grey w3-xlarge">Interface d'édition</div>
+								<div class="w3-container  w3-white" style="width:100%;height:80%">
+									<div id="edit" class="w3-xlarge w3-left-align"> </div>
+								</div>
+							</div>
+							<div class="w3-container w3-section w3-right"   style="display:None;width:50%;height:50%" id="stat">
+								<span class="w3-closebtn w3-padding w3-marging w3-red w3-medium w3-card-4" onclick="this.parentElement.style.display='none'">X</span>
+								<span class="w3-closebtn w3-padding w3-marging w3-light-grey w3-large w3-card-4 fa fa-floppy-o"  onclick="saved()" style="fontsize:15pt"></span>
+								<div class="w3-text-green w3-light-grey w3-xlarge">Traitement statistique</div>
+								<div class="w3-container  w3-white" style="width:100%;height:60%">
+									<div id="stat" class="w3-xlarge"> </div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script type="text/javaScript">
+			function editor() {
+				var eledit     = document.getElementById('edit');
+				var eleditarea = document.getElementById('editarea');
+				var contedit   = eledit.innerHTML;
+				var repl       ='<textarea id="editarea">'+contedit+'</textarea>';
+				if (eledit.innerHTML == contedit) {
+					eledit.innerHTML = '<textarea id="editarea" class="w3-input w3-animate-input">'+contedit+'</textarea>';
+				}
+			}
+			function saved() {
+				var eledit         = document.getElementById('editarea');
+				var elvisual       = document.getElementById('visual');
+				elvisual.innerText = eledit.value;
+			}
+			function display(element) {
+				var idencyclo           = document.getElementById(element);
+				idencyclo.style.display = 'block';
+				idencyclo.style.width   = '50%';
+				idencyclo.style.height  = '100%';
+			}
+			function changeImage(idart) {
+				var visualisation = document.getElementById('visualisation');
+				var edition       = document.getElementById('edition');
+				var visual        = document.getElementById('visual');
+				var edit          = document.getElementById('edit');
+				var articles      = document.getElementsByTagName('article');
+				for (var i = 0, c = articles.length ; i < c ; i++) {
+					var attrib  = articles[i].getAttribute('id');
+					if ( attrib == idart) {
+						edit.innerHTML   = articles[i].innerHTML;
+						visual.innerHTML = articles[i].innerHTML;
+					}
+				}
+			}
+			function add(idart) {
+				var visualisation = document.getElementById('visualisation');
+				var edition       = document.getElementById('edition');
+				var visual        = document.getElementById('visual');
+				var edit          = document.getElementById('edit');
+				var articles      = document.getElementsByTagName('article');
+				for (var i = 0, c = articles.length ; i < c ; i++) {
+					var attrib  = articles[i].getAttribute('id');
+					if ( attrib == idart) {
+						edit.innerHTML   += '<br/>'+articles[i].innerHTML;
+						visual.innerHTML += '<br/>'+articles[i].innerHTML;
+					}
+				}
+			}
+
+		</script>
+
+
+
+
+</body></html>
