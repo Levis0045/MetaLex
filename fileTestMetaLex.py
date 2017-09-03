@@ -116,8 +116,10 @@ def run_MetaLex_test ():
         author, comment, contrib = MetaLexArgs.confProject[0], MetaLexArgs.confProject[1], MetaLexArgs.confProject[2]
         project.setConfProject(author, comment, contrib)
     else :
+        hour = dico.dicProject.getHour() 
+        log = u'[MetaLexLog - '+hour+u']'
         message = u'Error : please set metadata for the current project. default name data must be apply' 
-        print u'\n%-8s : %-30s %s \n' %(colored(u'[MetaLexLog]', u'red', attrs=['reverse', 'blink', 'bold']), message)
+        print u'\n%-10s  %-30s %s \n' %(colored(log, u'red', attrs=['reverse', 'blink', 'bold']), message)
         project.setConfProject(u'MetaLex_user', u'Comment_user', u'MetaLex_contributors')
         
    
