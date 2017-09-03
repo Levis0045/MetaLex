@@ -18,7 +18,7 @@ MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these p
     vagrant up   #Build vagrant machine with all dependencies
     vagrant ssh  #Connect to ubuntu xenia development
     cd /vagrant
-    cd Metalex-vagrant
+    cd Metalex-vagrant 
 ```
    
 # Usage
