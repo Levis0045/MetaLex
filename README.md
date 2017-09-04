@@ -92,7 +92,7 @@ MetaLex take file which using  specific structure to enhance output text of OCR 
 
 # Contributors
 
-Special thank to [Bill](https://github.com/billmetangmo) for **MetaLex-vagrant** version for windows, Mac OS 6, Linux
+Special thank to [Bill](https://github.com/billmetangmo) for [MetaLex-vagrant](https://github.com/Levis0045/MetaLex-vagrant) version for windows, Mac OS 6, Linux
 
 
 # Reference
