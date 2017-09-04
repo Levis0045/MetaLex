@@ -17,6 +17,7 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
     sudo apt-get install python-lxml
     sudo apt-get install python-bs4
     sudo pip install pillow
+    sudo pip install termcolor
     sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
 ```
 

@@ -152,6 +152,7 @@ def run_MetaLex_test ():
     # ----Input dictionary images to project---------------------------------
     images  = project.MetaLex.getImages(imagelist)
     
+    
     # ----Enhance quality of dictionary image files -------------------------
     if MetaLexArgs.imgalg :
         actionType, value = MetaLexArgs.imgalg
@@ -166,6 +167,7 @@ def run_MetaLex_test ():
             dico.dicLog.manageLog.writelog(message, typ='warm')
     else :    
         images.enhanceImages().filter(f.DETAIL)
+        
         
     # ----Start optical recognition of dictionary image files----------------
     if MetaLexArgs.save and MetaLexArgs.lang :
@@ -182,6 +184,7 @@ def run_MetaLex_test ():
         images.makeTextWell(MetaLexArgs.fileRule)
     else :
         images.makeTextWell(u'file_Rule.dic')
+    
     
     #-----Produce HTML output file for project------------------------------
     if MetaLexArgs.save :

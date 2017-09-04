@@ -85,6 +85,7 @@ def imageToText(show=False, save=False, langIn='fra'):
                 messag = u"Fin de la lecture optique de "+imagefile+u' '
                 MetaLex.dicLog.manageLog.writelog(messag)
                 
+                MetaLex.dicProject.createtemp()
                 if save:
                     with codecs.open(tempname, 'w', "utf-8") as wr :
                         wr.write(textocr)
