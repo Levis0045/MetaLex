@@ -218,7 +218,7 @@ class fileRule():
                         if startc :
                             linepart = line.split(u'/')
                             if len(linepart) == 3 : ruleCaracts[linepart[1]] = linepart[2]
-                        if startr :
+                        if startr : 
                             linepart = line.split(u'/')
                             if len(linepart) == 3 : ruleRegex[linepart[1]] = linepart[2]
             if self.typ == u'rule_art' :
