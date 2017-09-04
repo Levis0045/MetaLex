@@ -1,5 +1,4 @@
-# MetaLex-vagrant 
-
+# MetaLex Tool
 MetaLex is general tool for **lexicographics** and **metalexicographics** activities.
 For current developpement version of this tool, see [MetaLex/Elvis-test](https://github.com/Levis0045/dic/tree/Elvis-test)
 
@@ -7,23 +6,23 @@ For current developpement version of this tool, see [MetaLex/Elvis-test](https:/
 
 # Requirements
 
-MetaLex-vagrant is developped in **Python 2.7** and vagrant environment, these packages are required :
-
+MetaLex is developped in **Python 2.7** environment, these packages are required :
 
 ```sh
-    sudo apt-get install vagrant
-    sudo apt-get install virtualbox
-    git clone git@github.com:Levis0045/MetaLex-vagrant.git
-    cd MetaLex-vagrant
-    vagrant up   #Build vagrant machine with all dependencies
-    vagrant ssh  #Connect to ubuntu xenia development
-    cd /vagrant
-    cd Metalex-vagrant 
+    sudo apt-get install build-essential libssl-dev libffi-dev python-dev
+    sudo pip install Cython
+    sudo apt-get install libtesseract-dev libleptonica-dev libjpeg-dev zlib1g-dev libpng-dev
+    sudo apt-get install tesseract-ocr-all
+    sudo apt-get install python-html5lib
+    sudo apt-get install python-lxml
+    sudo apt-get install python-bs4
+    sudo pip install pillow
+    sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
 ```
-   
+
 # Usage
 
-- Move test file in the current folder (MetaLex) and place it in the parent folder
+- Move **fileTestMetaLex.py** in the current folder (MetaLex) and place it in the parent folder
 
 - Global usage commands line
 
@@ -74,16 +73,26 @@ MetaLex take file which using  specific structure to enhance output text of OCR 
     \END
 ```
 
-- Run your project with your own set parameters or with the default
+
+- Run your project with the default parameters
+
+
+```sh
+    python fileTestMetaLex.py  -d 'imagesInputFiles' -s
+```
+
+
+- Run your project with your own set parameters 
 
 
 ```sh
     python fileTestMetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInputFiles' -r 'file_Rule.dic' -l fra
 ```
 
+
 # Contributors
 
-Special thank to [Bill](https://github.com/billmetangmo) for MetaLex-vagrant version (windows, Mac OS 6, Linux)
+Special thank to [Bill](https://github.com/billmetangmo) for [MetaLex-vagrant](https://github.com/Levis0045/MetaLex-vagrant) version for windows, Mac OS 6, Linux
 
 
 # Reference
