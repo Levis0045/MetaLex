@@ -10,7 +10,6 @@
         >>> sudo apt-get install libtesseract-dev libleptonica-dev 
         >>> sudo pip install Cython
         >>> sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
-        >>> sudo pip termcolor
         
     Usage:
         >>> import MetaLex as dico
@@ -30,9 +29,8 @@ import MetaLex
 
 from tesserocr import PyTessBaseAPI
 import codecs, os
-from termcolor import colored
 
-# -----Exported Functions-----------------------------------------------------
+# -----Exported Functions---------------------------------------------------
 
 __all__ = ['imageToText']
 
@@ -50,24 +48,16 @@ def imageToText(show=False, save=False, langIn='fra'):
         @param   langIn:str
         @return: str|file (MetaLex.resultOcrData)
     """
-    datefile = os.popen('date').read()
-    try :
-        datetab = datefile.split(',')[1].split(' ')
-        hour = datetab[1]
-    except :
-        datetab = datefile.split(' ')[3]
-        hour = datetab
         
-    log = u'[MetaLexLog - '+hour+u']'
     allimages = []
     if len(MetaLex.fileImages) >= 1 and not len(MetaLex.treatImages) >= 1 :
-        contentPrint = u"Vous avez aucun(s) fichier(s) image traité(s), veuillez les traiter avant la lecture optique"
-        print u'\n%-10s  %-30s\n' %(colored(log, u'red', attrs=['reverse', 'blink', 'bold']), contentPrint)
+        contentPrint = u"OCR >> You don't have any previous treated image(s)! Please treat them before OCR "
+        MetaLex.dicLog.manageLog.writelog(contentPrint, typ='error')
         os.chdir('..')
         return None
     elif not len(MetaLex.fileImages) >= 1 :
-        contentPrint = u"Vous n'avez aucun(s) fichier(s) image à traiter"
-        print u'\n%-10s %-30s\n' %(colored(log, u'red', attrs=['reverse', 'blink', 'bold']), contentPrint)
+        contentPrint = u"OCR >>  You don't have any image(s) for this treatment"
+        MetaLex.dicLog.manageLog.writelog(contentPrint, typ='error')
     else:
         allimages = MetaLex.treatImages
          
@@ -89,11 +79,11 @@ def imageToText(show=False, save=False, langIn='fra'):
             
             MetaLex.dicProject.createtemp()
             if MetaLex.dicProject.inDir(tempname) :
-                message = u"Début de la lecture optique de"
-                print u'\n%-10s  %-24s %s \n' %(colored(log, u'green', attrs=['reverse', 'blink', 'bold']), message, imagefile.strip())
+                message = u"OCR >> Début de la lecture optique de "+imagefile+u' '
+                MetaLex.dicLog.manageLog.writelog(message)
                 textocr = api.GetHOCRText(2)
-                messag = u"Fin de la lecture optique de"
-                print u'\n%-10s  %-24s %s \n' %(colored(log, u'green', attrs=['reverse', 'blink', 'bold']), messag, imagefile.strip())
+                messag = u"Fin de la lecture optique de "+imagefile+u' '
+                MetaLex.dicLog.manageLog.writelog(messag)
                 
                 if save:
                     with codecs.open(tempname, 'w', "utf-8") as wr :
@@ -107,12 +97,12 @@ def imageToText(show=False, save=False, langIn='fra'):
                     print textocr
                     print u"\n\n*********************************************************\n\n"
                 else :
-                    message = u" Warning : imageToText(show=False, save=False) >> precise the action 'show=False or save=False'"
-                    MetaLex.dicLog.manageLog.writelog(message) 
+                    message = u"OCR >> imageToText(show=False, save=False) : precise the action 'show=False or save=False'"
+                    MetaLex.dicLog.manageLog.writelog(message, typ='warm') 
             else :
-                messag =  u"Fin de la lecture optique de \n"
-                print u'\n%-10s  %-24s %s \n' %(colored(log, u'green', attrs=['reverse', 'blink', 'bold']), messag, imagefile)
-                 
+                messag =  u"OCR >> Fin de la lecture optique de '"+imagefile+u"' "
+                MetaLex.dicLog.manageLog.writelog(messag)
+                
             MetaLex.dicProject.treat_ocr_append(tempname)
             os.chdir('..')
               

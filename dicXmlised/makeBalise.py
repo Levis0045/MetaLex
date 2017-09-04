@@ -176,10 +176,10 @@ class baliseXML ():
                 if MetaLex.dicProject.inDir(name) :
                     with codecs.open(name, 'w', 'utf-8') as fle :
                         fle.write(metalexXmlTree.prettify(formatter=None))
-                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
+                    message = u"'"+name+u"' is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
                     MetaLex.dicLog.manageLog.writelog(message)
                 else:
-                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
+                    message = u"'"+name+u"' is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
                     MetaLex.dicLog.manageLog.writelog(message)
                 return metalexXml
             else :
@@ -196,10 +196,10 @@ class baliseXML ():
                 if MetaLex.dicProject.inDir(name) :
                     with codecs.open(name, 'w', 'utf-8') as fle :
                         fle.write(metalexXmlTree.prettify(formatter=None))
-                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
+                    message = u"'"+name+u"' is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
                     MetaLex.dicLog.manageLog.writelog(message)
                 else:
-                    message = u"'"+name+u"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
+                    message = u"'"+name+u"' is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
                     MetaLex.dicLog.manageLog.writelog(message)
                 return metalexXml
             else :
