@@ -32,7 +32,7 @@ import codecs, os
 
 # -----Exported Functions---------------------------------------------------
 
-__all__ = ['imageToText'] 
+__all__ = ['imageToText']
 
 # -----Global Variables-----------------------------------------------------
 
