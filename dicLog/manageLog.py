@@ -81,28 +81,28 @@ def folderlog():
         os.chdir(u'dicLogs/')
     else :
         try :
-            os.mkdir(u'dicLogs') 
+            os.mkdir(u'dicLogs')
         except os.error :
-            message = 'We can cannot create dicLogs folder in this directory ! It s right exception ?' 
+            message = 'We can cannot create dicLogs folder in this directory ! It s right exception ?'
             print u'%-8s : %-30s\n' %(colored(u'[MetaLexLog]', u'red', attrs=['reverse', 'blink', 'bold']), message)
             pass
-        os.chdir(u'dicLogs/')  
+        os.chdir(u'dicLogs/')
 
     currentdirlog = os.listdir(u'.')
-    if name not in currentdirlog : 
+    if name not in currentdirlog :
         logfile = codecs.open(name, 'a', 'utf-8')
-        return logfile 
+        return logfile
     else:
         pass
 
 
 
-def writelog(content, typ='ok'):
+def writelog(content, typ=u'ok'):
     name = logname()
-    hour = MetaLex.dicProject.getHour()  
-    
+    hour = MetaLex.dicProject.getHour()
+
     folderlog()
-    currentdirlog = os.listdir('.')
+    currentdirlog = os.listdir(u'.')
     if name in currentdirlog :
         with codecs.open(name, 'a', 'utf-8') as log :
             message = u'[MetaLex - '+hour+u'] '+content+u'\n\n'
@@ -117,6 +117,7 @@ def writelog(content, typ='ok'):
         print u'%-10s  %-30s\n' %(colored(message, u'red', attrs=['reverse', 'blink', 'bold']), content)
     else :
         print u'%-10s  %-30s\n' %(colored(message, u'green', attrs=['reverse', 'blink', 'bold']), content)
+    
     
     
     

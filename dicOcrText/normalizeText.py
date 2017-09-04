@@ -55,18 +55,21 @@ def makeTextWell(file_rules, okCorrect=False, log=False):
     dfilerule = time.time() - debut
     
     html_ocr_files = MetaLex.resultOcrFiles
-    for html in html_ocr_files :
-        with open(html, 'r') as html_file :
-            enhanceText(html_file, data_rules, okCorrect)
+    if len(html_ocr_files) >= 1 :
+        for html in html_ocr_files :
+            with open(html, 'r') as html_file :
+                enhanceText(html_file, data_rules, okCorrect)
+            
+        namepickle = MetaLex.dicProject.nameFile(html_ocr_files, u'.pickle')
+        nametxt    = MetaLex.dicProject.nameFile(html_ocr_files, u'.art')
         
-    namepickle = MetaLex.dicProject.nameFile(html_ocr_files, u'.pickle')
-    nametxt    = MetaLex.dicProject.nameFile(html_ocr_files, u'.art')
-    
-    saveNormalize(namepickle, u'pickle')
-    saveNormalize(nametxt, u'text')     
-       
-    if log : print "--> %30s : %10.5f seconds\n" %("Durée d'extraction du fichier des règles", dfilerule)
-    
+        saveNormalize(namepickle, u'pickle')
+        saveNormalize(nametxt, u'text')     
+           
+        if log : print "--> %30s : %10.5f seconds\n" %("Durée d'extraction du fichier des règles", dfilerule)
+    else :
+        message = u'We are not found any OCR files to enhance text quality'
+        return MetaLex.dicLog.manageLog.writelog(message, typ='error')
               
 def enhanceText(html_file, rules, okCorrect):
     """
@@ -221,8 +224,9 @@ class fileRule():
             if self.typ == u'rule_art' :
                 return False
         else :
-            warnings.warn(u"Your file syntax is not correct. Please correct it as recommended")
-                    
+            log = u"fileRuleUnpack() >> Your file rule syntax is not correct. Please correct it as recommended"
+            MetaLex.dicLog.manageLog.writelog(log, typ='warm')
+            
         return metadata, ruleWords, ruleCaracts, ruleRegex 
         
     
@@ -233,7 +237,12 @@ class fileRule():
           @return: Bool:True|Fase
         """
         module, synw, sync, synr, synrw, delimiter = (False for x in range(6))
-        fileop = codecs.open(self.file, 'r', 'utf-8').readlines()
+        try :
+            fileop = codecs.open(self.file, 'r', 'utf-8').readlines()
+        except :
+            log = u"verify() >> We can't open your file rule. Please set it !"
+            return MetaLex.dicLog.manageLog.writelog(log, typ='error')
+        
         if typ == u'rule_wc' :
             if u'\START' == fileop[0].strip() and u'\END' == fileop[-1].strip() : delimiter = True
             if len(fileop[1].strip().split(u'\\')) == 7 :

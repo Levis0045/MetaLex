@@ -33,7 +33,6 @@ import MetaLex
 import Image, os
 import ImageEnhance
 from shutil import copyfile
-import warnings
 
 # ----Exported Functions-----------------------------------------------------
 
@@ -116,7 +115,7 @@ class enhanceImages ():
                     enh.enhance(value).show()
                 elif save :
                     MetaLex.dicProject.createtemp()
-                    if dicProject.inDir(tempname) :
+                    if MetaLex.dicProject.inDir(tempname) :
                         enh.enhance(value).save(tempname)
                         MetaLex.dicProject.treat_image_append(tempname)
                         message = imagename + u'is modified with contrast (' +str(value)+ u') > '+tempname+u' > Saved in dicTemp folder'  
@@ -128,10 +127,10 @@ class enhanceImages ():
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1
                 else :
-                    message = u'Warning : contrast(value, show=False, save=False) --> You must define one action for the current treatment : show=true or save=true '
-                    MetaLex.dicLog.manageLog.writelog(message, typ='warn')
+                    message = u'contrast(value, show=False, save=False) --> You must define one action for the current treatment : show=true or save=true '
+                    MetaLex.dicLog.manageLog.writelog(message, typ='warm')
         else:
-            message = u'getImages(images) >> They are not images for the current treatment : please input images !! ' 
+            message = u'contrast(images) >> They are not images for the current treatment : please input images !! ' 
             MetaLex.dicLog.manageLog.writelog(message, typ='error')
             
             
@@ -172,9 +171,9 @@ class enhanceImages ():
                         num += 1
                 else :
                     message = u'Warning : sharp(value, show=False, save=False) --> You must define one action for the current treatment : show=true or save=true'
-                    MetaLex.dicLog.manageLog.writelog(message, typ='warn')
+                    MetaLex.dicLog.manageLog.writelog(message, typ='warm')
         else:
-            message = u'getImages(images) >> They are not images for the current treatment : please input images !! ' 
+            message = u'sharp(images) >> They are not images for the current treatment : please input images !! ' 
             MetaLex.dicLog.manageLog.writelog(message, typ='error')
             
             
@@ -192,7 +191,7 @@ class enhanceImages ():
             for image in  self.images :
                 img_conv = self.convert(image, save=True)
                 img = Image.open(img_conv)
-                imagename, ext = dicProject.get_part_file(image)
+                imagename, ext = MetaLex.dicProject.get_part_file(image)
                 tempname = u'img_bright_'+str(num)+ext
                 enh = ImageEnhance.Brightness(img)
 
@@ -215,9 +214,9 @@ class enhanceImages ():
                         num += 1
                 else :
                     message =  u'bright(value, show=False, save=False) --> You must define one action for the current treatment : show=true or save=true '
-                    MetaLex.dicLog.manageLog.writelog(message, typ='warn')
+                    MetaLex.dicLog.manageLog.writelog(message, typ='warm')
         else:
-            message = u'getImages(images) >> They are not images for the current treatment : input images!!' 
+            message = u'bright(images) >> They are not images for the current treatment : input images!!' 
             MetaLex.dicLog.manageLog.writelog(message, typ='error')
             
             
@@ -271,7 +270,7 @@ class enhanceImages ():
                         imgpil.close()
                         num += 1
         else:
-            message = u'They are not images for the current treatment : input images!!' 
+            message = u'contrastBright() >> They are not images for the current treatment : input images!!' 
             MetaLex.dicLog.manageLog.writelog(message, typ='error')  
             
            
@@ -300,7 +299,7 @@ class enhanceImages ():
                         return tempname
                     
         else:
-            message = u'They are not images for the current treatment : input images!!' 
+            message = u'convert() >> They are not images for the current treatment : input images!!' 
             MetaLex.dicLog.manageLog.writelog(message, typ='error')
             
                   
@@ -331,7 +330,7 @@ class enhanceImages ():
                 img.close()
                 num += 1
         else:
-            message = u'They are not images for the current treatment : input images!!' 
+            message = u'filter() >> They are not images for the current treatment : input images!!' 
             MetaLex.dicLog.manageLog.writelog(message, typ='error')
             
                     
@@ -376,7 +375,7 @@ class enhanceImages ():
                 else :
                     return namestore
         else:
-            message = u'They are not images for the current treatment : input images!!' 
+            message = u'removeColor() >> They are not images for the current treatment : input images!!' 
             MetaLex.dicLog.manageLog.writelog(message, typ='error')
             
                     

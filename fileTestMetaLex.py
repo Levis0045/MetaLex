@@ -19,8 +19,8 @@
 
 # Do this if MetaLex folder is in the parent of the current folder
 
-#import sys
-#sys.path.append('..')
+import sys
+sys.path.append('..')
 
 
 #-----If MetaLex is in the same file, import MetaLex------------------------
@@ -62,21 +62,34 @@ def run_MetaLex_test ():
                                      prefix_chars='-')
     
     MetaLexArgsParser.add_argument('-v', '--version', action='version', version='%(prog)s v0.2')
+    
     MetaLexArgsParser.add_argument('-p', '--project',  help='Defined  %(prog)s project name', 
-                        dest='projectName', action='store', required=True)
+                        dest='projectName', action='store')
+    
     MetaLexArgsParser.add_argument('-c', '--confproject', action='store', help='Defined  %(prog)s configuration for the current project', 
-                        dest='confProject', required=True, nargs=3, metavar=('author', 'comment', 'contributors'))
+                        dest='confProject', nargs=3, metavar=('author', 'comment', 'contributors'))
+    
     MetaLexArgsParser.add_argument('-i', '--dicimage', dest='imageFile', action='append', nargs='?', 
                         help='Input one or multiple dictionary image(s) file(s) for current  %(prog)s project')
+    
     MetaLexArgsParser.add_argument('-d', '--imagedir', help='Input folder name of dictionary image files for current  %(prog)s project',
                         type=str, required=True, action='store', dest='imagesDir')
-    MetaLexArgsParser.add_argument('-r', '--filerule', dest='fileRule', type=str, required=True)
+    
+    MetaLexArgsParser.add_argument('--imgalg', help='Set algorithm for enhancing dictionary image files for current  %(prog)s project (actiontype must be : constrat or bright or filter)',
+                        type=str, action='store', nargs=2, dest='imgalg', metavar=('actiontype', 'value'))
+    
+    MetaLexArgsParser.add_argument('-r', '--filerule', dest='fileRule', type=str,
+                                   help='Defined file rules that we use to enhance quality of OCR result')
+    
     MetaLexArgsParser.add_argument('-l', '--lang', help='Set language for optical characters recognition and others  %(prog)s treatment',
-                        type=str, required=True, )
+                        type=str)
+    
     MetaLexArgsParser.add_argument('-s', '--save', help='Save output result of the current project in files', 
                         action='store_true')
+    
     MetaLexArgsParser.add_argument('-t', '--terminal', help='Show  result of the current treatment in the terminal', 
                         action='store_true', default=False)
+    
     """
     subparsers = MetaLexArgsParser.add_subparsers(title='MetaLex subcommands', help='sub-commands for specific MetaLex treatment')
     
@@ -95,20 +108,35 @@ def run_MetaLex_test ():
     
     # ----Generate real path of images---------------------------------------
     imagelist = []
+    
     if MetaLexArgs.imageFile :
         imagelist.append(MetaLexArgs.imageFile)
             
-    if MetaLexArgs.imagesDir:
-        content = './'+MetaLexArgs.imagesDir+'/*.jpg'
+    elif MetaLexArgs.imagesDir:
+        content = './'+MetaLexArgs.imagesDir+'/*.*g'
         for imagefile in glob.glob(content) :
             name = os.getcwd()+'/'+imagefile
             imagelist.append(name)
+        if len(imagelist) < 1 :   
+            message = u"Your current directory don't have image(s)" 
+            dico.dicLog.manageLog.writelog(message, typ='warm')
+    else :
+        message = u"You must define folder containing image of dictionary or image of dictionary for your project otherwise default folder must be use" 
+        dico.dicLog.manageLog.writelog(message, typ='warm')
+        for imagefile in glob.glob('imagesInputFiles/*.*g') :
+            name = os.getcwd()+'/'+imagefile
+            imagelist.append(name)
+        if len(imagelist) < 1 :   
+            message = u"Your current directory don't have image(s)" 
+            dico.dicLog.manageLog.writelog(message, typ='warm')
             
             
     # ----Defined New project name-------------------------------------------
     if MetaLexArgs.projectName :
         project = dico.newProject(MetaLexArgs.projectName)
     else :
+        message = u"Your current project name is not set! Please correct it otherwise default name must be use" 
+        dico.dicLog.manageLog.writelog(message, typ='warm')
         project = dico.newProject(u'MetaLex_projectName')
         
     # ----Set metadata for the current project-------------------------------
@@ -116,10 +144,8 @@ def run_MetaLex_test ():
         author, comment, contrib = MetaLexArgs.confProject[0], MetaLexArgs.confProject[1], MetaLexArgs.confProject[2]
         project.setConfProject(author, comment, contrib)
     else :
-        hour = dico.dicProject.getHour() 
-        log = u'[MetaLexLog - '+hour+u']'
-        message = u'Error : please set metadata for the current project. default name data must be apply' 
-        print u'\n%-10s  %-30s %s \n' %(colored(log, u'red', attrs=['reverse', 'blink', 'bold']), message)
+        message = u'Please set metadata for the current project. default metadata data must be apply' 
+        dico.dicLog.manageLog.writelog(message, typ='error')
         project.setConfProject(u'MetaLex_user', u'Comment_user', u'MetaLex_contributors')
         
    
@@ -127,8 +153,20 @@ def run_MetaLex_test ():
     images  = project.MetaLex.getImages(imagelist)
     
     # ----Enhance quality of dictionary image files -------------------------
-    images.enhanceImages().filter(f.DETAIL)
-    
+    if MetaLexArgs.imgalg :
+        actionType, value = MetaLexArgs.imgalg
+        if actionType == 'constrat' :
+            images.enhanceImages().constrast(value)
+        elif actionType == 'bright' :
+            images.enhanceImages().bright(value)
+        elif actionType == 'filter' :
+            images.enhanceImages().filter(f.DETAIL)
+        else :
+            message = u"Your input string 'actiontype' don't match (constrat or bright or filter)" 
+            dico.dicLog.manageLog.writelog(message, typ='warm')
+    else :    
+        images.enhanceImages().filter(f.DETAIL)
+        
     # ----Start optical recognition of dictionary image files----------------
     if MetaLexArgs.save and MetaLexArgs.lang :
         images.imageToText(save=True, langIn=MetaLexArgs.lang)
