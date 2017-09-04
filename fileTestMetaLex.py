@@ -31,7 +31,7 @@ import MetaLex as dico
 
 import ImageFilter as f
 import os, glob
-import argparse, textwrap
+import argparse, textwrap 
 from termcolor import colored
 
 # ----Functions to run MetaLex in system args------------------------------------------------------

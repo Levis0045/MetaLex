@@ -25,7 +25,7 @@ import codecs, os, re
 import unicodedata
 from string import maketrans
 from termcolor import colored, cprint
-
+ 
 # -----Exported Functions-----------------------------------------------------
 
 __all__ = ['writelog', 'logname', 'folderlog', 'getDate']
