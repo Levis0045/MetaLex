@@ -210,7 +210,7 @@ class fileRule():
                             for name, cnt in zip(names, line.split(u'\\')[1:]) :
                                 metadata[name] = cnt
                         if line == word : startw, startc, startr = True, False, False
-                        if line == caracter : startw, startc, startr = False, True, False
+                        if line == caracter : startw, startc, startr = False, True, False 
                         if line == regex : startw, startc, startr = False, False, True
                         if startw :
                             linepart = line.split(u'/')
