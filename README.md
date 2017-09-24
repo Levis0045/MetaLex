@@ -23,7 +23,7 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
 
 # Usage
 
-- Move **fileTestMetaLex.py** in the current folder (MetaLex) and place it in the parent folder
+- Move **MetaLex.py** in the current folder (MetaLex) and place it in the parent folder
 
 - Global usage commands line
 
@@ -47,12 +47,37 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
   -d IMAGESDIR, --imagedir IMAGESDIR
                         Input folder name of dictionary image files for
                         current MetaLex project
+  --imgalg actiontype value
+                        Set algorithm for enhancing dictionary image files for
+                        current MetaLex project (actiontype must be : constrat
+                        or bright or filter)
   -r FILERULE, --filerule FILERULE
+                        Defined file rules that we use to enhance quality of
+                        OCR result
   -l LANG, --lang LANG  Set language for optical characters recognition and
                         others MetaLex treatment
   -s, --save            Save output result of the current project in files
   -t, --terminal        Show result of the current treatment in the terminal
+
   
+```
+
+- Usage situation
+
+```
+    I am a metalexicographer or linguist and I have printed dictionaries. I wish to make a diachronic metalexicographics studies to
+    the evolution of the formulations of the definitions of a collection of dictionaries available from period A to period B.
+    
+    Traditionally or at best, the contemporary metalexicographer(according to our point of view) would apply successively the following methodology:
+    
+    - Scanning of printed materials (Scan)
+    - Optical reading of the supports (Ocrisation)
+    - Manual Error Corrections
+    - Marking of the articles obtained
+    - Metalexographical analysis / decryption of articles
+    
+    This is the same kind of process of MetaLex !
+
 ```
 
 
@@ -75,19 +100,19 @@ MetaLex take file which using  specific structure to enhance output text of OCR 
 ```
 
 
-- Run your project with the default parameters
+- Run your project with the default parameters except dictionary images data and save results
 
 
 ```sh
-    python fileTestMetaLex.py  -d 'imagesInputFiles' -s
+    python MetaLex.py  -d 'imagesInputFiles' -s
 ```
 
 
-- Run your project with your own set parameters 
+- Run your project with your own set of parameters 
 
 
 ```sh
-    python fileTestMetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInputFiles' -r 'file_Rule.dic' -l fra
+    python MetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInputFiles' -r 'file_Rule.dic' -l fra
 ```
 
 
