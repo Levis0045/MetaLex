@@ -23,6 +23,27 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
 
 # Usage
 
+
+- Usage situation
+
+```
+    I am a metalexicographer or linguist and I have printed dictionaries. I wish to make a diachronic metalexicographics studies to
+    the evolution of the formulations of the definitions of a collection of dictionaries available from period A to period B.
+    
+    Traditionally or at best, the contemporary metalexicographer(according to our point of view) would apply successively the following methodology:
+    
+    - Scanning of printed materials (Scan)
+    - Optical reading of the supports (Ocrisation)
+    - Manual Error Corrections
+    - Marking of the articles obtained
+    - Metalexographical analysis / decryption of articles
+    
+    
+    This is an example of process used with MetaLex ! Some other more complex process can be done !
+
+```
+
+
 - Move **MetaLex.py** in the current folder (MetaLex) and place it in the parent folder
 
 - Global usage commands line
@@ -62,24 +83,6 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
   
 ```
 
-- Usage situation
-
-```
-    I am a metalexicographer or linguist and I have printed dictionaries. I wish to make a diachronic metalexicographics studies to
-    the evolution of the formulations of the definitions of a collection of dictionaries available from period A to period B.
-    
-    Traditionally or at best, the contemporary metalexicographer(according to our point of view) would apply successively the following methodology:
-    
-    - Scanning of printed materials (Scan)
-    - Optical reading of the supports (Ocrisation)
-    - Manual Error Corrections
-    - Marking of the articles obtained
-    - Metalexographical analysis / decryption of articles
-    
-    This is the same kind of process of MetaLex !
-
-```
-
 
 - Build the file rule. 
 
@@ -104,7 +107,9 @@ MetaLex take file which using  specific structure to enhance output text of OCR 
 
 
 ```sh
+
     python MetaLex.py  -d 'imagesInputFiles' -s
+    
 ```
 
 
@@ -112,7 +117,9 @@ MetaLex take file which using  specific structure to enhance output text of OCR 
 
 
 ```sh
-    python MetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInputFiles' -r 'file_Rule.dic' -l fra
+
+    python MetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInputFiles' -r 'file_Rule.dic' -l fra -s
+    
 ```
 
 
@@ -126,6 +133,7 @@ Special thank to [Bill](https://github.com/billmetangmo) for [MetaLex-vagrant](h
 Please don't forget to cite this work :
 
 ```latex
+
     @article{Mboning-Elvis,
         title  = {Quand le TAL s'empare de la métalexicographie : conception d'un outil pour le métalexicographe},
         author = {Mboning, Elvis},
@@ -136,6 +144,7 @@ Please don't forget to cite this work :
         pages  = {12},
         keywords = {métalexicographie, TAL, fouille de données, extraction d'information, lecture optique, lexicographie, Xmlisation, DTD}
     }
+    
 ```
 
 
