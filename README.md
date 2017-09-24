@@ -46,11 +46,9 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
 
 - Move **MetaLex.py** in the current folder (MetaLex) and place it in the parent folder
 
-- Global usage commands line
-
 
 ```sh
-    python fileTestMetaLex.py -h
+    python MetaLex.py -h
 ```
 
 ```md
@@ -84,7 +82,7 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
 ```
 
 
-- Build the file rule. 
+- Build the file rules of the project. 
 
 MetaLex take file which using  specific structure to enhance output text of OCR data (from image's files dictionnaries). **\W** for word replacement, **\C** for caracter replacement and **\R**  for regular expression replacement. The space between headers served to describe remplacement.
 
@@ -103,22 +101,22 @@ MetaLex take file which using  specific structure to enhance output text of OCR 
 ```
 
 
-- Run your project with the default parameters except dictionary images data and save results
+- Run your project with the default parameters except dictionary images data and save results. You must create a folder containing dictionnaty images like **imagesInput/**.
 
 
 ```sh
 
-    python MetaLex.py  -d 'imagesInputFiles' -s
+    python MetaLex.py  -d 'imagesInput' -s
     
 ```
 
 
-- Run your project with your own set of parameters 
+- Run your project with your own set of parameters and save results
 
 
 ```sh
 
-    python MetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInputFiles' -r 'file_Rule.dic' -l fra -s
+    python MetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l fra -s
     
 ```
 
