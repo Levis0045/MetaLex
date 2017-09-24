@@ -4,10 +4,8 @@ For current developpement version of this tool, see [MetaLex/v0.3](https://githu
 
 [![Build Status](https://travis-ci.org/claroline/Distribution.svg?branch=master)](mteprojet.fr/MetaLex)
 
-# Usage
+# Usage situation
 
-
-- Usage situation
 
 ```md
 
@@ -55,12 +53,15 @@ MetaLex is developped in **Python 2.7** environment, the following packages are 
     sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
 ```
 
+# How to run MetaLex ?
+
 - Move **MetaLex.py** in the current folder (MetaLex) and place it in the parent folder
 
 
 ```sh
     python runMetaLex.py -h
-```ss
+    
+```
 
 ```md
    MetaLex arguments :
