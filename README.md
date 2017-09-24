@@ -23,13 +23,32 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
 
 # Usage
 
-- Move **fileTestMetaLex.py** in the current folder (MetaLex) and place it in the parent folder
 
-- Global usage commands line
+- Usage situation
+
+```
+    I am a metalexicographer or linguist and I have printed dictionaries. I wish to make a diachronic metalexicographics studies to
+    the evolution of the formulations of the definitions of a collection of dictionaries available from period A to period B.
+    
+    Traditionally or at best, the contemporary metalexicographer(according to our point of view) would apply successively the following methodology:
+    
+    - Scanning of printed materials (Scan)
+    - Optical reading of the supports (Ocrisation)
+    - Manual Error Corrections
+    - Marking of the articles obtained
+    - Metalexographical analysis / decryption of articles
+    
+    
+    This is an example of process used with MetaLex ! Some other more complex process can be done !
+
+```
+
+
+- Move **MetaLex.py** in the current folder (MetaLex) and place it in the parent folder
 
 
 ```sh
-    python fileTestMetaLex.py -h
+    python MetaLex.py -h
 ```
 
 ```md
@@ -47,18 +66,25 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
   -d IMAGESDIR, --imagedir IMAGESDIR
                         Input folder name of dictionary image files for
                         current MetaLex project
+  --imgalg actiontype value
+                        Set algorithm for enhancing dictionary image files for
+                        current MetaLex project (actiontype must be : constrat
+                        or bright or filter)
   -r FILERULE, --filerule FILERULE
+                        Defined file rules that we use to enhance quality of
+                        OCR result
   -l LANG, --lang LANG  Set language for optical characters recognition and
                         others MetaLex treatment
   -s, --save            Save output result of the current project in files
   -t, --terminal        Show result of the current treatment in the terminal
+
   
 ```
 
 
-- Build the file rule. 
+- Build the file rules of the project. 
 
-MetaLex take file which using  specific structure to enhance output text of OCR data (from image's files dictionnaries). **\W** for word replacement, **\C** for caracter replacement and **\R**  for regular expression replacement. The space between headers served to describe remplacement.
+MetaLex takes file which using  specific structure to enhance output text of OCR data (from dictionnary images files). **\W** for words replacement, **\C** for caracters replacement and **\R**  for regular expressions replacement. The spaces between headers served to describe remplacement.
 
 ```md
     \START
@@ -75,19 +101,24 @@ MetaLex take file which using  specific structure to enhance output text of OCR 
 ```
 
 
-- Run your project with the default parameters
+- Run your project with the default parameters except dictionary images data and save results. You must create a folder containing dictionnary images like **imagesInput/**.
 
 
 ```sh
-    python fileTestMetaLex.py  -d 'imagesInputFiles' -s
+
+    python MetaLex.py  -d 'imagesInput' -s  # We defined a folder containing dictionnary images for current treatment 
+    python MetaLex.py  -i 'imagedic.png' -s  # Or you can defined a single dictionnary image
+    
 ```
 
 
-- Run your project with your own set parameters 
+- Run your project with your own set of parameters and save results
 
 
 ```sh
-    python fileTestMetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInputFiles' -r 'file_Rule.dic' -l fra
+
+    python MetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l fra -s
+    
 ```
 
 
@@ -101,6 +132,7 @@ Special thank to [Bill](https://github.com/billmetangmo) for [MetaLex-vagrant](h
 Please don't forget to cite this work :
 
 ```latex
+
     @article{Mboning-Elvis,
         title  = {Quand le TAL s'empare de la métalexicographie : conception d'un outil pour le métalexicographe},
         author = {Mboning, Elvis},
@@ -111,6 +143,7 @@ Please don't forget to cite this work :
         pages  = {12},
         keywords = {métalexicographie, TAL, fouille de données, extraction d'information, lecture optique, lexicographie, Xmlisation, DTD}
     }
+    
 ```
 
 

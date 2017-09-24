@@ -91,7 +91,7 @@ def dicoHtml(save=False) :
             message = u"'MetaLexViewerEditor.html' has correctly been generated > Saved in dicTemp folder" 
             MetaLex.dicLog.manageLog.writelog(message)
     
-      
+        
  
 class baliseHTML () :
     
@@ -439,7 +439,7 @@ class baliseXML ():
     
     def chevron(self, el, attr, openchev=True, art=False, sclose=False):
         """
-          Put tag around the data element
+          Put tag around the data of element
           @return: str:tagging element 
         """
         idart = generateID()
