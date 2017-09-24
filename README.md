@@ -4,6 +4,40 @@ For current developpement version of this tool, see [MetaLex/v0.3](https://githu
 
 [![Build Status](https://travis-ci.org/claroline/Distribution.svg?branch=master)](mteprojet.fr/MetaLex)
 
+# Usage
+
+
+- Usage situation
+
+```md
+
+    # This is an example of process used with MetaLex 
+    
+    I am a metalexicographer or linguist and I have paper dictionaries. 
+    I want to perform a diachronic study of the evolution of the wording of 
+    definitions in a collection of dictionaries available from period A to period B.
+
+    Traditionally or at best, the contemporary metalexicographer (according to our point of view)
+    would apply the following methodology :
+
+    1- Scanning of printed materials (Scan)
+        2- Optical reading of the pictures (Ocrisation) 
+            3- Manual Error Corrections                     
+                4- Marking of the articles                      
+                    5- Metalexographical analysis / decryption of articles 
+
+    MetaLex through its modules operates in the same way by successively executing each of these tasks automatically.
+    
+    1 = MetaLex.dicOcrText.normalizeImage.enhanceImages().filter(f.DETAIL)
+        2 = MetaLex.dicOcrText.makeOcr.imageToText()
+            3 = MetaLex.dicOcrText.makeTextwell()
+                4 = MetaLex.dicXmlised.xmlised('tei') or MetaLex.dicXmlised.xmlised('lmf')
+                    5 = MetaLex.dicXmlised.handleStat()
+                
+    Some other more complex processes can be done !
+
+```
+
 # Requirements
 
 MetaLex is developped in **Python 2.7** environment, the following packages are required :
@@ -20,28 +54,6 @@ MetaLex is developped in **Python 2.7** environment, the following packages are 
     sudo pip install termcolor
     sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
 ```
-
-# Usage
-
-
-- Usage situation
-
-```
-    I am a metalexicographer or linguist and I have paper dictionaries. I want to perform a diachronic study of the evolution of the wording of definitions in a collection of dictionaries available from period A to period B.
-
-    Traditionally or at best, the contemporary metalexicographer (according to our point of view) would apply the following methodology:
-
-    - Scanning of printed materials (Scan)
-    - Optical reading of the pictures (Ocrisation) = MetaLex.dicOcrText.makeOcr.imageToText()
-    - Manual Error Corrections                     = MetaLex.dicOcrText.makeTextwell()
-    - Marking of the articles                      = MetaLex.dicXmlised.xmlised('tei')
-    - Metalexographical analysis / decryption of articles = MetaLex.dicXmlised.handleStat()
-
-
-    This is an example of process used with MetaLex ! Some other more complex processes can be done !
-
-```
-
 
 - Move **MetaLex.py** in the current folder (MetaLex) and place it in the parent folder
 
