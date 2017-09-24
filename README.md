@@ -59,8 +59,8 @@ MetaLex is developped in **Python 2.7** environment, the following packages are 
 
 
 ```sh
-    python MetaLex.py -h
-```
+    python runMetaLex.py -h
+```ss
 
 ```md
    MetaLex arguments :
@@ -117,8 +117,8 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 
 ```sh
 
-    python MetaLex.py  -d 'imagesInput' -s  # We defined a folder containing dictionary images for current process
-    python MetaLex.py  -i 'imagedic.png' -s  # Or you can define a single dictionary image file
+    python runMetaLex.py  -d 'imagesInput' -s  # We defined a folder containing dictionary images for current process
+    python runMetaLex.py  -i 'imagedic.png' -s  # Or you can define a single dictionary image file
 
 ```
 
@@ -128,7 +128,7 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 
 ```sh
 
-    python MetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l fra -s
+    python runMetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l fra -s
 
 ```
 
