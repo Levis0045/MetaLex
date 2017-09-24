@@ -101,12 +101,13 @@ MetaLex take file which using  specific structure to enhance output text of OCR 
 ```
 
 
-- Run your project with the default parameters except dictionary images data and save results. You must create a folder containing dictionnaty images like **imagesInput/**.
+- Run your project with the default parameters except dictionary images data and save results. You must create a folder containing dictionnary images like **imagesInput/**.
 
 
 ```sh
 
-    python MetaLex.py  -d 'imagesInput' -s
+    python MetaLex.py  -d 'imagesInput' -s  # We defined a folder containing dictionnary images for current treatment 
+    python MetaLex.py  -i 'imagedic.png' -s  # Or you can defined a single dictionnary image
     
 ```
 
