@@ -84,6 +84,9 @@ def run_MetaLex_test ():
     MetaLexArgsParser.add_argument('-l', '--lang', help='Set language for optical characters recognition and others  %(prog)s treatment',
                         type=str)
     
+    MetaLexArgsParser.add_argument('-x', '--xml', help='Defined output result treatment of  %(prog)s',
+                        type=str, nargs=3, choices=('xml', 'lmf', 'tei'))
+     
     MetaLexArgsParser.add_argument('-s', '--save', help='Save output result of the current project in files', 
                         action='store_true')
     
@@ -189,6 +192,9 @@ def run_MetaLex_test ():
     #-----Produce HTML output file for project------------------------------
     if MetaLexArgs.save :
         images.dicoHtml(save=MetaLexArgs.save)
+        baliseXML = images.baliseXML()
+        if MetaLexArgs.xml :
+            baliseXML.xmlised(save=MetaLexArgs.save, typ=MetaLexArgs.xml)
     else :
         images.dicoHtml(save=False)
 
