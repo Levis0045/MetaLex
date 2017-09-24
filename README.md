@@ -149,7 +149,7 @@ Please don't forget to cite this work :
     @article{Mboning-Elvis,
         title  = {Quand le TAL s'empare de la métalexicographie : conception d'un outil pour le métalexicographe},
         author = {Mboning, Elvis},
-        url    = {https://github.com/Levis0045/dic/},
+        url    = {https://github.com/Levis0045/MetaLex},
         date   = {2017-06-20},
         shool  = {Université de Lille 3},
         year   = {2017},
