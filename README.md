@@ -15,16 +15,17 @@ For current developpement version of this tool, see [MetaLex/v0.3](https://githu
     I want to perform a diachronic study of the evolution of the wording of 
     definitions in a collection of dictionaries available from period A to period B.
 
-    Traditionally or at best, the contemporary metalexicographer (according to our point of view)
+    # Traditionally or at best, the contemporary metalexicographer (according to our point of view)
     would apply the following methodology :
 
-    1- Scanning of printed materials (Scan)
-        2- Optical reading of the pictures (Ocrisation) 
-            3- Manual Error Corrections                     
-                4- Marking of the articles                      
+    1- Scanning of printed materials (Scan) and enhance its qualities
+        2- Optical reading of the pictures (Ocrisation) = extract articles content 
+            3- Manual Error Corrections  of text articles                   
+                4- Marking of the articles with regular standard                 
                     5- Metalexographical analysis / decryption of articles 
 
-    MetaLex through its modules operates in the same way by successively executing each of these tasks automatically.
+    #  MetaLex through its modules operates in the same way by successively executing 
+    each of these tasks automatically.
     
     1 = MetaLex.dicOcrText.normalizeImage.enhanceImages().filter(f.DETAIL)
         2 = MetaLex.dicOcrText.makeOcr.imageToText()
