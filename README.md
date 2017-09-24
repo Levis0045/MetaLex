@@ -6,7 +6,7 @@ For current developpement version of this tool, see [MetaLex/v0.3](https://githu
 
 # Requirements
 
-MetaLex is developped in **Python 2.7** environment, these packages are required :
+MetaLex is developped in **Python 2.7** environment, the following packages are required :
 
 ```sh
     sudo apt-get install build-essential libssl-dev libffi-dev python-dev
@@ -27,19 +27,18 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
 - Usage situation
 
 ```
-    I am a metalexicographer or linguist and I have printed dictionaries. I wish to make a diachronic metalexicographics studies to
-    the evolution of the formulations of the definitions of a collection of dictionaries available from period A to period B.
+    I am a metalexicographer or linguist and I have paper dictionaries. I want to perform a diachronic study of the evolution of the wording of definitions in a collection of dictionaries available from period A to period B.
     
-    Traditionally or at best, the contemporary metalexicographer(according to our point of view) would apply successively the following methodology:
+    Traditionally or at best, the contemporary metalexicographer (according to our point of view) would apply the following methodology:
     
     - Scanning of printed materials (Scan)
-    - Optical reading of the supports (Ocrisation)
+    - Optical reading of the pictures (Ocrisation)
     - Manual Error Corrections
-    - Marking of the articles obtained
+    - Marking of the articles
     - Metalexographical analysis / decryption of articles
     
     
-    This is an example of process used with MetaLex ! Some other more complex process can be done !
+    This is an example of process used with MetaLex ! Some other more complex processes can be done !
 
 ```
 
@@ -57,24 +56,24 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
   -h, --help            show this help message and exit
   -v, --version         show program's version number and exit
   -p PROJECTNAME, --project PROJECTNAME
-                        Defined MetaLex project name
+                        Define MetaLex project name
   -c author comment contributors, --confproject author comment contributors
-                        Defined MetaLex configuration for the current project
+                        Define MetaLex configuration for the current project
   -i [IMAGEFILE], --dicimage [IMAGEFILE]
-                        Input one or multiple dictionary image(s) file(s) for
+                        Input one or multiple dictionary image file(s) for
                         current MetaLex project
   -d IMAGESDIR, --imagedir IMAGESDIR
                         Input folder name of dictionary image files for
                         current MetaLex project
   --imgalg actiontype value
                         Set algorithm for enhancing dictionary image files for
-                        current MetaLex project (actiontype must be : constrat
+                        current MetaLex project (actiontype must be : contrast
                         or bright or filter)
   -r FILERULE, --filerule FILERULE
-                        Defined file rules that we use to enhance quality of
+                        Define file rules that we use to enhance quality of
                         OCR result
   -l LANG, --lang LANG  Set language for optical characters recognition and
-                        others MetaLex treatment
+                        other MetaLex processings
   -s, --save            Save output result of the current project in files
   -t, --terminal        Show result of the current treatment in the terminal
 
@@ -84,7 +83,7 @@ MetaLex is developped in **Python 2.7** environment, these packages are required
 
 - Build the file rules of the project. 
 
-MetaLex takes file which using  specific structure to enhance output text of OCR data (from dictionnary images files). **\W** for words replacement, **\C** for caracters replacement and **\R**  for regular expressions replacement. The spaces between headers served to describe remplacement.
+MetaLex takes files using specific structure to enhance output text of OCR data (from dictionary image files). **\W** for word replacement, **\C** for character replacement and **\R**  for regular expression replacement. The spaces between headers are used to to describe remplacement.
 
 ```md
     \START
@@ -101,13 +100,13 @@ MetaLex takes file which using  specific structure to enhance output text of OCR
 ```
 
 
-- Run your project with the default parameters except dictionary images data and save results. You must create a folder containing dictionnary images like **imagesInput/**.
+- Run your project with the default parameters except dictionary images data and save results. You must create a folder containing dictionary image files such as **imagesInput/**.
 
 
 ```sh
 
-    python MetaLex.py  -d 'imagesInput' -s  # We defined a folder containing dictionnary images for current treatment 
-    python MetaLex.py  -i 'imagedic.png' -s  # Or you can defined a single dictionnary image
+    python MetaLex.py  -d 'imagesInput' -s  # We defined a folder containing dictionary images for current process 
+    python MetaLex.py  -i 'imagedic.png' -s  # Or you can define a single dictionary image file
     
 ```
 
