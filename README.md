@@ -27,11 +27,16 @@ For current developpement version of this tool, see [MetaLex/v0.3](https://githu
     #  MetaLex through its modules operates in the same way by successively executing 
     each of these tasks automatically.
     
-    1 = MetaLex.dicOcrText.normalizeImage.enhanceImages().filter(f.DETAIL)
-        2 = MetaLex.dicOcrText.makeOcr.imageToText()
-            3 = MetaLex.dicOcrText.makeTextwell()
-                4 = MetaLex.dicXmlised.xmlised('tei') or MetaLex.dicXmlised.xmlised('lmf')
-                    5 = MetaLex.dicXmlised.handleStat()
+    1 = MetaLex enhances the quality of dictionary images 
+      - MetaLex.dicOcrText.normalizeImage.enhanceImages().filter(f.DETAIL)
+        2 = MetaLex extract from dictionary images all dictionary articles 
+          - MetaLex.dicOcrText.makeOcr.imageToText()
+            3 = MetaLex corrects dictionary articles 
+              - MetaLex.dicOcrText.makeTextwell()
+                4 = MetaLex marking dictionary articles depending of some standard 
+                  - MetaLex.dicXmlised.xmlised('tei') or MetaLex.dicXmlised.xmlised('lmf')
+                    5 = MetaLex generates some metalexicographics analysis of part of content dictionary 
+                      - MetaLex.dicXmlised.handleStat()
                 
     Some other more complex processes can be done !
 
