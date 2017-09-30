@@ -6,7 +6,7 @@
     
 """
  
-__version__ = u"0.0.3"
+__version__ = u"0.0.5"
 
 # ----Internal Modules------------------------------------------------------
 
@@ -27,7 +27,7 @@ treatImages        = []
 resultOcrFiles     = []
 resultOcrData      = {}
 codifications      = {}
-
+projectFolder      = {}
 # ----------------------------------------------------------
 
 version = u"MetaLex package is in a version : %s " %__version__
