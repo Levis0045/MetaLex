@@ -318,14 +318,6 @@ class baliseXML ():
         
         return resultArticles
             
-            
-        """
-        if re.search(ur'^.+\s(<cgr-vrg>,</cgr-vrg>\s.+|<cgr-vrg>,</cgr-vrg>\s.+ ou\s.+\s<cgr-vrg>,</cgr-vrg>\s.+)?\s<cte-cat>.+</cte-cat>\s(<cte-genre>..</cte-genre>|<cte-rection>.+</cte-rection>)?\s.+', art) :
-            artpart  = re.search(ur'(^.+)\s(<cgr-vrg>,</cgr-vrg>\s.+|<cgr-vrg>,</cgr-vrg>\s.+ ou\s.+\s<cgr-vrg>,</cgr-vrg>\s.+)?\s<cte-cat>.+</cte-cat>\s(<cte-genre>..</cte-genre>|<cte-rection>.+</cte-rection>)?\s(.+)', art)
-            entry, cat, rest = artpart.group(1), artpart.group(2), artpart.group(3)
-            print entry+'***'+cat+'***'+rest
-            print '------------------------------------------\n'
-        """
            
     def xmlContent(self, typ=u'xml', forme=u'text'): 
         """

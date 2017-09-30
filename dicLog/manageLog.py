@@ -54,6 +54,13 @@ def getDate():
         return date  
 
 
+def getTime():
+    datefile = os.popen('date').read()
+    datetab  = datefile.split(' ')
+    time = datetab[4]
+    return time  
+    
+    
 def logname():
     strdate = getDate()
     projectName = MetaLex.projectName
@@ -62,31 +69,25 @@ def logname():
 
 
 def folderlog():
-    name       = logname()
-    parentdir  = os.listdir('..')
-    currentdir = os.listdir('.')
-
-    if 'dicLogs' in currentdir :
-        os.chdir('dicLogs')
-    elif 'dicLogs' not in currentdir and 'dicTemp' in currentdir :
+    hour = MetaLex.dicProject.getHour()
+    name          = logname()
+    parentdir     = os.listdir('..')
+    projectF      = MetaLex.projectFolder.items()[0][0]
+    projectD      = MetaLex.projectFolder.items()[0][1]
+    rootProject   = projectD+'/'+projectF
+    dicLogs       = rootProject+'/dicLogs'
+    contentdir    = os.listdir(rootProject)
+    logs          = u'[MetaLexLog - '+hour+u']'
+    if 'dicLogs' not in contentdir :
         try :
-            os.mkdir('dicLogs')
+            os.mkdir(dicLogs)
+            os.chdir(dicLogs)
         except os.error :
-            message = 'We can cannot create dicLogs folder in this directory ! It s right exception ?'
-            print u'%-8s : %-30s\n' %(colored(u'[MetaLexLog]', u'red', attrs=['reverse', 'blink', 'bold']), message)
+            message = u'We can cannot create dicLogs folder in this directory ! It s right exception ?'
+            print u'%-8s : %-30s\n' %(colored(logs, u'red', attrs=['reverse', 'blink', 'bold']), message)
             pass
-        os.chdir(u'dicLogs/')
-    elif 'dicLogs' not in currentdir and 'dicLogs' in parentdir :
-        os.chdir(u'..')
-        os.chdir(u'dicLogs/')
-    else :
-        try :
-            os.mkdir(u'dicLogs')
-        except os.error :
-            message = 'We can cannot create dicLogs folder in this directory ! It s right exception ?'
-            print u'%-8s : %-30s\n' %(colored(u'[MetaLexLog]', u'red', attrs=['reverse', 'blink', 'bold']), message)
-            pass
-        os.chdir(u'dicLogs/')
+    else:
+        os.chdir(dicLogs)
 
     currentdirlog = os.listdir(u'.')
     if name not in currentdirlog :
@@ -109,7 +110,6 @@ def writelog(content, typ=u'ok'):
             log.write(message)
     else:
         pass
-    #os.chdir('..')
     message = u'[MetaLexLog - '+hour+u']'
     if typ == 'warm' :
         print u'%-10s  %-30s\n' %(colored(message, u'yellow', attrs=['reverse', 'blink', 'bold']), content)

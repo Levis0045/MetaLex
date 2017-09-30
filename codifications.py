@@ -14,8 +14,8 @@
 
 # ----Internal Modules------------------------------------------------------
 
-from MetaLex import dicLog
-from MetaLex import dicProject
+import dicLog
+import dicProject
 
 # ----External Modules------------------------------------------------------
 
@@ -38,6 +38,7 @@ class codificationsStore() :
           @param   typ:text|graph|symb|typo
           @return: list:allcoditext
         """
+        
         if typ == u'text' :
             cats        = [u'n', u'adj', u'v', u'prép', u'adv', u'loc',
                            u'Fig', u'tr', u'intr', u'interj', u'art', u'conj', u'pron',
@@ -109,6 +110,12 @@ class codificationsStore() :
 
 
     def getCodifTextType(self):
+        """
+            Get all existing type of dictionary textual codification
+            @param   self:class object
+            @return: dict: textual codifications
+        """
+        
         cats        = [u'n', u'adj', u'v', u'prép', u'adv', u'loc',
                        u'Fig', u'tr', u'intr', u'interj', u'art', u'conj', u'pron',
                        u'loc.conj', u'loc.adv', u'loc.adj', u'pron.relat', u'pronom',
@@ -165,6 +172,12 @@ class codificationsStore() :
 
 
     def getCodifSymbType(self):
+        """
+            Get all existing dictionary symbolic codification
+            @param   self:class object
+            @return: dict: symbolic codifications
+        """
+        
         symbs        = [u'||', u'&#9830;', u'--']
         allnumbers   = [u'1',u'2',u'3',u'4',u'5',u'6',u'7',u'8',u'9',u'0']
         alphabs      = [u'a',u'b',u'c',u'd',u'e',u'f',u'g',u'h', u'i',u'j',
@@ -187,6 +200,11 @@ class codificationsStore() :
         return allcoditype
 
     def getCodifGraphType(self):
+        """
+            Get all existing dictionary graphematic codification
+            @param   self:class object
+            @return: dict: graphematic codifications
+        """
         graphs = [u'.', u',', u':', u'-', u';', u'[', u']', u'(', u')']
         allcoditype = {}
         for graph in graphs :
@@ -206,6 +224,7 @@ class codificationsStore() :
             @param   self:class object
             @return: dict:allcodifications
         """
+        
         coditext  = self.getCodification(u'text')
         codigraph = self.getCodification(u'graph')
         coditypo  = self.getCodification(u'typo')
@@ -225,6 +244,7 @@ class codificationsStore() :
             @param   typ:str
             @return: file:allcodifications
         """
+        
         coditext  = self.getCodification(u'text')
         codigraph = self.getCodification(u'graph')
         coditypo  = self.getCodification(u'typo')

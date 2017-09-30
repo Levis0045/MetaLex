@@ -41,7 +41,6 @@ def get_part_file(namefile):
     (imageroot, ext) = os.path.splitext(os.path.basename(namefile))
     return (imageroot, ext)
 
-
 def getHour():
     datefile = os.popen('date').read()
     try :
@@ -52,6 +51,7 @@ def getHour():
         datetab = datefile.split(' ')[3]
         hour = datetab
         return hour
+    
     
 def treat_image_append(namefile) :
     """
@@ -144,13 +144,26 @@ def fileGettext(fil):
     return datatext
 
 
+def getRootProject():
+    """
+      Go to the root path of current project
+      @return: root path of current project
+    """
+    projectF = MetaLex.projectFolder.items()[0][0]
+    projectD = MetaLex.projectFolder.items()[0][1]
+    projetPath = projectD+u'/'+projectF
+    return projetPath
+
+
 def readConf():
     """
       Extract data configuration of the project
       @return: dict:data configuration text
     """
     confData = {}
-    with codecs.open(u'MetaLex.cnf', 'r', 'utf-8') as conf :
+    rootPath = getRootProject()
+    confPath = rootPath+u'/MetaLex.cnf'
+    with codecs.open(confPath, 'r', 'utf-8') as conf :
         for line in conf :
             if line[0] == u'\\' : 
                 part  = line.strip().split(u':')
@@ -165,32 +178,24 @@ def createtemp():
       Create a 'dicTemp' folder if it doesn't exist at the parent folder at the scope
       @return: path:place in dicTemp folder
     """
-      
-    contentdir     = os.listdir('.')
-    parentdir      = os.listdir('..')
-    if 'dicLogs' in contentdir and 'dicTemp' not in contentdir :
+    parentdir     = os.listdir('..')
+    projectF      = MetaLex.projectFolder.items()[0][0]
+    projectD      = MetaLex.projectFolder.items()[0][1]
+    rootProject   = projectD+'/'+projectF
+    dicTemp       = rootProject+'/dicTemp'
+    contentdir    = os.listdir(rootProject)
+    if 'dicTemp' not in contentdir :
         try:
-            os.mkdir('dicTemp')
+            os.mkdir(dicTemp)
         except os.error :
-            print 'Error :  We can cannot create dicTemp folder in this directory ! It s right exception ?'
+            message = u'We can cannot create dicTemp folder in this directory ! It s right exception ?'
+            MetaLex.dicLog.manageLog.writelog(message, typ='error')
             pass
-        message = u'dicTemp folder' + u'  > is created an initialised' 
+        message = u'dicTemp folder >> is created an initialised with' 
         MetaLex.dicLog.manageLog.writelog(message)
-        os.chdir('dicTemp/')
-
-    elif 'dicLogs' in contentdir and 'dicTemp' in contentdir :
-        os.chdir('dicTemp/') 
-    elif 'dicLogs' not in contentdir and 'dicLogs' in parentdir and 'dicTemp' in parentdir :
-        os.chdir('..')
-        os.chdir('dicTemp/')
-    elif 'dicLogs' not in contentdir and 'dicLogs' in parentdir and 'dicTemp' not in parentdir :
-        os.chdir('..')
-        try:
-            os.mkdir('dicTemp')
-        except os.error :
-            print 'Error :  We can cannot create dicTemp folder in this directory ! It s right exception ?'
-            pass
-        os.chdir('dicTemp/') 
+        os.chdir(dicTemp)
+    else :
+        os.chdir(dicTemp) 
         
 
 def dicFile(fil):
@@ -199,7 +204,6 @@ def dicFile(fil):
       @keyword fil:str
       @return: path:normalize file path
     """
-    
     script_dir = os.path.dirname(os.path.abspath(__file__))
     return os.path.join(script_dir, fil)
        
@@ -212,7 +216,7 @@ class newProject :
     """
     
     import MetaLex
-    
+        
     def __init__ (self, projectname):
         self.name = projectname
         MetaLex.allProjectNames.append(self.name)
@@ -224,7 +228,27 @@ class newProject :
         self.resultLog      = u""
         self.lang           = u""
         self.dicoType       = u""
-    
+        self.projetFolder()
+         
+    def projetFolder(self):
+        """
+          Create folder of new environment project
+          @return: project folder
+        """
+        folderName = 'MetaLex_'+self.name
+        MetaLex.projectFolder[folderName] = os.getcwd()
+        currentdir = os.listdir('.')
+        if folderName in currentdir :
+            os.chdir(folderName)
+        else :
+            try : 
+                os.mkdir(folderName)
+                os.chdir(folderName)
+            except os.error :
+                message =  u"We can can't create "+folderName+u" folder in this directory ! It is right exception ?"
+                MetaLex.dicLog.manageLog.writelog(message, typ='error')
+                
+        
     def setConfProject (self, author, comment, contrib):
         """
           Set parameters of new environment project
@@ -234,21 +258,34 @@ class newProject :
           @return: file:normalize file path
         """
         MetaLex.projectAuthor = author
+        projectF = MetaLex.projectFolder.items()[0][0]
+        projectD = MetaLex.projectFolder.items()[0][1]
+        acessDF  = projectF+u' | '+projectD
         project  = MetaLex.projectName
-        dateInit = MetaLex.manageLog.getDate()
+        Cdate    = MetaLex.manageLog.getDate()
+        Ctime    = getHour()
+        dateInit = Cdate.decode('ascii')+u' à '+Ctime
+        log      = u'/dicLogs'+u' | '+projectD+u'/'+projectF+u'/dicLogs'
+        temp     = u'/dicTemp'+u' | '+projectD+u'/'+projectF+u'/dicTemp'
+        images   = u'/dicImages'+u' | '+projectD+u'/'+projectF+u'/dicImages'
         Intro    = u'***************** MetaLex project configuration *****************\n\n'
+        access   = u'%-15s : %-10s \n' %(u'\Project folder', acessDF)
         end      = u'***************************************************************** \n\n'
-        #content  = Intro+'\n\n'+'\Project name  : '+project+'\n'+'\Creation date : '+dateInit+'\n'+'\Author  : '+author+'\n'+'\Contributors  : '+contrib+'\n'+'\Comment       : '+comment+'\n\n'+end
-        #print type(dateInit), dateInit
-        MetaLex.dicProject.createtemp()
-        if MetaLex.dicProject.inDir('MetaLex.cnf') :
+   
+        os.chdir(getRootProject())
+        contentdir = os.listdir('.')
+        if 'MetaLex.cnf' not in contentdir :
             with codecs.open('MetaLex.cnf', 'w', 'utf-8') as conf :
                 conf.write(Intro)
-                conf.write('%-15s : %-10s \n'   %(u'\Project name', project))
-                conf.write('%10s : %s \n'   %(u'\Creation date', dateInit.decode('ascii')))
-                conf.write('%-15s : %-10s \n'   %(u'\Author', author))
-                conf.write('%-15s : %-10s \n'   %(u'\Contributors', contrib))
-                conf.write('%-15s : %-10s \n\n' %(u'\Comment', comment))
+                conf.write(access)
+                conf.write(u'%-15s : %-10s \n'   %(u'\Project name', project))
+                conf.write(u'%-15s : %-10s \n'   %(u'\Creation date', dateInit))
+                conf.write(u'%-15s : %-10s \n'   %(u'\Author', author))
+                conf.write(u'%-15s : %-10s \n'   %(u'\Contributors', contrib))
+                conf.write(u'%-15s : %-10s \n'   %(u'\Comment', comment))
+                conf.write(u'%-15s : %-10s \n'   %(u'\Folder log', log))
+                conf.write(u'%-15s : %-10s \n'   %(u'\Folder temp', temp))
+                conf.write(u'%-15s : %-10s \n\n' %(u'\Folder images', images))
                 conf.write(end)
                 
     def getProjectName(self):

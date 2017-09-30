@@ -79,20 +79,19 @@ def imageToText(show=False, save=False, langIn='fra'):
             
             MetaLex.dicProject.createtemp()
             if MetaLex.dicProject.inDir(tempname) :
-                message = u"OCR >> Début de la lecture optique de "+imagefile+u' '
+                message = u"OCR >> Starting optical charaters recognition of *"+imagefile+u"* "
                 MetaLex.dicLog.manageLog.writelog(message)
                 textocr = api.GetHOCRText(2)
-                messag = u"Fin de la lecture optique de "+imagefile+u' '
+                messag = u"OCR >> Ending optical charaters recognition of *"+imagefile+u"* "
                 MetaLex.dicLog.manageLog.writelog(messag)
                 
                 MetaLex.dicProject.createtemp()
                 if save:
                     with codecs.open(tempname, 'w', "utf-8") as wr :
                         wr.write(textocr)
-                    message = u"'"+ imagefile +u"' is Ocrised to > '"+tempname+u"' > Saved in dicTemp folder" 
+                    message = u"*"+ imagefile +u"* is Ocrised to > *"+tempname+u"* > Saved in dicTemp folder" 
                     MetaLex.dicLog.manageLog.writelog(message) 
                     MetaLex.resultOcrData[img] = [textocr]
-                    #os.chdir('..')
                 elif show :
                     print u"\n\n*********************************************************\n\n"
                     print textocr
@@ -101,7 +100,7 @@ def imageToText(show=False, save=False, langIn='fra'):
                     message = u"OCR >> imageToText(show=False, save=False) : precise the action 'show=False or save=False'"
                     MetaLex.dicLog.manageLog.writelog(message, typ='warm') 
             else :
-                messag =  u"OCR >> Fin de la lecture optique de '"+imagefile+u"' "
+                messag = u"OCR >> Ending optical charaters recognition of *"+imagefile+u"* "
                 MetaLex.dicLog.manageLog.writelog(messag)
                 
             MetaLex.dicProject.treat_ocr_append(tempname)
