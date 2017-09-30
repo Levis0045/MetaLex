@@ -8,7 +8,7 @@
 """
 
 
-__version__ = "0.0.4"
+__version__ = "0.0.5"
 
 
 # ----Internal Modules------------------------------------------------------
@@ -21,7 +21,7 @@ import sys, os
 # -----Global Variables-----------------------------------------------------
 
 
-# ----------------------------------------------------------
+# --------------------------------------------------------------------------
 
 pytesserocr = os.path.dirname(os.path.abspath(__file__))+'/pytesseocr'
 resources = pytesserocr = os.path.dirname(os.path.abspath(__file__))+'/resources'
