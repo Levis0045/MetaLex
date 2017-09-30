@@ -55,11 +55,11 @@ def getImages(images):
             imageroot, ext = MetaLex.dicProject.get_part_file(image)
             if os.path.isfile(image) and ext in exts:
                 imagedir = os.path.dirname(image)
-                
+                pName = MetaLex.projectFolder.items()[0][0]
                 imagedirNew = u""
                 for tep in imagedir.split('/')[:-1] :
                     imagedirNew += tep +u"/"
-                imagedirNew = imagedirNew+u"dicImages/"
+                imagedirNew = imagedirNew+pName+u"/dicImages/"
                 
                 if not os.path.exists(imagedirNew) :
                     os.mkdir(imagedirNew)
@@ -70,11 +70,11 @@ def getImages(images):
                 MetaLex.fileImages.append(imageLocationNew)
                 num += 1
             else :
-                message = u"getImages(images) >> The input image '"+imageroot+ext+u"' is not a file image"
+                message = u"getImages(images) >> The input image *"+imageroot+ext+u"* is not a file image"
                 MetaLex.dicLog.manageLog.writelog(message, typ='error')
                  
         imagestr = str(images)
-        message  = imagestr + u' > are append for the current treatment' 
+        message  = u' *'+imagestr +u'* >> are append for the current treatment' 
         MetaLex.dicLog.manageLog.writelog(message)
     else: 
         message = u'getImages(images) >> They are not images for the current treatment : input images !!' 
@@ -118,12 +118,12 @@ class enhanceImages ():
                     if MetaLex.dicProject.inDir(tempname) :
                         enh.enhance(value).save(tempname)
                         MetaLex.dicProject.treat_image_append(tempname)
-                        message = imagename + u'is modified with contrast (' +str(value)+ u') > '+tempname+u' > Saved in dicTemp folder'  
+                        message = u' *'+imagename+u'* is modified with contrast (' +str(value)+ u') > *'+tempname+u'* > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1
                     else :
                         MetaLex.dicProject.treat_image_append(tempname)
-                        message = imagename + u'is modified with contrast (' +str(value)+ u') > '+tempname+u' > Saved in dicTemp folder'  
+                        message = u' *'+imagename+u'* is modified with contrast (' +str(value)+ u') > *'+tempname+u'* > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1
                 else :
@@ -160,17 +160,17 @@ class enhanceImages ():
                         enh.enhance(value).save(tempname)
                         MetaLex.dicProject.treat_image_append(tempname)
                         os.remove(img_conv)
-                        message = imagename + u'is modified with sharp ( ' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
+                        message = u'*'+imagename+u'* is modified with sharp ( ' +str(value)+ u') > *'+tempname+u'* > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1 
                     else :
                         MetaLex.dicProject.treat_image_append(tempname)
                         os.remove(img_conv)
-                        message = imagename + u'is modified with contrast (' +str(value)+ u') > '+tempname+u' > Saved in dicTemp folder'  
+                        message = u'*'+imagename+u'* is modified with contrast (' +str(value)+ u') > *'+tempname+u'* > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1
                 else :
-                    message = u'Warning : sharp(value, show=False, save=False) --> You must define one action for the current treatment : show=true or save=true'
+                    message = u'sharp(value, show=False, save=False) --> You must define one action for the current treatment : show=true or save=true'
                     MetaLex.dicLog.manageLog.writelog(message, typ='warm')
         else:
             message = u'sharp(images) >> They are not images for the current treatment : please input images !! ' 
@@ -203,13 +203,13 @@ class enhanceImages ():
                         enh.enhance(value).save(tempname)
                         MetaLex.dicProject.treat_image_append(tempname)
                         os.remove(img_conv)
-                        message = imagename + u' is modified with bright (' +str(value)+ ') > '+tempname+' > Saved in dicTemp folder'  
+                        message = u'*'+imagename+u'* is modified with bright (' +str(value)+ u') > *'+tempname+u'* > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1 
                     else :
                         MetaLex.dicProject.treat_image_append(tempname)
                         os.remove(img_conv)
-                        message = imagename + u' is modified with contrast (' +str(value)+ u') > '+tempname+u' > Saved in dicTemp folder'  
+                        message = u'*'+imagename+u'* is modified with contrast (' +str(value)+ u') > *'+tempname+u'* > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1
                 else :
@@ -257,7 +257,7 @@ class enhanceImages ():
                         os.remove(tempname)
                         os.remove(img_conv_file)
                         MetaLex.dicProject.treat_image_append(tempname2)
-                        message = imagename + u' is modified with  contrast (' +str(contrast)+ ') and  bright ('+str(bright)+') > '+tempname2+' > Saved in dicTemp folder'  
+                        message = u'*'+imagename+u'* is modified with  contrast (' +str(contrast)+ ') and  bright ('+str(bright)+') > '+tempname2+' > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         imgpil.close()
                         num += 1
@@ -265,7 +265,7 @@ class enhanceImages ():
                         os.remove(img_conv_file)
                         os.remove(tempname)
                         MetaLex.dicProject.treat_image_append(tempname2)
-                        message = imagename + u' is modified with  contrast (' +str(contrast)+ ') and  bright ('+str(bright)+') > '+tempname2+' > Saved in dicTemp folder'  
+                        message = u'*'+imagename+u'* is modified with  contrast (' +str(contrast)+ u') and  bright ('+str(bright)+u') > *'+tempname2+u'* > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         imgpil.close()
                         num += 1
@@ -325,7 +325,7 @@ class enhanceImages ():
                 elif not show and MetaLex.dicProject.inDir(tempname) :
                     img.filter(imgfilter).save(tempname)
                 MetaLex.dicProject.treat_image_append(tempname)
-                message = imagename + u' is modified with  filter (' +str(imgfilter)+ u')  > '+tempname+u' > Saved in dicTemp folder'  
+                message = u'*'+imagename+u'* is modified with  filter (' +str(imgfilter)+ u')  > *'+tempname+u'* > Saved in dicTemp folder'  
                 MetaLex.dicLog.manageLog.writelog(message)
                 img.close()
                 num += 1
