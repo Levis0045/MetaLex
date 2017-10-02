@@ -1,8 +1,10 @@
 # MetaLex Tool
-MetaLex is general tool for **lexicographics** and **metalexicographics** activities.
+MetaLex is general tool in AGPL Licence for `lexicographics` and `metalexicographics` activities.
 For current developpement version of this tool, see [MetaLex/v0.3](https://github.com/Levis0045/MetaLex/tree/v0.3)
 
+
 [![Build Status](https://travis-ci.org/claroline/Distribution.svg?branch=master)](mteprojet.fr/MetaLex)
+
 
 # Usage
 
@@ -47,7 +49,7 @@ For current developpement version of this tool, see [MetaLex/v0.3](https://githu
 
 # Requirements
 
-MetaLex is developped in **Python 2.7** environment, the following packages are required :
+MetaLex is developped in `Python 2.7` environment, the following packages are required :
 
 ```sh
     sudo apt-get install build-essential libssl-dev libffi-dev python-dev
@@ -64,7 +66,7 @@ MetaLex is developped in **Python 2.7** environment, the following packages are 
 
 # How to run MetaLex ?
 
-- Move **MetaLex.py** in the current folder (MetaLex) and place it in the parent folder
+- Move `runMetaLex.py` in the current folder (MetaLex) and place it in the parent folder
 
 
 ```sh
@@ -105,7 +107,7 @@ MetaLex is developped in **Python 2.7** environment, the following packages are 
 
 - Build the file rules of the project.
 
-MetaLex takes files using specific structure to enhance output text of OCR data (from dictionary image files). **\W** for word replacement, **\C** for character replacement and **\R**  for regular expression replacement. The spaces between headers are used to to describe remplacement.
+MetaLex takes files using specific structure to enhance output text of OCR data (from dictionary image files). `\W` for word replacement, `\C` for character replacement and `\R`  for regular expression replacement. The spaces between headers are used to to describe remplacement.
 
 ```md
     \START
