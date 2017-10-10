@@ -159,8 +159,9 @@ def run_MetaLex_test ():
         project = dico.newProject(MetaLexArgs.projectName)
     else :
         message = u"Your current project name is not set! Please correct it otherwise default name must be use" 
-        dico.dicLog.manageLog.writelog(message, typ='warm')
         project = dico.newProject(u'MetaLex_projectName')
+        dico.dicLog.manageLog.writelog(message, typ='warm')
+        
         
     # ----Set metadata for the current project-------------------------------
     if MetaLexArgs.confProject :
