@@ -69,8 +69,7 @@ MetaLex is developped in `Python 2.7` environment, the following packages are re
 - Or follow these steps 
 
 ```sh
-    chmod +x setup.sh   
-    ./setup.sh     #install linux package dependencies
+    sudo ./setup.sh     #install linux package dependencies
     
     sudo pip install -r requirements.txt  #install python module dependencies
 
