@@ -48,7 +48,7 @@ import MetaLex
 # ----External Modules------------------------------------------------------
 
 from tesserocr import PyTessBaseAPI
-import codecs, os
+import codecs, os, sys
 
 # -----Exported Functions---------------------------------------------------
 
@@ -77,7 +77,9 @@ def imageToText(show=False, save=False, langIn='fra'):
         return None
     elif not len(MetaLex.fileImages) >= 1 :
         contentPrint = u"OCR >>  You don't have any image(s) for this treatment"
+        messageExit  = u'FATAL ERROR! We cannot continue, resolve the previous error'
         MetaLex.dicLog.manageLog.writelog(contentPrint, typ='error')
+        sys.exit(MetaLex.dicLog.manageLog.writelog(messageExit, typ='error'))
     else:
         allimages = MetaLex.treatImages
          

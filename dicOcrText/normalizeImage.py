@@ -49,8 +49,8 @@
 import MetaLex
 
 # ----External Modules------------------------------------------------------
-
-import Image, os
+from PIL import Image
+import os, sys
 import ImageEnhance
 from shutil import copyfile
 
@@ -99,7 +99,8 @@ def getImages(images):
     else: 
         message = u'getImages(images) >> They are not images for the current treatment : input images !!' 
         MetaLex.dicLog.manageLog.writelog(message, typ='error')
-        
+        messageExit = u'FATAL ERROR! We cannot continue, resolve the previous error'
+        sys.exit(MetaLex.dicLog.manageLog.writelog(messageExit, typ='error'))
     return MetaLex
     
         
@@ -138,12 +139,12 @@ class enhanceImages ():
                     if MetaLex.dicProject.inDir(tempname) :
                         enh.enhance(value).save(tempname)
                         MetaLex.dicProject.treat_image_append(tempname)
-                        message = u' *'+imagename+u'* is modified with contrast (' +str(value)+ u') > *'+tempname+u'* > Saved in dicTemp folder'  
+                        message = u'*'+imagename+u'* is modified with contrast (' +str(value)+ u') > *'+tempname+u'* > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1
                     else :
                         MetaLex.dicProject.treat_image_append(tempname)
-                        message = u' *'+imagename+u'* is modified with contrast (' +str(value)+ u') > *'+tempname+u'* > Saved in dicTemp folder'  
+                        message = u'*'+imagename+u'* is modified with contrast (' +str(value)+ u') > *'+tempname+u'* > Saved in dicTemp folder'  
                         MetaLex.dicLog.manageLog.writelog(message) 
                         num += 1
                 else :
@@ -347,7 +348,7 @@ class enhanceImages ():
                 MetaLex.dicProject.treat_image_append(tempname)
                 message = u'*'+imagename+u'* is modified with  filter (' +str(imgfilter)+ u')  > *'+tempname+u'* > Saved in dicTemp folder'  
                 MetaLex.dicLog.manageLog.writelog(message)
-                img.close()
+                #img.close()
                 num += 1
         else:
             message = u'filter() >> They are not images for the current treatment : input images!!' 
