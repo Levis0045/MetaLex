@@ -88,8 +88,11 @@ def makeTextWell(file_rules, okCorrect=False, log=False):
            
         if log : print "--> %30s : %10.5f seconds\n" %("Durée d'extraction du fichier des règles", dfilerule)
     else :
-        message = u'We are not found any OCR files to enhance text quality'
-        return MetaLex.dicLog.manageLog.writelog(message, typ='error')
+        message = u'OCR  >> we are not found any OCR files to enhance text quality'
+        messageExit = u'FATAL ERROR! We cannot continue, resolve the previous error'
+        MetaLex.dicLog.manageLog.writelog(message, typ='error')
+        return sys.exit(MetaLex.dicLog.manageLog.writelog(messageExit, typ='error'))
+              
               
 def enhanceText(html_file, rules, okCorrect):
     """
@@ -159,8 +162,11 @@ def enhanceText(html_file, rules, okCorrect):
                 article = {crtnum:contentCorrection, artnum:contentOrigin}
                 dicArticles.append(article)
                 art += 1
-    
-    
+                
+    formFile = str(html_file).split('/')[-1].split("'")[0]
+    message = u"enhanceText() >> *"+formFile+u"* has been corrected"
+    MetaLex.dicLog.manageLog.writelog(message)
+                
     
 def saveNormalize(name, typ):
     """
@@ -182,18 +188,18 @@ def saveNormalize(name, typ):
                             fil.write('\n----- FILE: %s ---------------------------------------------------------------------------------\n\n' %num)
                             fil.write('%10s : %s\n' %(k, v))
                             num += 1
-            message = name+u' is created and contain all text format data from html files > Saved in dicTemp folder'  
+            message = u'saveNormalize() >> '+u'*'+name+u'* is created and contain all text format data from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message) 
         else :
-            message = name+u' is created and contain all text format data from html files > Saved in dicTemp folder'  
+            message = u'saveNormalize() >> '+u'*'+name+u'* is created and contain all text format data from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message) 
     
     if typ == u'pickle' :  
         if MetaLex.dicProject.inDir(name) and MetaLex.dicProject.filePickle(dicArticles, name) :
-            message = name+u' is created and contain pickle data object from html files > Saved in dicTemp folder'  
+            message = u'saveNormalize() >> '+u'*'+name+u'* is created and contain pickle data object from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message)         
         else :
-            message = name+u' is created and contain pickle data object from html files > Saved in dicTemp folder'  
+            message = u'saveNormalize() >> '+u'*'+name+u'* is created and contain pickle data object from html files > Saved in dicTemp folder'  
             MetaLex.dicLog.manageLog.writelog(message)     
         
  
@@ -220,7 +226,7 @@ class fileRule():
         metadata, ruleWords, ruleCaracts, ruleRegex = {}, {}, {}, {}
         startw, startc, startr = False, False, False
         
-        if self.verify(self.typ) :
+        if self.fileRuleVerified(self.typ) :
             if self.typ == u'rule_wc' :
                 with codecs.open(self.file, 'r', 'utf-8') as rule :
                     for line in rule : 
@@ -250,7 +256,7 @@ class fileRule():
         return metadata, ruleWords, ruleCaracts, ruleRegex 
         
     
-    def verify(self, typ):
+    def fileRuleVerified(self, typ):
         """
           Verified if file rule content respect the norm description of MetaLex 
           @param   typ:str
@@ -260,7 +266,7 @@ class fileRule():
         try :
             fileop = codecs.open(self.file, 'r', 'utf-8').readlines()
         except :
-            log = u"verify() >> We can't open your file rule. Please set it !"
+            log = u"fileRuleVerified() >> We can't open your file rule. Please set it !"
             return MetaLex.dicLog.manageLog.writelog(log, typ='error')
         
         if typ == u'rule_wc' :
