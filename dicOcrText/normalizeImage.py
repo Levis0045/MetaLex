@@ -51,7 +51,7 @@ import MetaLex
 # ----External Modules------------------------------------------------------
 from PIL import Image
 import os, sys
-import ImageEnhance
+from PIL import ImageEnhance
 from shutil import copyfile
 
 # ----Exported Functions-----------------------------------------------------
