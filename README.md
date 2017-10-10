@@ -51,6 +51,8 @@ For current developpement version of this tool, see [MetaLex/v0.3](https://githu
 
 MetaLex is developped in `Python 2.7` environment, the following packages are required :
 
+-  We can install all package dependencies manually
+
 ```sh
     sudo apt-get install build-essential libssl-dev libffi-dev python-dev
     sudo pip install Cython
@@ -62,6 +64,16 @@ MetaLex is developped in `Python 2.7` environment, the following packages are re
     sudo pip install pillow
     sudo pip install termcolor
     sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
+```
+
+- Or follow these steps 
+
+```sh
+    chmod +x setup.sh   
+    ./setup.sh     #install linux package dependencies
+    
+    sudo pip install -r requirements.txt  #install python module dependencies
+
 ```
 
 # How to run MetaLex ?
