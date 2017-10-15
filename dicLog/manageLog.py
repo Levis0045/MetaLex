@@ -41,7 +41,7 @@ import MetaLex
 
 # ----External Modules------------------------------------------------------
 
-import codecs, os, re
+import codecs, os
 import unicodedata
 from string import maketrans
 from termcolor import colored, cprint
@@ -59,19 +59,25 @@ def getDate():
     strdate  = ''
     datefile = os.popen('date').read()
 
-    try :
-        datetab  = datefile.split(',')[0].split(' ')
-        for date in datetab[1:] :
-            strdate += date+'-'
-        date = unicode(strdate.strip('-').translate(maketrans('û', 'u ')))
-        date = unicodedata.normalize('NFKD', date).encode('ascii','ignore')
-        return date
-    except :
-        datetab  = datefile.split(' ')
-        for date in datetab :
-            strdate += date+'-'
-        date = unicode(strdate.strip('-'))
-        return date  
+    if re.search(ur'.+\(UTC+.*', datefile) :
+        try :
+            datetab  = datefile.split(',')[0].split(' ')
+            for date in datetab[1:] :
+                strdate += date+'-'
+            date = unicode(strdate.strip('-').translate(maketrans('û', 'u ')))
+            date = unicodedata.normalize('NFKD', date).encode('ascii','ignore')
+            return date
+        except :
+            datetab  = datefile.split(' ')
+            for date in datetab :
+                strdate += date+'-'
+            date = unicode(strdate.strip('-'))
+            return date
+    else :
+        datetab = datefile.split(' ')
+        day, month, year = datetab[2], datetab[1], datetab[5]
+        strdate = day+'-'+month+'-'+year
+        return strdate
 
 
 def getTime():
