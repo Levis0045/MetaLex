@@ -1,0 +1,11 @@
+\START
+\MetaLex\project_name\type_of_project\lang\author\date
+\W
+/t'/t
+/{/f.
+/E./f.
+\C
+/i'/i
+\R
+/a-z+/ij
+\END

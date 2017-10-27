@@ -1,30 +1,39 @@
-#    MetaLex is general tool for lexicographic and metalexicographic activities
-#    Copyright (C) 2017  by Elvis MBONING
-
-#    This program is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Affero General Public License as
-#    published by the Free Software Foundation, either version 3 of the
-#    License, or (at your option) any later version.
-
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Affero General Public License for more details.
-
-#    You should have received a copy of the GNU Affero General Public License
-#    along with this program.  If not, see <https://www.gnu.org/licenses/>.
-    
-#    Contact : levismboning@yahoo.fr
-    
-#    --------------------------------------------------------------------------
-
-#    Requirement.txt file for MetaLex dependencies
-
-
-
-
-pillow
-tesserocr
-Cython
-http://effbot.org/downloads/Imaging-1.1.7.tar.gz
-termcolor
+alabaster==0.7.10
+astroid==1.5.3
+Babel==2.5.1
+backports.functools-lru-cache==1.4
+beautifulsoup4==4.6.0
+bs4==0.0.1
+certifi==2017.7.27.1
+chardet==3.0.4
+configparser==3.5.0
+Cython==0.27.2
+docutils==0.14
+enum34==1.1.6
+html5lib==0.999999999
+idna==2.6
+imagesize==0.7.1
+isort==4.2.15
+Jinja2==2.9.6
+lazy-object-proxy==1.3.1
+lxml==4.1.0
+MarkupSafe==1.0
+mccabe==0.6.1
+olefile==0.44
+PIL==1.1.7
+Pillow==4.3.0
+Pygments==2.2.0
+pylint==1.7.4
+pytz==2017.2
+requests==2.18.4
+singledispatch==3.4.0.3
+six==1.11.0
+snowballstemmer==1.2.1
+Sphinx==1.6.5
+sphinxcontrib-websupport==1.0.1
+termcolor==1.1.0
+tesserocr==2.2.2
+typing==3.6.2
+urllib3==1.22
+webencodings==0.5.1
+wrapt==1.10.11

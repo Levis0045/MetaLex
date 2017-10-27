@@ -1,6 +1,6 @@
 # MetaLex Tool
-MetaLex is general tool in AGPL Licence for `lexicographics` and `metalexicographics` activities.
-For current developpement version of this tool, see [MetaLex/v0.3](https://github.com/Levis0045/MetaLex/tree/v0.3)
+**metalex** is general tool in AGPL Licence for `lexicographics` and `metalexicographics` activities.
+For current developpement version of this tool, see [MetaLex/v1.0](https://github.com/Levis0045/MetaLex/tree/v1.0)
 
 
 [![Build Status](https://travis-ci.org/claroline/Distribution.svg?branch=master)](mteprojet.fr/MetaLex)
@@ -28,20 +28,20 @@ For current developpement version of this tool, see [MetaLex/v0.3](https://githu
     5- Metalexographical analysis / decryption of articles 
 ```
 
-- MetaLex through its modules operates in the same way by successively executing 
+- metalex through its modules operates in the same way by successively executing 
   each of these tasks automatically.
   
 ```
     1 = MetaLex enhances the quality of dictionary images 
-        **MetaLex.dicOcrText.normalizeImage.enhanceImages().filter(f.DETAIL)**
+        **metalex.ocrtext.normalizeImage.EnhanceImages().filter(f.DETAIL)**
     2 = MetaLex extract from dictionary images all dictionary articles 
-        **MetaLex.dicOcrText.makeOcr.imageToText()**
+        **metalex.ocrtext.make_ocr.image_to_text()**
     3 = MetaLex corrects dictionary articles 
-        **MetaLex.dicOcrText.makeTextwell()**
+        **metalex.ocrtext.make_text_well()**
     4 = MetaLex marking dictionary articles depending of some standard 
-        **MetaLex.dicXmlised.xmlised('tei') or MetaLex.dicXmlised.xmlised('lmf')**
+        **metalex.xmlised.put_xml('tei') or MetaLex.xmlised.put_xml('lmf')**
     5 = MetaLex generates some metalexicographics analysis of part of content dictionary 
-        **MetaLex.dicXmlised.handleStat()**
+        **metalex.xmlised.handleStat()**
 ```
 
 - Some other more complex processes can be done !
@@ -71,24 +71,24 @@ MetaLex is developped in `Python 2.7` environment, the following packages are re
 - Or follow these steps 
 
 ```sh
-    sudo ./setup.sh     #install linux package dependencies
+    sudo ./config.sh     # Install linux package dependencies
     
-    sudo pip install -r requirements.txt  #install python module dependencies
+    sudo pip install -r requirements.txt  # Install python module dependencies
 
 ```
 
 # How to run MetaLex ?
 
-- Move `runMetaLex.py` in the current folder (MetaLex) and place it in the parent folder
+- Go to the `test/` folder and run build help command
 
 
 ```sh
-    python runMetaLex.py -h
+    python runMetalex.py -h
     
 ```
 
 ```md
-   MetaLex arguments :
+   metalex arguments :
 
   -h, --help            show this help message and exit
   -v, --version         show program's version number and exit
@@ -136,24 +136,22 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
     \END
 ```
 
-
 - Run your project with the default parameters except dictionary images data and save results. You must create a folder containing dictionary image files such as **imagesInput/**.
 
 
 ```sh
 
-    python runMetaLex.py  -d 'imagesInput' -s  # We defined a folder containing dictionary images for current process
-    python runMetaLex.py  -i 'imagedic.png' -s  # Or you can define a single dictionary image file
+    python runMetalex.py  -d 'dicImages' -s  # We defined a folder containing dictionary images for current process
+    python runMetalex.py  -i 'dicImages/dic_image_1.jpg' -s  # Or you can define a single dictionary image file
 
 ```
-
 
 - Run your project with your own set of parameters and save results
 
 
 ```sh
 
-    python runMetaLex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -s
+    python runMetalex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -s
 
 ```
 
