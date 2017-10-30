@@ -6,55 +6,55 @@ python:
 
 before_install:
   # install python dev libs
-  - apt-get -y install python-dev python-pip python-setuptools
-  - pip install --upgrade pip
-  - apt-get -y install zlib1g-dev libpng-dev libjpeg-dev
-  - apt-get -y install build-essential libssl-dev libffi-dev
-  - apt-get -y install libtesseract-dev libleptonica-dev
-  - apt-get -y install tesseract-ocr
+  - sudo apt-get -y install python-dev python-pip python-setuptools
+  - sudo pip install --upgrade pip
+  - sudo apt-get -y install zlib1g-dev libpng-dev libjpeg-dev
+  - sudo apt-get -y install build-essential libssl-dev libffi-dev
+  - sudo apt-get -y install libtesseract-dev libleptonica-dev
+  - sudo apt-get -y install tesseract-ocr
   - sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
-  - apt-get -y install cython
-  - pip install Cython
+  - sudo apt-get -y install cython
+  - sudo pip install Cython
 
 before_script:
   # install xml parser for metalex.xmlised module
-  - apt-get -y install python-html5lib python-lxml python-bs4
+  - sudo apt-get -y install python-html5lib python-lxml python-bs4
   # install pip package dependencies for metalex.ocrtext module
-  - pip install pillow
-  - pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
-  - pip install termcolor
-  - pip install alabaster==0.7.10
-  - pip install astroid==1.5.3
-  - pip install Babel==2.5.1
-  - pip install backports.functools-lru-cache==1.4
-  - pip install certifi==2017.7.27.1
-  - pip install chardet==3.0.4
-  - pip install configparser==3.5.0
-  - pip install docutils==0.14
-  - pip install enum34==1.1.6
-  - pip install idna==2.6
-  - pip install imagesize==0.7.1
-  - pip install isort==4.2.15
-  - pip install Jinja2==2.9.6
-  - pip install lazy-object-proxy==1.3.1
-  - pip install MarkupSafe==1.0
-  - pip install mccabe==0.6.1
-  - pip install olefile==0.44
-  - pip install PIL==1.1.7
-  - pip install Pygments==2.2.0
-  - pip install pylint==1.7.4
-  - pip install pytz==2017.2
-  - pip install requests==2.18.4
-  - pip install singledispatch==3.4.0.3
-  - pip install six==1.11.0
-  - pip install snowballstemmer==1.2.1
-  - pip install Sphinx==1.6.5
-  - pip install sphinxcontrib-websupport==1.0.1
-  - pip install termcolor==1.1.0
-  - pip install typing==3.6.2
-  - pip install urllib3==1.22
-  - pip install webencodings==0.5.1
-  - pip install wrapt==1.10.11
+  - sudo pip install pillow
+  - sudo pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
+  - sudo pip install termcolor
+  - sudo pip install alabaster==0.7.10
+  - sudo pip install astroid==1.5.3
+  - sudo pip install Babel==2.5.1
+  - sudo pip install backports.functools-lru-cache==1.4
+  - sudo pip install certifi==2017.7.27.1
+  - sudo pip install chardet==3.0.4
+  - sudo pip install configparser==3.5.0
+  - sudo pip install docutils==0.14
+  - sudo pip install enum34==1.1.6
+  - sudo pip install idna==2.6
+  - sudo pip install imagesize==0.7.1
+  - sudo pip install isort==4.2.15
+  - sudo pip install Jinja2==2.9.6
+  - sudo pip install lazy-object-proxy==1.3.1
+  - sudo pip install MarkupSafe==1.0
+  - sudo pip install mccabe==0.6.1
+  - sudo pip install olefile==0.44
+  - sudo pip install PIL==1.1.7
+  - sudo pip install Pygments==2.2.0
+  - sudo pip install pylint==1.7.4
+  - sudo pip install pytz==2017.2
+  - sudo pip install requests==2.18.4
+  - sudo pip install singledispatch==3.4.0.3
+  - sudo pip install six==1.11.0
+  - sudo pip install snowballstemmer==1.2.1
+  - sudo pip install Sphinx==1.6.5
+  - sudo pip install sphinxcontrib-websupport==1.0.1
+  - sudo pip install termcolor==1.1.0
+  - sudo pip install typing==3.6.2
+  - sudo pip install urllib3==1.22
+  - sudo pip install webencodings==0.5.1
+  - sudo pip install wrapt==1.10.11
 
 
 script:
