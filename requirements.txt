@@ -20,7 +20,7 @@ lxml==4.1.0
 MarkupSafe==1.0
 mccabe==0.6.1
 olefile==0.44
-PIL==1.1.7
+PIL
 Pillow==4.3.0
 Pygments==2.2.0
 pylint==1.7.4
