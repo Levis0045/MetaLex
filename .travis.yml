@@ -20,11 +20,14 @@ before_install:
   - sudo apt-get -y install libtesseract-dev libleptonica-dev
   - sudo apt-get -y install cython
   - sudo pip install Cython
+  - sudo apt-get update
   - sudo apt-get -y install tesseract-ocr-all
   - sudo apt-get -y install python-html5lib python-lxml python-bs4
   - sudo pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
 
-
+matrix:
+  fast_finish: true
+  
 script:
   # run static analysis tools on modified files if needed
   - cd metalex/test/
