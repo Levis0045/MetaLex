@@ -67,7 +67,7 @@ MetaLex is developped in `Python 2.7` environment, the following packages are re
     sudo apt-get install python-bs4
     sudo pip install pillow
     sudo pip install --no-cache-dir -I pillow
-    pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
+    sudo pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
     sudo pip install termcolor
     sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
 ```
