@@ -22,11 +22,8 @@ before_install:
   - sudo pip install Cython
   - sudo apt-get -y install tesseract-ocr
   - sudo apt-get -y install tesseract-ocr-fra
-
-
-before_script:
-  # install xml parser for metalex.xmlised module
   - sudo apt-get -y install python-html5lib python-lxml python-bs4
+  - sudo pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
 
 
 script:
