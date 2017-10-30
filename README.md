@@ -1,4 +1,4 @@
-# MetaLex Tool
+# MetaLex Tool (tool for lexicographers and metalexicographers)
 **metalex** is general tool in AGPL Licence for `lexicographics` and `metalexicographics` activities.
 For current developpement version of this tool, see [MetaLex/v1.0](https://github.com/Levis0045/MetaLex/tree/v1.0)
 
@@ -8,12 +8,12 @@ For current developpement version of this tool, see [MetaLex/v1.0](https://githu
 
 # Usage
 
-- This a design process of metalex tool (written in french)
+- metalex tool process like this (written in french)
 
 ![metalex process](./docs/metalex_process.png)
 
 
-- This is an example of process used with MetaLex 
+- This is an example of this process used with metalex 
 
 ```
     I am a metalexicographer or linguist and I have paper dictionaries. 
