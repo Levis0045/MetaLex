@@ -19,7 +19,10 @@ before_install:
   - sudo apt-get -y install zlib1g-dev libpng-dev libjpeg-dev
   - sudo apt-get -y install build-essential libssl-dev libffi-dev
   - sudo apt-get -y install libtesseract-dev libleptonica-dev
+  - sudo apt-get -y install tesseract
   - sudo apt-get -y install tesseract-ocr
+  - sudo apt-get -y install tesseract-ocr
+  - sudo apt-get -y install tesseract-ocr-fra
   - sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
   - sudo apt-get -y install cython
   - sudo pip install Cython
