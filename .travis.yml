@@ -10,7 +10,6 @@ matrix:
   include:
     - os: linux
       dist: xenial
-      sudo: required
   fast_finish: true
 
 git:
