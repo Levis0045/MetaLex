@@ -19,19 +19,18 @@ before_install:
   - sudo apt-get -y install zlib1g-dev libpng-dev libjpeg-dev
   - sudo apt-get -y install build-essential libssl-dev libffi-dev
   - sudo apt-get -y install libtesseract-dev libleptonica-dev
-  - sudo apt-get -y install tesseract
-  - sudo apt-get -y install tesseract-ocr
-  - sudo apt-get -y install tesseract-ocr
-  - sudo apt-get -y install tesseract-ocr-fra
-  - sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
   - sudo apt-get -y install cython
   - sudo pip install Cython
+  - sudo apt-get -y install tesseract-ocr
+  - sudo apt-get -y install tesseract-ocr-fra
+
 
 before_script:
   # install xml parser for metalex.xmlised module
   - sudo apt-get -y install python-html5lib python-lxml python-bs4
   # install pip package dependencies for metalex.ocrtext module
   - sudo pip install pillow
+  - sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
   - sudo pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
   - sudo pip install termcolor
   - sudo pip install alabaster==0.7.10
