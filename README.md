@@ -3,10 +3,14 @@
 For current developpement version of this tool, see [MetaLex/v1.0](https://github.com/Levis0045/MetaLex/tree/v1.0)
 
 
-[![Build Status](https://travis-ci.org/claroline/Distribution.svg?branch=master)](mteprojet.fr/MetaLex)
+[![Build Status](https://travis-ci.org/MetaLex/Distribution.svg?branch=master)](mteprojet.fr/MetaLex)
 
 
 # Usage
+
+- This a design process of metalex tool (written in french)
+
+![metalex process](./docs/metalex_process.png)
 
 
 - This is an example of process used with MetaLex 
@@ -53,7 +57,7 @@ MetaLex is developped in `Python 2.7` environment, the following packages are re
 
 -  We can install all package dependencies manually
 
-```sh
+```shell
     sudo apt-get install build-essential libssl-dev libffi-dev python-dev
     sudo pip install Cython
     sudo apt-get install libtesseract-dev libleptonica-dev libjpeg-dev zlib1g-dev libpng-dev
@@ -70,7 +74,7 @@ MetaLex is developped in `Python 2.7` environment, the following packages are re
 
 - Or follow these steps 
 
-```sh
+```shell
     sudo ./config.sh     # Install linux package dependencies
     
     sudo pip install -r requirements.txt  # Install python module dependencies
@@ -82,7 +86,7 @@ MetaLex is developped in `Python 2.7` environment, the following packages are re
 - Go to the `test/` folder and run build help command
 
 
-```sh
+```shell
     python runMetalex.py -h
     
 ```
@@ -122,7 +126,7 @@ MetaLex is developped in `Python 2.7` environment, the following packages are re
 
 MetaLex takes files using specific structure to enhance output text of OCR data (from dictionary image files). `\W` for word replacement, `\C` for character replacement and `\R`  for regular expression replacement. The spaces between headers are used to to describe remplacement.
 
-```md
+```text
     \START
     \MetaLex\project_name\type_of_project\lang\author\date
     \W
@@ -134,12 +138,13 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
     \R
     /a-z+/ij
     \END
+    
 ```
 
 - Run your project with the default parameters except dictionary images data and save results. You must create a folder containing dictionary image files such as **imagesInput/**.
 
 
-```sh
+```shell
 
     python runMetalex.py  -d 'dicImages' -s  # We defined a folder containing dictionary images for current process
     python runMetalex.py  -i 'dicImages/dic_image_1.jpg' -s  # Or you can define a single dictionary image file
@@ -149,12 +154,17 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 - Run your project with your own set of parameters and save results
 
 
-```sh
+```shell
 
     python runMetalex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -s
 
 ```
 
+- For these comands, the result in to the console will produce this
+
+
+![metalex process](./docs/results_process.png)
+ 
 
 # Contributors
 
