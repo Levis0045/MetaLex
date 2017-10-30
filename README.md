@@ -160,7 +160,7 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 
 ```
 
-- For these comands, the result in to the console will produce this
+- For the first comand (without parameters), the result in the console will produce this. `With parameters, errors message will disapear`
 
 
 ![metalex process](./docs/results_process.png)
