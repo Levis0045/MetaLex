@@ -1,7 +1,7 @@
 MetaLex Tool (tool for lexicographers and metalexicographers)
 ===============================================================
 
-**metalex** is general tool in AGPL Licence for *lexicographics* and *metalexicographics* activities.
+**metalex** is general tool in AGPL Licence for **lexicographics** and **metalexicographics** activities.
 For current developpement version of this tool, see `MetaLex/v1.0 <https://github.com/Levis0045/MetaLex/tree/v1.0>`_
 
 
@@ -56,8 +56,7 @@ Usage
 Requirements
 ============
 
-MetaLex is developped in *Python 2.7* environment, the following packages are required :
-
+MetaLex is developped in **Python 2.7** environment, the following packages are required :
 
 - We can install all package dependencies manually
 
@@ -129,12 +128,9 @@ How to run MetaLex ?
       -t, --terminal        Show result of the current treatment in the terminal
 
 
-
-
-
 - Build the file rules of the project.
 
-MetaLex takes files using specific structure to enhance output text of OCR data (from dictionary image files). *\W* for word replacement, *\C* for character replacement and `\R`  for regular expression replacement. The spaces between headers are used to to describe remplacement.
+MetaLex takes files using specific structure to enhance output text of OCR data (from dictionary image files). **\W** for word replacement, **\C** for character replacement and **\R**  for regular expression replacement. The spaces between headers are used to to describe remplacement.
 
 ::
 
@@ -167,7 +163,7 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
     python runMetalex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -s
 
 
-- **OUTPUT:** For the first comand (without parameters), the result in the console will produce this. `NB:` With parameters, error and warning messages will disapear.
+- **OUTPUT :** For the first comand (without parameters), the result in the console will produce this. **NB :** With parameters, error and warning messages will disapear.
 
 
 .. image:: ./docs/results_process.png
