@@ -2,7 +2,7 @@ MetaLex Tool (tool for lexicographers and metalexicographers)
 ===============================================================
 
 **metalex** is general tool in AGPL Licence for **lexicographics** and **metalexicographics** activities.
-For current developpement version of this tool, see `MetaLex/v1.0 <https://github.com/Levis0045/MetaLex/tree/v1.0>`_
+For current developpement version of this tool, see `MetaLex/v1.0  <https://github.com/Levis0045/MetaLex/tree/v1.0>`_
 
 
 
@@ -172,7 +172,7 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 Contributors
 ============
 
-Special thank to  `Bill <https://github.com/billmetangmo>`_  for `MetaLex-vagrant <https://github.com/Levis0045/MetaLex-vagrant>`_ version for windows, Mac OS 6, Linux
+Special thank to  `Bill  <https://github.com/billmetangmo>`_   for  `MetaLex-vagrant  <https://github.com/Levis0045/MetaLex-vagrant>`_  version for windows, Mac OS 6, Linux
 
 
 Reference
