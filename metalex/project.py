@@ -63,6 +63,7 @@ def get_part_file(namefile):
     (imageroot, ext) = os.path.splitext(os.path.basename(namefile))
     return (imageroot, ext)
 
+
 def get_hour():
     """Get the current system time 
     

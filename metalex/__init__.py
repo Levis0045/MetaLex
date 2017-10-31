@@ -28,16 +28,17 @@ Ce package implémente tous les plugins de MetaLex
     
 """
  
-__version__ = u"1.6.0"
+__version__ = u"1.6.5"
 
 # ----Internal Modules------------------------------------------------------
 
 import codifications
-from .ocrtext    import *
-from .xmlised    import *
-from .logs       import *
-from .plugins    import *
-from  project    import *
+from api import *
+from .ocrtext import *
+from .xmlised import *
+from .logs import *
+from .plugins import *
+from  project import *
 
 # -----Global Variables-----------------------------------------------------
 
