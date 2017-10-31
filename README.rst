@@ -2,10 +2,8 @@ MetaLex Tool (tool for lexicographers and metalexicographers)
 ===============================================================
 
 **metalex** is general tool in AGPL Licence for *lexicographics* and *metalexicographics* activities.
-For current developpement version of this tool, see [MetaLex/v1.0](https://github.com/Levis0045/MetaLex/tree/v1.0)
+For current developpement version of this tool, see `MetaLex/v1.0 <https://github.com/Levis0045/MetaLex/tree/v1.0>`
 
-
-[![Build Status](https://travis-ci.org/MetaLex/Distribution.svg?branch=master)](mteprojet.fr/MetaLex)
 
 
 Usage
@@ -93,7 +91,7 @@ MetaLex is developped in *Python 2.7* environment, the following packages are re
 How to run MetaLex ?
 ====================
 
-- Go to the `test/` folder and run build help command
+- Go to the **test/** folder and run build help command
 
 ::
 
@@ -168,7 +166,7 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 Contributors
 ============
 
-Special thank to  .. _Bill: https://github.com/billmetangmo for [MetaLex-vagrant](https://github.com/Levis0045/MetaLex-vagrant) version for windows, Mac OS 6, Linux
+Special thank to  `Bill <https://github.com/billmetangmo>` for `MetaLex-vagrant <https://github.com/Levis0045/MetaLex-vagrant>` version for windows, Mac OS 6, Linux
 
 
 Reference
