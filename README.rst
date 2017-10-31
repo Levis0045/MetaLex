@@ -104,20 +104,30 @@ How to run MetaLex ?
     
       -h, --help            show this help message and exit
       -v, --version         show program's version number and exit
-      -p PROJECTNAME, --project
-                            Define MetaLex project name
-      -c author comment contributors, --confproject
-                            Define MetaLex configuration for the current project
-      -i [IMAGEFILE], --dicimage
-                            Input one or multiple dictionary image file(s) for current MetaLex project
-      -d IMAGESDIR, --imagedir
-                            Input folder name of dictionary image files for current MetaLex project
+      -p PROJECTNAME, --project PROJECTNAME
+                            Defined metalex project name
+      -c author comment contributors, --confproject author comment contributors
+                            Defined metalex configuration for the current project
+      -i [IMAGEFILE], --dicimage [IMAGEFILE]
+                            Input one or multiple dictionary image(s) file(s) for
+                            current metalex project
+      -d IMAGESDIR, --imagedir IMAGESDIR
+                            Input folder name of dictionary image files for
+                            current metalex project
       --imgalg actiontype value
-                            Set algorithm for enhancing dictionary image files for current MetaLex project (actiontype must be : contrast or bright or filter)
-      -r FILERULE, --filerule
-                            Define file rules that we use to enhance quality of  OCR result
-      -l LANG, --lang       Set language for optical characters recognition and other MetaLex processings Save output result of the current project in files
+                            Set algorithm for enhancing dictionary image files for
+                            current metalex project (actiontype must be : constrat
+                            or bright or filter)
+      -r FILERULE, --filerule FILERULE
+                            Defined file rules that we use to enhance quality of
+                            OCR result
+      -l LANG, --lang LANG  Set language for optical characters recognition and
+                            others metalex treatment
+      -x {xml,lmf,tei} {xml,lmf,tei} {xml,lmf,tei}, --xml {xml,lmf,tei} {xml,lmf,tei} {xml,lmf,tei}
+                            Defined output result treatment of metalex
+      -s, --save            Save output result of the current project in files
       -t, --terminal        Show result of the current treatment in the terminal
+
 
 
 
