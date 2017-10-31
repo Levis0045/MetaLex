@@ -8,7 +8,7 @@ For current developpement version of this tool, see [MetaLex/v1.0](https://githu
 
 # Usage
 
-- metalex tool process like this (written in french)
+- metalex proceeds in this way (written in french)
 
 ![metalex process](./docs/metalex_process.png)
 
@@ -160,7 +160,7 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 
 ```
 
-- For the first comand (without parameters), the result in the console will produce this. `NB:` With parameters, error and warning messages will disapear.
+- **OUTPUT : ** For the first comand (without parameters), the result in the console will produce this. `NB:` With parameters, error and warning messages will disapear.
 
 
 ![metalex process](./docs/results_process.png)
