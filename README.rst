@@ -1,4 +1,6 @@
-# MetaLex Tool (tool for lexicographers and metalexicographers)
+MetaLex Tool (tool for lexicographers and metalexicographers)
+===============================================================
+
 **metalex** is general tool in AGPL Licence for `lexicographics` and `metalexicographics` activities.
 For current developpement version of this tool, see [MetaLex/v1.0](https://github.com/Levis0045/MetaLex/tree/v1.0)
 
@@ -6,58 +8,69 @@ For current developpement version of this tool, see [MetaLex/v1.0](https://githu
 [![Build Status](https://travis-ci.org/MetaLex/Distribution.svg?branch=master)](mteprojet.fr/MetaLex)
 
 
-# Usage
+Usage
+=====
 
-- metalex proceeds in this way (written in french)
+metalex proceeds in this way (written in french)
+------------------------------------------------
 
 ![metalex process](./docs/metalex_process.png)
 
 
-- This is an example of this process used with metalex 
+This is an example of this process used with metalex 
+-----------------------------------------------------
 
-```
+::
+
     I am a metalexicographer or linguist and I have paper dictionaries. 
     I want to perform a diachronic study of the evolution of the wording of 
     definitions in a collection of dictionaries available from period A to period B.
-```
 
-- Traditionally or at best, the contemporary metalexicographer (according to our point of view)
-  would apply the following methodology :
-  
-```
+
+Traditionally or at best, the contemporary metalexicographer (according to our point of view) would apply the following methodology :
+-------------------------------------------------------------------------------------------------------------------------------------
+ 
+::
+
     1- Scanning of printed materials (Scan) and enhance its qualities
     2- Optical reading of the pictures (Ocrisation) = extract articles content 
     3- Manual Error Corrections  of text articles                   
     4- Marking of the articles with regular standard                 
     5- Metalexographical analysis / decryption of articles 
-```
 
-- metalex through its modules operates in the same way by successively executing 
-  each of these tasks automatically.
-  
-```
-    1 = MetaLex enhances the quality of dictionary images 
+
+metalex through its modules operates in the same way by successively executing  each of these tasks automatically.
+-----------------------------------------------------------------------------------------------------------------
+
+::
+
+    1)  MetaLex enhances the quality of dictionary images 
         **metalex.ocrtext.normalizeImage.EnhanceImages().filter(f.DETAIL)**
-    2 = MetaLex extract from dictionary images all dictionary articles 
+    2) MetaLex extract from dictionary images all dictionary articles 
         **metalex.ocrtext.make_ocr.image_to_text()**
-    3 = MetaLex corrects dictionary articles 
+    3) MetaLex corrects dictionary articles 
         **metalex.ocrtext.make_text_well()**
-    4 = MetaLex marking dictionary articles depending of some standard 
+    4) MetaLex marking dictionary articles depending of some standard 
         **metalex.xmlised.put_xml('tei') or MetaLex.xmlised.put_xml('lmf')**
-    5 = MetaLex generates some metalexicographics analysis of part of content dictionary 
+    5) MetaLex generates some metalexicographics analysis of part of content dictionary 
         **metalex.xmlised.handleStat()**
-```
-
-- Some other more complex processes can be done !
 
 
-# Requirements
+Some other more complex processes can be done !
+------------------------------------------------
+
+Requirements
+============
+
 
 MetaLex is developped in `Python 2.7` environment, the following packages are required :
 
--  We can install all package dependencies manually
+We can install all package dependencies manually
+------------------------------------------------
 
-```shell
+::
+
+
     sudo apt-get install build-essential libssl-dev libffi-dev python-dev
     sudo pip install Cython
     sudo apt-get install libtesseract-dev libleptonica-dev libjpeg-dev zlib1g-dev libpng-dev
@@ -70,7 +83,7 @@ MetaLex is developped in `Python 2.7` environment, the following packages are re
     sudo pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
     sudo pip install termcolor
     sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
-```
+
 
 - Or follow these steps 
 
@@ -163,7 +176,7 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 - **OUTPUT : ** For the first comand (without parameters), the result in the console will produce this. `NB:` With parameters, error and warning messages will disapear.
 
 
-![metalex process](./docs/results_process.png)
+.. image:: ./docs/results_process.png
  
 
 # Contributors
