@@ -90,7 +90,8 @@ MetaLex is developped in *Python 2.7* environment, the following packages are re
 
 
 
-# How to run MetaLex ?
+How to run MetaLex ?
+====================
 
 - Go to the `test/` folder and run build help command
 
@@ -167,7 +168,7 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 Contributors
 ============
 
-Special thank to [Bill](https://github.com/billmetangmo) for [MetaLex-vagrant](https://github.com/Levis0045/MetaLex-vagrant) version for windows, Mac OS 6, Linux
+Special thank to  .. _Bill: https://github.com/billmetangmo for [MetaLex-vagrant](https://github.com/Levis0045/MetaLex-vagrant) version for windows, Mac OS 6, Linux
 
 
 Reference
@@ -175,6 +176,7 @@ Reference
 
 Please don't forget to cite this work :
 
+::
 
     @article{Mboning-Elvis,
         title  = {Quand le TAL s'empare de la métalexicographie : conception d'un outil pour le métalexicographe},
