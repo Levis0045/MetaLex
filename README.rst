@@ -58,7 +58,7 @@ Usage
 Requirements
 ============
 
-MetaLex is developped in `Python 2.7` environment, the following packages are required :
+MetaLex is developped in *Python 2.7* environment, the following packages are required :
 
 
 - We can install all package dependencies manually
@@ -82,6 +82,7 @@ MetaLex is developped in `Python 2.7` environment, the following packages are re
 
 - Or follow these steps 
 
+::
 
     sudo ./config.sh     # Install linux package dependencies
     
@@ -104,13 +105,19 @@ MetaLex is developped in `Python 2.7` environment, the following packages are re
     
       -h, --help            show this help message and exit
       -v, --version         show program's version number and exit
-      -p PROJECTNAME, --project PROJECTNAME     Define MetaLex project name
-      -c author comment contributors, --confproject author comment contributors     Define MetaLex configuration for the current project
-      -i [IMAGEFILE], --dicimage [IMAGEFILE]    Input one or multiple dictionary image file(s) for current MetaLex project
-      -d IMAGESDIR, --imagedir IMAGESDIR    Input folder name of dictionary image files for current MetaLex project
-      --imgalg actiontype value     Set algorithm for enhancing dictionary image files for current MetaLex project (actiontype must be : contrast or bright or filter)
-      -r FILERULE, --filerule FILERULE      Define file rules that we use to enhance quality of  OCR result
-      -l LANG, --lang LANG  Set language for optical characters recognition and other MetaLex processings Save output result of the current project in files
+      -p PROJECTNAME, --project
+                            Define MetaLex project name
+      -c author comment contributors, --confproject
+                            Define MetaLex configuration for the current project
+      -i [IMAGEFILE], --dicimage
+                            Input one or multiple dictionary image file(s) for current MetaLex project
+      -d IMAGESDIR, --imagedir
+                            Input folder name of dictionary image files for current MetaLex project
+      --imgalg actiontype value
+                            Set algorithm for enhancing dictionary image files for current MetaLex project (actiontype must be : contrast or bright or filter)
+      -r FILERULE, --filerule
+                            Define file rules that we use to enhance quality of  OCR result
+      -l LANG, --lang       Set language for optical characters recognition and other MetaLex processings Save output result of the current project in files
       -t, --terminal        Show result of the current treatment in the terminal
 
 
@@ -151,7 +158,7 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
     python runMetalex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -s
 
 
-- **OUTPUT : ** For the first comand (without parameters), the result in the console will produce this. `NB:` With parameters, error and warning messages will disapear.
+- **OUTPUT:** For the first comand (without parameters), the result in the console will produce this. `NB:` With parameters, error and warning messages will disapear.
 
 
 .. image:: ./docs/results_process.png
