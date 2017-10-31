@@ -130,7 +130,7 @@ How to run MetaLex ?
 
 - Build the file rules of the project.
 
-MetaLex takes files using specific structure to enhance output text of OCR data (from dictionary image files). **\W** for word replacement, **\C** for character replacement and **\R**  for regular expression replacement. The spaces between headers are used to to describe remplacement.
+MetaLex takes files using specific structure to enhance output text of OCR data (from dictionary image files). **\\W** for word replacement, **\\C** for character replacement and **\\R**  for regular expression replacement. The spaces between headers are used to to describe remplacement.
 
 ::
 
