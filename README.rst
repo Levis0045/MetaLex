@@ -183,7 +183,6 @@ Reference
 Please don't forget to cite this work :
 
 .. code-block:: latex
-    :emphasize-lines: 3,5
     
     @article{Mboning-Elvis,
         title  = {Quand le TAL s'empare de la métalexicographie : conception d'un outil pour le métalexicographe},
