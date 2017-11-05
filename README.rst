@@ -91,7 +91,7 @@ MetaLex is developped in **Python 2.7** environment, the following packages are 
 How to run MetaLex ?
 ====================
 
-- Go to the ** test/ ** folder and run build help command
+- Go to the **test/** folder and run build help command
 
 .. code-block:: shell
     
