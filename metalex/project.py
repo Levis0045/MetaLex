@@ -42,10 +42,12 @@ import os
 import codecs
 import re
 import pickle
+from termcolor import colored
 
 # -----Exported Functions---------------------------------------------------
 
-__all__ = ['create_temp', 'NewProject', 'treat_image_append', 'get_part_file', 'in_dir']
+__all__ = ['create_temp', 'NewProject', 'treat_image_append', 'get_part_file', 
+           'in_dir', 'write_temp_file', 'read_temp_file', 'save_normalized_data']
 
 # -----Global Variables-----------------------------------------------------
 
@@ -64,6 +66,49 @@ def get_part_file(namefile):
     return (imageroot, ext)
 
 
+def save_normalized_data(name, typ, form=None, data=None):
+    """Saved normalized text in text format (*.art) or in pickle format (*.pickle) 
+    
+    :param name: str file
+    :param typ: str
+    
+    :return file: texts extracted
+    """
+    dicArticles = []
+    if data:
+        for k, v in data.items():
+            result = {k:v}
+            dicArticles.append(result)
+    else: dicArticles = read_temp_file(form)
+        
+    create_temp()
+    if typ == u'text':
+        if in_dir(name):
+            with codecs.open(name, 'a', 'utf-8') as fil :
+                num = 1
+                for art in dicArticles:
+                    for k, v in art.items():
+                        if k != u'article_1':
+                            fil.write('%10s : %s\n' %(k, v))
+                        else:
+                            if not data : fil.write('\n----- FILE: %s ---------------------------------------------------------------------------------\n\n' %num)
+                            fil.write('%10s : %s\n' %(k, v))
+                            num += 1
+            message = u'save_normalize() >> '+u'*'+name+u'* is created and contain all text format data from html files > Saved in dicTemp folder'  
+            metalex.logs.manageLog.write_log(message) 
+        else:
+            message = u'save_normalize() >> '+u'*'+name+u'* is created and contain all text format data from html files > Saved in dicTemp folder'  
+            metalex.logs.manageLog.write_log(message) 
+    
+    if typ == u'pickle':  
+        if in_dir(name) and file_pickle(dicArticles, name):
+            message = u'save_normalize() >> '+u'*'+name+u'* is created and contain pickle data object from html files > Saved in dicTemp folder'  
+            metalex.logs.manageLog.write_log(message)         
+        else:
+            message = u'save_normalize() >> '+u'*'+name+u'* is created and contain pickle data object from html files > Saved in dicTemp folder'  
+            metalex.logs.manageLog.write_log(message)    
+            
+
 def get_hour():
     """Get the current system time 
     
@@ -80,7 +125,46 @@ def get_hour():
         return hour
     
     
-def treat_image_append(namefile) :
+def write_temp_file(path, typ):
+    """Append result path of files to 'save.txt' temporaly file
+      
+    :param path: str path of file
+    
+    :return ...
+    """
+    create_temp()
+    if typ == 'ocr':
+        with codecs.open('temp_ocr.txt', 'a', 'utf-8') as s:
+            s.write('%s\n' %path)
+    elif typ == 'norm':
+        with codecs.open('temp_norm.txt', 'a', 'utf-8') as s:
+            s.write('%s\n' %path)
+
+
+def read_temp_file(typ):
+    """Append image result files to 'save.txt' temporaly file
+      
+    :param path: str path of file
+    
+    :return ...
+    """
+    create_temp()
+    result = []
+    if typ == 'ocr':
+        with codecs.open('temp_ocr.txt', 'r', 'utf-8') as s:
+            for line in s : treat_ocr_append(line.strip())
+        os.remove('temp_ocr.txt')
+    elif typ == 'norm': 
+        with codecs.open('temp_norm.txt', 'r', 'utf-8') as s:
+            for line in s :
+                part = line.split(u'==')
+                resultTemp = {part[0]:part[1]}
+                result.append(resultTemp)
+        return result
+    
+        
+        
+def treat_image_append(namefile):
     """Append image result files to the global variable at the scope
       
     :param namefile: str
@@ -91,7 +175,7 @@ def treat_image_append(namefile) :
     metalex.treatImages.append(tempnameLocation)
 
 
-def treat_ocr_append(namefile) :
+def treat_ocr_append(namefile):
     """Append ocr result files to the global variable
     
     :param namefile: str
@@ -99,7 +183,7 @@ def treat_ocr_append(namefile) :
     :return ...
     """
     parentdir = os.listdir('..')
-    if u'logs' in parentdir :
+    if u'logs' in parentdir:
         os.chdir('../dicTemp')
         tempnameLocation =  os.getcwd()+u'/'+namefile
         metalex.resultOcrFiles.append(tempnameLocation)
@@ -114,7 +198,7 @@ def in_dir(fil):
     :return Bool
     """
     currentdir = os.listdir('.')
-    if fil in currentdir :
+    if fil in currentdir:
         return False
     else :
         return True
@@ -129,10 +213,10 @@ def name_file(tab, ext):
     :return str: namepickle 
     """
     name  = str(tab[0]).split(u'/')[-1].split(u',')[0].split(u'_')[:-1]
-    if ext == u'.art' :
+    if ext == u'.art':
         nametxt    = u'articles_'+u'_'.join(name)+u'.art'
         return nametxt
-    elif ext == u'.pickle' :
+    elif ext == u'.pickle':
         namepickle = u'articles_'+u'_'.join(name)+u'.pickle'
         return namepickle
         
@@ -168,9 +252,9 @@ def file_get_text(fil):
     :return dict: data articles text
     """
     datatext = {}
-    with codecs.open(fil, 'r', 'utf-8') as f :
+    with codecs.open(fil, 'r', 'utf-8') as f:
         for line in f :
-            if re.search(ur'article_', line) :
+            if re.search(ur'article_', line):
                 partline = line.split(u':')
                 datatext[partline[0].strip()] = partline[1].strip()
     return datatext
@@ -195,7 +279,7 @@ def read_conf():
     confData = {}
     rootPath = get_root_project()
     confPath = rootPath+u'/metalex.cnf'
-    with codecs.open(confPath, 'r', 'utf-8') as conf :
+    with codecs.open(confPath, 'r', 'utf-8') as conf:
         for line in conf :
             if line[0] == u'\\' : 
                 part  = line.strip().split(u':')
@@ -216,7 +300,7 @@ def create_temp():
     rootProject = projectD+'/'+projectF
     dicTemp = rootProject+'/dicTemp'
     contentdir = os.listdir(rootProject)
-    if 'dicTemp' not in contentdir :
+    if 'dicTemp' not in contentdir:
         try:
             os.mkdir(dicTemp)
         except os.error :
@@ -241,7 +325,7 @@ def dic_file(fil):
     return os.path.join(script_dir, fil)
        
         
-class NewProject :
+class NewProject:
     """Create new environment project and its configuration
     
     :param projectname: str
@@ -255,15 +339,17 @@ class NewProject :
         self.name = projectname
         metalex.allProjectNames.append(self.name)
         metalex.projectName = self.name
-        self.fileImages     = []
-        self.resultOcr      = u""
-        self.resultText     = u""
-        self.resultXmlised  = u""
-        self.resultLog      = u""
-        self.lang           = u""
-        self.dicoType       = u""
+        self.fileImages = []
+        self.resultOcr = u""
+        self.resultText = u""
+        self.resultXmlised = u""
+        self.resultLog = u""
+        self.lang = u""
+        self.dicoType = u""
         self.project_folder()
-         
+        print  u'\n --- %s ---------------------------------------------------------------- \n\n' %colored('Part 0 : New project', attrs=['bold'])
+
+        
     def project_folder(self):
         """Create folder of new environment project
         
@@ -272,13 +358,13 @@ class NewProject :
         folderName = 'metalex_'+self.name
         metalex.projectFolder[folderName] = os.getcwd()
         currentdir = os.listdir('.')
-        if folderName in currentdir :
+        if folderName in currentdir:
             os.chdir(folderName)
-        else :
-            try : 
+        else:
+            try: 
                 os.mkdir(folderName)
                 os.chdir(folderName)
-            except os.error :
+            except os.error:
                 message =  u"We can can't create "+folderName+u" folder in this directory ! It is right exception ?"
                 metalex.logs.manageLog.write_log(message, typ='error')
                 
@@ -309,8 +395,8 @@ class NewProject :
    
         os.chdir(get_root_project())
         contentdir = os.listdir('.')
-        if 'metalex.cnf' not in contentdir :
-            with codecs.open('metalex.cnf', 'w', 'utf-8') as conf :
+        if 'metalex.cnf' not in contentdir:
+            with codecs.open('metalex.cnf', 'w', 'utf-8') as conf:
                 conf.write(Intro)
                 conf.write(access)
                 conf.write(u'%-15s : %-10s \n'   %(u'\Project name', project))
@@ -327,17 +413,17 @@ class NewProject :
         return metalex.projectName 
 
     def get_file_images (self):
-        if (len(metalex.fileImages)>= 1) :
+        if (len(metalex.fileImages)>= 1):
             self.fileImages = metalex.fileImages
             return self.fileImages
     
     def get_treat_images (self):
-        if (len(metalex.ocrtext.fileImages)>= 1) :
+        if (len(metalex.ocrtext.fileImages)>= 1):
             self.treatImageFile  = metalex.ocrtext.treatImageFile 
             return self.treatImageFile 
     
     def get_text_ocr (self):
-        if (metalex.ocrtext.textOcr) :
+        if (metalex.ocrtext.textOcr):
             self.resultOcr += metalex.ocrtext.textOcr
             return self.resultOcr
         

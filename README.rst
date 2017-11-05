@@ -2,7 +2,7 @@ MetaLex Tool (tool for lexicographers and metalexicographers)
 ===============================================================
 
 **metalex** is general tool in AGPL Licence for **lexicographics** and **metalexicographics** activities.
-For current developpement version of this tool, see `MetaLex/v1.0 <https://github.com/Levis0045/MetaLex/tree/v1.0>`_
+For current developpement version of this tool, see `MetaLex/v1.0  <https://github.com/Levis0045/MetaLex/tree/v1.0>`_
 
 
 
@@ -61,7 +61,8 @@ MetaLex is developped in **Python 2.7** environment, the following packages are 
 - We can install all package dependencies manually
 
 
-::
+.. code-block:: shell
+    :linenos:
 
     sudo apt-get install build-essential libssl-dev libffi-dev python-dev
     sudo pip install Cython
@@ -79,8 +80,8 @@ MetaLex is developped in **Python 2.7** environment, the following packages are 
 
 - Or follow these steps 
 
-::
-
+.. code-block:: shell
+    
     sudo ./config.sh     # Install linux package dependencies
     
     sudo pip install -r requirements.txt  # Install python module dependencies
@@ -90,42 +91,42 @@ MetaLex is developped in **Python 2.7** environment, the following packages are 
 How to run MetaLex ?
 ====================
 
-- Go to the **test/** folder and run build help command
+- Go to the ** test/ ** folder and run build help command
 
-::
-
+.. code-block:: shell
+    
     python runMetalex.py -h
 
 
-::
-
-       metalex arguments :
+.. code-block:: shell
     
-      -h, --help            show this help message and exit
-      -v, --version         show program's version number and exit
-      -p PROJECTNAME, --project PROJECTNAME
-                            Defined metalex project name
-      -c author comment contributors, --confproject author comment contributors
-                            Defined metalex configuration for the current project
-      -i [IMAGEFILE], --dicimage [IMAGEFILE]
-                            Input one or multiple dictionary image(s) file(s) for
-                            current metalex project
-      -d IMAGESDIR, --imagedir IMAGESDIR
-                            Input folder name of dictionary image files for
-                            current metalex project
-      --imgalg actiontype value
-                            Set algorithm for enhancing dictionary image files for
-                            current metalex project (actiontype must be : constrat
-                            or bright or filter)
-      -r FILERULE, --filerule FILERULE
-                            Defined file rules that we use to enhance quality of
-                            OCR result
-      -l LANG, --lang LANG  Set language for optical characters recognition and
-                            others metalex treatment
-      -x {xml,lmf,tei} {xml,lmf,tei} {xml,lmf,tei}, --xml {xml,lmf,tei} {xml,lmf,tei} {xml,lmf,tei}
-                            Defined output result treatment of metalex
-      -s, --save            Save output result of the current project in files
-      -t, --terminal        Show result of the current treatment in the terminal
+    metalex arguments :
+    
+    -h, --help            show this help message and exit
+    -v, --version         show program's version number and exit
+    -p PROJECTNAME, --project PROJECTNAME
+                          Defined metalex project name
+    -c author comment contributors, --confproject author comment contributors
+                          Defined metalex configuration for the current project
+    -i [IMAGEFILE], --dicimage [IMAGEFILE]
+                          Input one or multiple dictionary image(s) file(s) for
+                          current metalex project
+    -d IMAGESDIR, --imagedir IMAGESDIR
+                          Input folder name of dictionary image files for
+                          current metalex project
+    --imgalg actiontype value
+                          Set algorithm for enhancing dictionary image files for
+                          current metalex project (actiontype must be : constrat
+                          or bright or filter)
+    -r FILERULE, --filerule FILERULE
+                          Defined file rules that we use to enhance quality of
+                          OCR result
+    -l LANG, --lang LANG  Set language for optical characters recognition and
+                          others metalex treatment
+    -x {xml,lmf,tei} {xml,lmf,tei} {xml,lmf,tei}, --xml {xml,lmf,tei} {xml,lmf,tei} {xml,lmf,tei}
+                          Defined output result treatment of metalex
+    -s, --save            Save output result of the current project in files
+    -t, --terminal        Show result of the current treatment in the terminal
 
 
 - Build the file rules of the project.
@@ -150,16 +151,17 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 
 - Run your project with the default parameters except dictionary images data and save results. You must create a folder containing dictionary image files such as **imagesInput/**.
 
-::
+.. code-block:: shell
 
     python runMetalex.py  -d 'dicImages' -s  # We defined a folder containing dictionary images for current process
+    
     python runMetalex.py  -i 'dicImages/dic_image_1.jpg' -s  # Or you can define a single dictionary image file
 
 
 - Run your project with your own set of parameters and save results
 
-::
-
+.. code-block:: shell
+ 
     python runMetalex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -s
 
 
@@ -172,7 +174,7 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 Contributors
 ============
 
-Special thank to  `Bill <https://github.com/billmetangmo>`_  for `MetaLex-vagrant <https://github.com/Levis0045/MetaLex-vagrant>`_ version for windows, Mac OS 6, Linux
+Special thank to  `Bill  <https://github.com/billmetangmo>`_   for  `MetaLex-vagrant  <https://github.com/Levis0045/MetaLex-vagrant>`_  version for windows, Mac OS 6, Linux
 
 
 Reference
@@ -180,8 +182,9 @@ Reference
 
 Please don't forget to cite this work :
 
-::
-
+.. code-block:: latex
+    :emphasize-lines: 3,5
+    
     @article{Mboning-Elvis,
         title  = {Quand le TAL s'empare de la métalexicographie : conception d'un outil pour le métalexicographe},
         author = {Mboning, Elvis},

@@ -28,7 +28,7 @@ Ce package implémente tous les plugins de MetaLex
     
 """
  
-__version__ = u"1.6.5"
+__version__ = u"1.8.5"
 
 # ----Internal Modules------------------------------------------------------
 

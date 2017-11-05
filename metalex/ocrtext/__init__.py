@@ -35,13 +35,13 @@
 """
 
 
-__version__ = "1.6.0"
+__version__ = "1.8.5"
 
 # ----Internal Modules------------------------------------------------------
 
 from normalizeImage  import EnhanceImages, get_images
-from makeOcr         import image_to_text
-from normalizeText   import make_text_well, FileRule
+from makeOcr         import BuildOcrImages
+from normalizeText   import BuildTextWell, FileRule
 from wordsCorrection import correct_word, caract_replace, word_replace
 
 # -----Global Variables-----------------------------------------------------

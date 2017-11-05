@@ -51,45 +51,84 @@ import codecs
 import os
 import sys
 from tesserocr import PyTessBaseAPI
+from multiprocessing import Pool
+from termcolor import colored
 
 # -----Exported Functions---------------------------------------------------
 
-__all__ = ['image_to_text']
+__all__ = ['BuildOcrImages']
 
 # -----Global Variables-----------------------------------------------------
 
 
-# ----------------------------------------------------------
 
+# --------------------------------------------------------------------------
     
-def image_to_text(show=False, save=False, langIn='fra'):
-    """Take image files, ocrised and save them to 'dicTemp' folder
+class BuildOcrImages():
+    """Extract all text data from dictionary images files 
     
-    :param   show: Bool
-    :param   save: Bool
-    :param   langIn: str
+    :param show: bool
+    :param save: bool
+    :param langIn: str (language used in OCR : format 'fra | eng | esp',  etc.)
     
-    :return str|file (metalex.resultOcrData)
+    :return array: list of path of 
     """
+    
+    def __init__(self, show=False, save=True, langIn='fra'):
+        self.show = show
+        self.save = save
+        self.langIn = langIn
+        print  u'\n --- %s ---------------------------------------------------------------------- \n\n' %colored('Part 2 : OCR', attrs=['bold'])
         
-    allimages = []
-    if len(metalex.fileImages) >= 1 and not len(metalex.treatImages) >= 1 :
-        contentPrint = u"OCR >> You don't have any previous treated image(s)! Please treat them before OCR "
-        metalex.logs.manageLog.write_log(contentPrint, typ='error')
-        os.chdir('..')
-        return None
-    elif not len(metalex.fileImages) >= 1 :
-        contentPrint = u"OCR >>  You don't have any image(s) for this treatment"
-        messageExit  = u'FATAL ERROR! We cannot continue, resolve the previous error'
-        metalex.logs.manageLog.write_log(contentPrint, typ='error')
-        sys.exit(metalex.logs.manageLog.write_log(messageExit, typ='error'))
-    else:
-        allimages = metalex.treatImages
-         
-    num = 1
-    for img in allimages :
+    def get_available_images(self):
+        """Get all available path of dictionary images previously treated 
+    
+        :return array: list of path of enhanced dictionary images
+        """
+        if len(metalex.fileImages) >= 1 and not len(metalex.treatImages) >= 1 :
+            contentPrint = u"OCR >> You don't have any previous treated image(s)! Please treat them before OCR "
+            metalex.logs.manageLog.write_log(contentPrint, typ='error')
+            return None
+        elif not len(metalex.fileImages) >= 1 :
+            contentPrint = u"OCR >>  You don't have any image(s) for this treatment"
+            messageExit  = u'FATAL ERROR! We cannot continue, resolve the previous error'
+            metalex.logs.manageLog.write_log(contentPrint, typ='error')
+            sys.exit(metalex.logs.manageLog.write_log(messageExit, typ='error'))
+        else:
+            allimages = metalex.treatImages
+        return allimages
+    
+    
+    def calculate_process(self):
+        """Calculate a number of processes usefull for OCR processing
+    
+        :return int: number of processes
+        """
+        processExec = 0
+        lenImages = len(self.get_available_images())
+        if lenImages == 1: 
+            processExec = 1
+        elif lenImages == 2:
+            processExec = 2
+        elif lenImages > 2 and lenImages < 10 :
+            processExec = 3
+        elif lenImages > 10 :
+            processExec = 5
+        return processExec
+            
+    
+    def ocr_exec(self, img):
+        """Take image files, ocrised and save them to 'dicTemp' folder
+        
+        :param show: Bool
+        :param save: Bool
+        :param langIn: str
+        
+        :return str|file (metalex.resultOcrData)
+        """
+    
         with PyTessBaseAPI() as api:
-            api.Init(lang=langIn)
+            api.Init(lang=self.langIn)
             api.SetImageFile(img)
             
             image, ext = metalex.project.get_part_file(img)
@@ -97,45 +136,52 @@ def image_to_text(show=False, save=False, langIn='fra'):
             imagefile = image+ext
             
             imageconcat = u''
-            for i in imagepart :
+            for i in imagepart:
                 imageconcat +=u'_'+i 
             imageconcat = imageconcat.split(u'.')[0]
             tempname = u'text_ocr'+imageconcat+u'.html'
-
+            
             metalex.project.create_temp()
             if metalex.project.in_dir(tempname) :
-                message = u"OCR >> Starting optical charaters recognition of *"+imagefile+u"* "
+                message = u"Starting optical charaters recognition of *"+imagefile+u"* "
                 metalex.logs.manageLog.write_log(message)
                 textocr = api.GetHOCRText(2)
-                messag = u"OCR >> Ending optical charaters recognition of *"+imagefile+u"* "
+                messag = u"Ending optical charaters recognition of *"+imagefile+u"* "
                 metalex.logs.manageLog.write_log(messag)
                 
                 metalex.project.create_temp()
-                if save:
+                if self.save:
                     with codecs.open(tempname, 'w', "utf-8") as wr :
                         wr.write(textocr)
                     message = u"*"+ imagefile +u"* is Ocrised to > *"+tempname+u"* > Saved in dicTemp folder" 
                     metalex.logs.manageLog.write_log(message) 
                     metalex.resultOcrData[img] = [textocr]
-                elif show :
+                elif self.show :
                     print u"\n\n*********************************************************\n\n"
                     print textocr
                     print u"\n\n*********************************************************\n\n"
                 else :
-                    message = u"OCR >> imageToText(show=False, save=False) : precise the action 'show=False or save=False'"
+                    message = u"imageToText(show=False, save=False) : precise the action 'show=False or save=False'"
                     metalex.logs.manageLog.write_log(message, typ='warm') 
             else :
-                messag = u"OCR >> Ending optical charaters recognition of *"+imagefile+u"* "
+                messag = u"Ending optical charaters recognition of *"+imagefile+u"* "
                 metalex.logs.manageLog.write_log(messag)
-                
-            metalex.project.treat_ocr_append(tempname)
-            os.chdir('..')
-              
             
-        num += 1
-                
-    return metalex.resultOcrData
-                
-                
-                
-                
+            metalex.project.write_temp_file(tempname, 'ocr')
+            
+    
+    def image_to_text(self):
+        """Run simultanously all OCR processes of dictionary files
+    
+        :return array: list of path of HTML files
+        """ 
+        allimages = self.get_available_images()
+        processOcr = Pool(self.calculate_process())
+        processOcr.map(self, allimages)
+        metalex.project.read_temp_file('ocr')
+
+        
+    def __call__(self, img):   
+        return self.ocr_exec(img)
+    
+    
