@@ -51,6 +51,7 @@ from bs4 import BeautifulSoup
 from random import sample
 from shutil import copyfile
 from lxml import etree
+from termcolor import colored
 
 # -----Exported Functions-----------------------------------------------------
 
@@ -90,8 +91,9 @@ def dico_html(save=False) :
     
     :return file: metalexViewerEditor.html
     """
-    metalex.plugins
+    print  u'\n --- %s ---------------------------------------------------- \n\n' %colored('Part 4 : Generate Output formats', attrs=['bold'])
     
+    metalex.plugins
     instanceHtml = BaliseHTML()
     filepath     = sys.path[-1]+u'/metalex-template.html'
     metalex.project.create_temp()
@@ -113,7 +115,8 @@ def dico_html(save=False) :
             message = u"'metalexViewerEditor.html' has correctly been generated > Saved in dicTemp folder" 
             metalex.logs.manageLog.write_log(message)
     
-        
+    print  u'\n\n --- %s --------------- \n\n' %colored('MetaLex Processes was ended : consult results data in "dicTemp" folder', 'green', attrs=['bold'])
+      
  
 class BaliseHTML () :
     

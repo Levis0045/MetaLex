@@ -39,6 +39,7 @@ Usage:
 # ----Internal Modules------------------------------------------------------
 
 from metalex import codifications
+from metalex import project
 from dicXmlTool import * 
 
 # ----External Modules------------------------------------------------------
@@ -56,10 +57,10 @@ __all__ = ['parse_article', 'StructuredWithCodif']
 
 # -----Global Variables-----------------------------------------------------
 
-codi       = codifications.CodificationsStore()
+codi = codifications.CodificationsStore()
 contentDic = codi.get_all_codifications()
-textCodif  = codi.get_codif_text_type()
-symbCodif  = codi.get_codif_symb_type()
+textCodif = codi.get_codif_text_type()
+symbCodif = codi.get_codif_symb_type()
 graphCodif = codi.get_codif_graph_type()
 
 # --------------------------------------------------------------------------
@@ -75,6 +76,7 @@ def parse_article(textart, log=False) :
     i, c = 0, 0
     parser = ParserCodification(log)
     resultext = parser.proc_codi(textart, i, c, codif, contentDic, log)
+    #print resultext
     return resultext
 
 
@@ -87,8 +89,8 @@ def build_replace_codif(codif, typ):
     :return str: balise codification type
     """
     for k, v in contentDic.items():
-        if typ == u'text' and codif in v and k == typ :
-            for i, t in textCodif.items() :
+        if typ == u'text' and codif in v and k == typ:
+            for i, t in textCodif.items():
                 if codif in t and i == u'cats'    : return u' <cte_cat>'+codif+u'</cte_cat> '
                 if codif in t and i == u'genres'  : return u' <cte_gender>'+codif+u'</cte_gender> '
                 if codif in t and i == u'marques' : return u' <cte_mark>'+codif+u'</cte_mark> '
@@ -97,14 +99,14 @@ def build_replace_codif(codif, typ):
                 if codif in t and i == u'rection' : return u' <cte_rection>'+codif+u'</cte_rection> '
                 if codif in t and i == u'affixe'  : return u' <cte_affix>'+codif+u'</cte_affix> '
         
-        elif typ == u'symb' and codif in v and k == typ  :
-            for i, t in symbCodif.items() :
+        elif typ == u'symb' and codif in v and k == typ:
+            for i, t in symbCodif.items():
                 if codif in t and i == u'numbers' : return u' <csy_chif>'+codif+u'</cte_chif> '
                 if codif in t and i == u'alpha'   : return u' <cte_alpha>'+codif+u'</cte_alpha> '
                 if codif in t and i == u'symbs'   : return u' <cte_syb>'+codif+u'</cte_syb> '
         
-        elif typ == u'graph' and codif in v and k == typ  :
-            for i, t in graphCodif.items() :
+        elif typ == u'graph' and codif in v and k == typ:
+            for i, t in graphCodif.items():
                 if codif == t and i == u'point'    : return u' <cgr_pt>'+codif+u'</cgr_pt> '
                 if codif == t and i == u'virgule'  : return u' <cgr_vrg>'+codif+u'</cgr_vrg> '
                 if codif == t and i == u'pointv'   : return u' <cgr_ptvrg>'+codif+u'</cgr_ptvrg> '
@@ -123,15 +125,15 @@ class ParserCodification() :
     
     def __init__(self, log):
         self.result = u''
-        self.codif  = [u'text', u'symb', u'typo', u'graph']
-        self.log    = log
+        self.codif = [u'text', u'symb', u'typo', u'graph']
+        self.log = log
         
     def proc_codi(self, art, i, c, codif, codifs, log):
-        num    = i
+        num = i
         codift = self.codif[c] 
-        codi   = ' '+codifs[codift][num]+' '
+        codi = ' '+codifs[codift][num]+' '
         
-        if  art.find(codi)  != -1 :
+        if  art.find(codi) != -1:
             if self.log : print '3'
             if codift == u'text' : replac = build_replace_codif(codifs[codift][num], u'text')
             if codift == u'graph': replac = build_replace_codif(codifs[codift][num], u'graph')
@@ -140,28 +142,28 @@ class ParserCodification() :
             artcodi = art.replace(codi, replac)
             self.result = artcodi
             num += 1
-            if num < len(codifs[codift]) :
+            if num < len(codifs[codift]):
                 if self.log : print '4', codifs[codift][num]
                 self.proc_codi(artcodi, num, c, self.codif, codifs, self.log)
-            elif c < 3 :
+            elif c < 3:
                 c = c + 1
                 num = 0
                 self.proc_codi(artcodi, num, c, self.codif, codifs, self.log)
                 if self.log : print artcodi, codif[c]
-            if c == 3 and art == None :
+            if c == 3 and art == None:
                 self.result = art
         else : 
             num += 1
-            if num < len(codifs[codift]) :
-                if self.log : print '6', codifs[codift][num]
+            if num < len(codifs[codift]):
+                if self.log: print '6', codifs[codift][num]
                 self.proc_codi(art, num, c, self.codif, codifs, self.log)
-            elif c < 3 :
+            elif c < 3:
                 c = c + 1
                 num = 0
                 self.proc_codi(art, num, c, self.codif, codifs, self.log)
-            elif c == 3 and art == None :
-                self.result =  art
-        
+            elif c == 3 and art == None:
+                self.result = art
+
         return self.result
 
 
@@ -186,9 +188,9 @@ class StructuredWithCodif():
         :return dict: contentall
         """
         contentall = {}
-        for art in self.data.keys() :
+        for art in self.data.keys():
             content = u''
-            for word in re.split(ur' ', self.data[art]) :
+            for word in re.split(ur' ', self.data[art]):
                 word = word.strip()
                 if re.search(ur"[a-z.éèùàê,]+", word, re.I):
                     if word.isalnum() and word[-1] == u';' or word[-1] == u':' or word[-1] == u',':
@@ -197,23 +199,23 @@ class StructuredWithCodif():
                     elif len(word)> 2 and word[-1] == u'.' and word[0] != u'(' and word[-2] != u')' and word not in contentDic['text'] :
                         word, caract = word[:-1], word[-1]
                         content += word+u' {0} '.format(caract)
-                    elif word[0]  == u'('  and word not in contentDic['symb'] :
+                    elif word[0]  == u'('  and word not in contentDic['symb']:
                         if self.log : print word, '----------------'
                         word, caract = word[1:], word[0]
                         content += caract+u' {0} '.format(word)
-                    elif len(word)> 2 and word[-1] == u'.' and word[-2] == u')' and word not in contentDic['symb'] :
+                    elif len(word)> 2 and word[-1] == u'.' and word[-2] == u')' and word not in contentDic['symb']:
                         if self.log : print word, word[-2],'----------------'
                         word, caract, point = word[:-2], word[-2], word[-1]
                         content += word+u' {0} {1} '.format(caract, point)
-                    elif len(word)> 2 and word[0] == u'[' and word[-1] == u']' and word not in contentDic['symb'] :
+                    elif len(word)> 2 and word[0] == u'[' and word[-1] == u']' and word not in contentDic['symb']:
                         if self.log : print word, word[-2],'----------------'
                         word, caract1, caract2 = word[1:-1], word[0], word[-1]
                         content += u' {0} {1} {2} '.format(caract1, word, caract2)
-                    else :
+                    else:
                         content += word +u' '
-                else :
+                else:
                     content += word+u''
-            contentall[art]  = content
+            contentall[art] = content
         return contentall
           
           
@@ -228,13 +230,15 @@ class StructuredWithCodif():
         dnormal = time.time() - debut
         debut   = time.time()
         datacodified = {}
-        for art in dataArticles.keys() :
-            artcodif          = parse_article(dataArticles[art], self.log)
+        for art in dataArticles.keys():
+            artcodif = parse_article(dataArticles[art], self.log)
             datacodified[art] = artcodif
         dcodif  = time.time() - debut
-        if self.log :
+        if self.log:
             print "Durée normalisation texte pour codif : %10.3f seconds\n" %dnormal
             print "Durée parsage codif texte : %10.3f seconds\n" %dcodif
+            
+        project.save_normalized_data(name=u'articles_codified.art', typ=u'text', data=datacodified)
         return datacodified
          
          
@@ -246,18 +250,18 @@ class StructuredWithCodif():
         :return str: element (content of tag)
         """
         elsearch = re.search(ur'<.+>(.+)</.+>', tag)
-        elment   = elsearch.group(1)
+        elment = elsearch.group(1)
         return elment
     
     
     def segment_articles (self, article, log):
-        if re.search(ur'.+\s<cgr_pt>\.</cgr_pt>\s.+\s<cte_cat>.+', article) : 
+        if re.search(ur'.+\s<cgr_pt>\.</cgr_pt>\s.+\s<cte_cat>.+', article): 
             arts = re.search(ur'(.+\s<cgr_pt>\.</cgr_pt>)(\s.+\s<cte_cat>.+)', article)
             art1, art2 = arts.group(1), arts.group(2)
-            self.segment_articles (art1, self.log)
-            self.segment_articles (art2, self.log)
+            self.segment_articles(art1, self.log)
+            self.segment_articles(art2, self.log)
         else :
-            if self.log : print '3-----------------------------\n'+article+'---------------------------\n\n'
+            if self.log: print '3-----------------------------\n'+article+'---------------------------\n\n'
             self.treat_articles.append(article)
     
     
@@ -266,16 +270,16 @@ class StructuredWithCodif():
         
         :return list: treat_articles
         """
-        dataCodified  = self.codified_articles()
-        for i, article in dataCodified.items() :
-            if i == 'article1' : self.treat_articles.append('sep')
-            if article.count('<cgr_pt>.</cgr_pt>') >= 2 :
-                if re.search(ur'<cgr_pt>\.</cgr_pt>\s<cte_cat>', article) :
+        dataCodified = self.codified_articles()
+        for i, article in dataCodified.items():
+            if i == 'article1': self.treat_articles.append('sep')
+            if article.count('<cgr_pt>.</cgr_pt>') >= 2:
+                if re.search(ur'<cgr_pt>\.</cgr_pt>\s<cte_cat>', article):
                     self.treat_articles.append(article)
                     if self.log : print '1-----------------------------\n'+article+'---------------------------\n\n'
                 elif self.segment_articles(article, self.log):
                     print True
-            else :
+            else:
                 self.treat_articles.append(article)
                 if self.log : print '2-----------------------------\n'+article+'---------------------------\n\n'
         return self.treat_articles
