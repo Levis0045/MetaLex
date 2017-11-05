@@ -96,15 +96,11 @@ How to run MetaLex ?
 
 .. code-block:: shell
     :linenos:
-    
-    
     python runMetalex.py -h
 
 
 .. code-block:: shell
     :linenos:
-
-
     metalex arguments :
     
     -h, --help            show this help message and exit
