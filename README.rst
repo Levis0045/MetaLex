@@ -81,7 +81,6 @@ MetaLex is developped in **Python 2.7** environment, the following packages are 
 - Or follow these steps 
 
 .. code-block:: shell
-    :linenos:
     
     sudo ./config.sh     # Install linux package dependencies
     
@@ -95,12 +94,12 @@ How to run MetaLex ?
 - Go to the ** test/ ** folder and run build help command
 
 .. code-block:: shell
-    :linenos:
+    
     python runMetalex.py -h
 
 
 .. code-block:: shell
-    :linenos:
+    
     metalex arguments :
     
     -h, --help            show this help message and exit
@@ -153,7 +152,6 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 - Run your project with the default parameters except dictionary images data and save results. You must create a folder containing dictionary image files such as **imagesInput/**.
 
 .. code-block:: shell
-    :linenos:
 
     python runMetalex.py  -d 'dicImages' -s  # We defined a folder containing dictionary images for current process
     
@@ -163,7 +161,6 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 - Run your project with your own set of parameters and save results
 
 .. code-block:: shell
-    :linenos:
 
     python runMetalex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -s
 
@@ -186,8 +183,8 @@ Reference
 Please don't forget to cite this work :
 
 .. code-block:: latex
-    :linenos:
-
+    :emphasize-lines: 3,5
+    
     @article{Mboning-Elvis,
         title  = {Quand le TAL s'empare de la métalexicographie : conception d'un outil pour le métalexicographe},
         author = {Mboning, Elvis},
