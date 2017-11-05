@@ -181,20 +181,27 @@ class TestMetalex:
             
         # ----Start optical recognition of dictionary image files----------------
         if metalexArgs.save and metalexArgs.lang :
-            images.image_to_text(save=True, langIn=metalexArgs.lang)
+            execOcr = images.BuildOcrImages(save=True, langIn=metalexArgs.lang)
+            execOcr.image_to_text()
         elif metalexArgs.lang :
-            images.image_to_text(save=False, langIn=metalexArgs.lang)
+            execOcr = images.BuildOcrImages(save=False, langIn=metalexArgs.lang)
+            execOcr.image_to_text()
         elif metalexArgs.terminal and metalexArgs.lang :
-            images.image_to_text(show=True, langIn=metalexArgs.lang)
+            execOcr = images.BuildOcrImages(show=True, langIn=metalexArgs.lang)
+            execOcr.image_to_text()
         else :
-            images.image_to_text(save=True, langIn='fra')
-        
+            execOcr = images.BuildOcrImages(save=True, langIn='fra')
+            execOcr.image_to_text()
         
         # ----Normalize result of ocr files ------------------------------------
         if metalexArgs.fileRule :
-            images.make_text_well(metalexArgs.fileRule)
+            execNormalize = images.BuildTextWell(metalexArgs.fileRule)
+            execNormalize.make_text_well()
         else :
-            images.make_text_well(u'file_Rule.dic')
+            message = u"FileRule() >> You don't defined file rules for this project. *file_Rule.dic* will be used instead" 
+            execNormalize = images.BuildTextWell(u'../../file_Rule.dic')
+            dico.logs.manageLog.write_log(message, typ='warm')
+            execNormalize.make_text_well()
         
         #-----Produce HTML output file for project------------------------------
         if metalexArgs.save :
