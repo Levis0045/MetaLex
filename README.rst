@@ -61,7 +61,8 @@ MetaLex is developped in **Python 2.7** environment, the following packages are 
 - We can install all package dependencies manually
 
 
-::
+.. code-block:: shell
+    :linenos:
 
     sudo apt-get install build-essential libssl-dev libffi-dev python-dev
     sudo pip install Cython
@@ -79,8 +80,9 @@ MetaLex is developped in **Python 2.7** environment, the following packages are 
 
 - Or follow these steps 
 
-::
-
+.. code-block:: shell
+    :linenos:
+    
     sudo ./config.sh     # Install linux package dependencies
     
     sudo pip install -r requirements.txt  # Install python module dependencies
@@ -90,42 +92,44 @@ MetaLex is developped in **Python 2.7** environment, the following packages are 
 How to run MetaLex ?
 ====================
 
-- Go to the **test/** folder and run build help command
+- Go to the ** test/ ** folder and run build help command
 
-::
+.. code-block:: shell
+    :linenos:
 
     python runMetalex.py -h
 
 
-::
+.. code-block:: shell
+    :linenos:
 
-       metalex arguments :
+    metalex arguments :
     
-      -h, --help            show this help message and exit
-      -v, --version         show program's version number and exit
-      -p PROJECTNAME, --project PROJECTNAME
-                            Defined metalex project name
-      -c author comment contributors, --confproject author comment contributors
-                            Defined metalex configuration for the current project
-      -i [IMAGEFILE], --dicimage [IMAGEFILE]
-                            Input one or multiple dictionary image(s) file(s) for
-                            current metalex project
-      -d IMAGESDIR, --imagedir IMAGESDIR
-                            Input folder name of dictionary image files for
-                            current metalex project
-      --imgalg actiontype value
-                            Set algorithm for enhancing dictionary image files for
-                            current metalex project (actiontype must be : constrat
-                            or bright or filter)
-      -r FILERULE, --filerule FILERULE
-                            Defined file rules that we use to enhance quality of
-                            OCR result
-      -l LANG, --lang LANG  Set language for optical characters recognition and
-                            others metalex treatment
-      -x {xml,lmf,tei} {xml,lmf,tei} {xml,lmf,tei}, --xml {xml,lmf,tei} {xml,lmf,tei} {xml,lmf,tei}
-                            Defined output result treatment of metalex
-      -s, --save            Save output result of the current project in files
-      -t, --terminal        Show result of the current treatment in the terminal
+    -h, --help            show this help message and exit
+    -v, --version         show program's version number and exit
+    -p PROJECTNAME, --project PROJECTNAME
+                          Defined metalex project name
+    -c author comment contributors, --confproject author comment contributors
+                          Defined metalex configuration for the current project
+    -i [IMAGEFILE], --dicimage [IMAGEFILE]
+                          Input one or multiple dictionary image(s) file(s) for
+                          current metalex project
+    -d IMAGESDIR, --imagedir IMAGESDIR
+                          Input folder name of dictionary image files for
+                          current metalex project
+    --imgalg actiontype value
+                          Set algorithm for enhancing dictionary image files for
+                          current metalex project (actiontype must be : constrat
+                          or bright or filter)
+    -r FILERULE, --filerule FILERULE
+                          Defined file rules that we use to enhance quality of
+                          OCR result
+    -l LANG, --lang LANG  Set language for optical characters recognition and
+                          others metalex treatment
+    -x {xml,lmf,tei} {xml,lmf,tei} {xml,lmf,tei}, --xml {xml,lmf,tei} {xml,lmf,tei} {xml,lmf,tei}
+                          Defined output result treatment of metalex
+    -s, --save            Save output result of the current project in files
+    -t, --terminal        Show result of the current treatment in the terminal
 
 
 - Build the file rules of the project.
@@ -150,15 +154,18 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 
 - Run your project with the default parameters except dictionary images data and save results. You must create a folder containing dictionary image files such as **imagesInput/**.
 
-::
+.. code-block:: shell
+    :linenos:
 
     python runMetalex.py  -d 'dicImages' -s  # We defined a folder containing dictionary images for current process
+    
     python runMetalex.py  -i 'dicImages/dic_image_1.jpg' -s  # Or you can define a single dictionary image file
 
 
 - Run your project with your own set of parameters and save results
 
-::
+.. code-block:: shell
+    :linenos:
 
     python runMetalex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -s
 
@@ -180,7 +187,8 @@ Reference
 
 Please don't forget to cite this work :
 
-::
+.. code-block:: latex
+    :linenos:
 
     @article{Mboning-Elvis,
         title  = {Quand le TAL s'empare de la métalexicographie : conception d'un outil pour le métalexicographe},
