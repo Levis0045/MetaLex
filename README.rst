@@ -161,7 +161,7 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 - Run your project with your own set of parameters and save results
 
 .. code-block:: shell
-
+ 
     python runMetalex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -s
 
 
