@@ -50,56 +50,100 @@ import os
 import time
 import warnings
 from bs4 import BeautifulSoup
-
-#import ipdb
+from termcolor import colored
+from multiprocessing import Pool
 
 # -----Exported Functions---------------------------------------------------
 
-__all__ = ['make_text_well', 'FileRule']
+__all__ = ['BuildTextWell', 'FileRule']
 
 # -----Global Variables-----------------------------------------------------
 
-dicArticles = []
 AllWords    = []
 namepickle  = ''
 nametxt     = ''
 
 # ----------------------------------------------------------
-
-
-def make_text_well(file_rules, okCorrect=False, log=False):
-    """Composed and saved all treatments process to enhance quality of html articles 
     
-    :param file_rules: str
+class BuildTextWell():
+    """Extract and normalize all text data from HTML files 
+    
+    :param file_rules: file containing dictionary rules
     :param okCorrect: bool
+    :param log: bool
     
-    :return file: pickle and text 
+    :return array: list of path of 
     """
-    debut = time.time()
-    filerule = FileRule(file_rules, typ=u'rule_wc')
-    data_rules = filerule.file_rule_unpack()
-    dfilerule = time.time() - debut
     
-    html_ocr_files = metalex.resultOcrFiles
-    if len(html_ocr_files) >= 1 :
-        for html in html_ocr_files :
-            with open(html, 'r') as html_file :
-                enhance_text(html_file, data_rules, okCorrect)
-            
+    def __init__(self, file_rules, okCorrect=False, log=False):
+        self.okCorrect = okCorrect
+        self.log = log
+        self.file_rules = file_rules
+        print  u'\n --- %s ---------------------------------------------------------- \n\n' %colored('Part 3 : Correct OCR data', attrs=['bold'])
+        debut = time.time()
+        filerule = FileRule(self.file_rules, typ=u'rule_wc')
+        self.data_rules = filerule.file_rule_unpack()
+        dfilerule = time.time() - debut
+        if self.log : print "--> %30s : %10.5f seconds\n" %("Durée d'extraction du fichier des règles", dfilerule)
+         
+
+    def extract_correct(self, html):
+        """Composed and saved all treatment processes to enhance quality of HTML articles 
+        
+        :param html: str HTML file
+        
+        :return dicArticles: add corrected file in dicArticles
+        """
+        with open(html, 'r') as html_file :
+            enhance_text(html_file, self.data_rules, self.okCorrect)  
+
+    
+    def calculate_process(self):
+        """Calculate a number of processes usefull for OCR processing
+    
+        :return int: number of processes
+        """
+        processExec = 0
+        lenHtmlOcrFiles = len(metalex.resultOcrFiles)
+        if lenHtmlOcrFiles == 1: 
+            processExec = 1
+        elif lenHtmlOcrFiles == 2:
+            processExec = 2
+        elif lenHtmlOcrFiles > 2 and lenHtmlOcrFiles < 10 :
+            processExec = 3
+        elif lenHtmlOcrFiles > 10 :
+            processExec = 5
+        return processExec
+    
+    
+    def make_text_well(self):
+        """Run simultanously all html files processes to extract data articles
+    
+        :return file: pickle object and texte data
+        """
+        html_ocr_files = metalex.resultOcrFiles
+        processOcr = Pool(self.calculate_process())
+        if len(html_ocr_files) >= 1 :
+            processOcr.map(self, html_ocr_files)
+        else :
+            message = u'OCR  >> We are not found any OCR files to enhance text quality'
+            messageExit = u'FATAL ERROR! We cannot continue, resolve the previous error'
+            metalex.logs.manageLog.write_log(message, typ='error')
+            return sys.exit(metalex.logs.manageLog.write_log(messageExit, typ='error'))
+
         namepickle = metalex.project.name_file(html_ocr_files, u'.pickle')
         nametxt = metalex.project.name_file(html_ocr_files, u'.art')
         
-        save_normalize(namepickle, u'pickle')
-        save_normalize(nametxt, u'text')     
-           
-        if log : print "--> %30s : %10.5f seconds\n" %("Durée d'extraction du fichier des règles", dfilerule)
-    else :
-        message = u'OCR  >> we are not found any OCR files to enhance text quality'
-        messageExit = u'FATAL ERROR! We cannot continue, resolve the previous error'
-        metalex.logs.manageLog.write_log(message, typ='error')
-        return sys.exit(metalex.logs.manageLog.write_log(messageExit, typ='error'))
-              
-              
+        metalex.project.save_normalized_data(name=namepickle, typ=u'pickle', form=u'norm')
+        metalex.project.save_normalized_data(name=nametxt, typ=u'text', form=u'norm')
+        
+        metalex.project.create_temp()  
+        os.remove('temp_norm.txt')
+    
+    def __call__(self, html):
+        return self.extract_correct(html)
+    
+    
 def enhance_text(html_file, rules, okCorrect):
     """Enhance quality of text by remove all inconvenients characters and optionally 
        correct malformed words.
@@ -162,55 +206,18 @@ def enhance_text(html_file, rules, okCorrect):
             artnum = u'article_'+str(art)
             crtnum = u'correction_'+str(art)
             if len(contentOrigin) >= 15 and len(contentCorrection) == 0:
-                article = {artnum:contentOrigin}
-                dicArticles.append(article)
+                article = u'%s==%s' %(artnum, contentOrigin)
+                metalex.project.write_temp_file(article, 'norm')
                 art += 1
             elif len(contentOrigin) >= 15 and len(contentCorrection) >= 5 :
-                article = {crtnum:contentCorrection, artnum:contentOrigin}
-                dicArticles.append(article)
+                article = u'%s==%s | %s==%s' %(crtnum, contentCorrection, artnum, contentOrigin)
+                metalex.project.write_temp_file(article, 'norm')
                 art += 1
                 
     formFile = str(html_file).split('/')[-1].split("'")[0]
-    message = u"enhance_text() >> *"+formFile+u"* has been corrected"
-    metalex.logs.manageLog.write_log(message)
-                
-    
-def save_normalize(name, typ):
-    """Saved normalized text in text format (*.art) or in pickle format (*.pickle) 
-    
-    :param name: str file
-    :param typ: str
-    
-    :return file: texts extracted
-    """
-    metalex.project.create_temp()
-    if typ == u'text' :
-        if metalex.project.in_dir(name) :
-            with codecs.open(name, 'a', 'utf-8') as fil :
-                num = 1
-                for art in dicArticles :
-                    for k, v in art.items() :
-                        if k != u'article_1' :
-                            fil.write('%10s : %s\n' %(k, v))
-                        else :
-                            fil.write('\n----- FILE: %s ---------------------------------------------------------------------------------\n\n' %num)
-                            fil.write('%10s : %s\n' %(k, v))
-                            num += 1
-            message = u'save_normalize() >> '+u'*'+name+u'* is created and contain all text format data from html files > Saved in dicTemp folder'  
-            metalex.logs.manageLog.write_log(message) 
-        else :
-            message = u'save_normalize() >> '+u'*'+name+u'* is created and contain all text format data from html files > Saved in dicTemp folder'  
-            metalex.logs.manageLog.write_log(message) 
-    
-    if typ == u'pickle' :  
-        if metalex.project.in_dir(name) and metalex.project.file_pickle(dicArticles, name) :
-            message = u'save_normalize() >> '+u'*'+name+u'* is created and contain pickle data object from html files > Saved in dicTemp folder'  
-            metalex.logs.manageLog.write_log(message)         
-        else :
-            message = u'save_normalize() >> '+u'*'+name+u'* is created and contain pickle data object from html files > Saved in dicTemp folder'  
-            metalex.logs.manageLog.write_log(message)     
+    message = u"enhance_text() >> *"+formFile+u"* has been extracted and corrected"
+    metalex.logs.manageLog.write_log(message) 
         
- 
         
 class FileRule():
     """Managing of input file rules for text normalization

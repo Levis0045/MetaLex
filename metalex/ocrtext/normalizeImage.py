@@ -55,6 +55,7 @@ import sys
 from PIL import Image
 from PIL import ImageEnhance
 from shutil import copyfile
+from termcolor import colored
 
 # ----Exported Functions-----------------------------------------------------
 
@@ -118,6 +119,7 @@ class EnhanceImages ():
     
     def __init__(self): 
         self.images = metalex.fileImages
+        print  u'\n --- %s ------------------------------------------------------------- \n\n' %colored('Part 1 : EnhanceImages', attrs=['bold'])
         
     def contrast(self, value, show=False, save=False):
         """ Enhance image file with the contrast value
