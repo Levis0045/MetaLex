@@ -60,9 +60,7 @@ MetaLex is developped in **Python 2.7** environment, the following packages are 
 
 - We can install all package dependencies manually
 
-
 .. code-block:: shell
-    :linenos:
 
     sudo apt-get install build-essential libssl-dev libffi-dev python-dev
     sudo pip install Cython
