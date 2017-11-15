@@ -35,7 +35,7 @@ before_install:
   - sudo apt-get -y install zlib1g-dev libpng-dev libjpeg-dev 
   - sudo apt-get -y install build-essential libssl-dev libffi-dev
   - sudo pip install Cython pillow
-  - sudo apt-get install tesseract-ocr libtesseract-dev libleptonica-dev
+  - sudo apt-get install tesseract-ocr tesseract libtesseract-dev libleptonica-dev
   - sudo pip install tesserocr
   - sudo apt-get -y install tesseract-ocr-fra
   - sudo apt-get -y install tesseract-ocr-dev
