@@ -40,7 +40,7 @@ before_install:
 
 install:
   #
-  - cd /usr/local/include/leptonica/allheaders.h
+  - ls /usr/local/include
   - sudo apt-get install tesseract-ocr libtesseract-dev libleptonica-dev
   - sudo apt-get -y install tesseract-ocr-fra
   - CPPFLAGS=-I/usr/local/include pip install tesserocr
