@@ -36,7 +36,6 @@ install:
   - sudo apt-get -y install build-essential libssl-dev libffi-dev
   - sudo pip install Cython pillow
   - sudo apt-get install tesseract-ocr libtesseract-dev libleptonica-dev
-  - sudo pip install tesserocr
   - sudo apt-get -y install tesseract-ocr-fra
   - sudo apt-get -y install tesseract-ocr-dev
   - sudo apt-get -y install cython
@@ -48,6 +47,7 @@ install:
   
 script:
   # run static analysis tools on modified files if needed
+  - sudo pip install tesserocr
   - cd metalex/test/
   - python runMetalex.py -h  --stderr
   - python runMetalex.py -p 'projectTestName' -c 'testAuthor' 'testComment' 'testContributors' -d 'dicImages' -r 'file_Rule.dic' -l 'fra' -s  --stderr
