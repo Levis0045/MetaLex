@@ -27,7 +27,7 @@ notifications:
     on_success: always # default: change
     on_failure: always # default: always
     
-before_install:
+install:
   # install python dev libs
   - sudo apt-get -y install python-dev python-pip python-setuptools
   - sudo apt-get update
