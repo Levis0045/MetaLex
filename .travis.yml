@@ -48,7 +48,7 @@ install:
 script:
   # run static analysis tools on modified files if needed
   - sudo pip install tesserocr
-  - cd metalex/test/
+  - cd test/
   - python runMetalex.py -h  --stderr
   - python runMetalex.py -p 'projectTestName' -c 'testAuthor' 'testComment' 'testContributors' -d 'dicImages' -r 'file_Rule.dic' -l 'fra' -s  --stderr
 
