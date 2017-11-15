@@ -27,14 +27,12 @@ notifications:
     on_success: always # default: change
     on_failure: always # default: always
     
-install:
+before_install:
   # install python dev libs
   - sudo apt-get -y install python-dev python-pip python-setuptools
   - sudo apt-get update
-  - sudo pip install --upgrade pip  
   - sudo apt-get -y install zlib1g-dev libpng-dev libjpeg-dev 
   - sudo apt-get -y install build-essential libssl-dev libffi-dev
-  - sudo pip install Cython pillow
   - sudo apt-get install tesseract-ocr libtesseract-dev libleptonica-dev
   - sudo apt-get -y install tesseract-ocr-fra
   - sudo apt-get -y install tesseract-ocr-dev
@@ -42,12 +40,16 @@ install:
   - sudo apt-get install gcc g++
   - sudo apt-get install autoconf automake libtool checkinstall
   - sudo apt-get -y install python-html5lib python-lxml python-bs4
-  - sudo pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
 
-  
+install:
+  #
+  - sudo pip install tesserocr
+  - sudo pip install --upgrade pip  
+  - sudo pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
+  - sudo pip install Cython pillow termcolor
+
 script:
   # run static analysis tools on modified files if needed
-  - sudo pip install tesserocr
   - cd test/
   - python runMetalex.py -h  --stderr
   - python runMetalex.py -p 'projectTestName' -c 'testAuthor' 'testComment' 'testContributors' -d 'dicImages' -r 'file_Rule.dic' -l 'fra' -s  --stderr
