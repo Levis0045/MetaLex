@@ -33,7 +33,6 @@ before_install:
   - sudo apt-get update
   - sudo apt-get -y install zlib1g-dev libpng-dev libjpeg-dev 
   - sudo apt-get -y install build-essential libssl-dev libffi-dev 
-  - sudo apt-get -y install tesseract-ocr-fra
   - sudo apt-get -y install cython
   - sudo apt-get install gcc g++
   - sudo apt-get install autoconf automake libtool checkinstall
@@ -42,7 +41,8 @@ before_install:
 install:
   #
   - sudo apt-get install tesseract-ocr libtesseract-dev libleptonica-dev
-  - sudo pip install tesserocr
+  - sudo apt-get -y install tesseract-ocr-fra
+  - CPPFLAGS=-I/usr/local/include pip install tesserocr
   - sudo pip install --upgrade pip  
   - sudo pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
   - sudo pip install Cython pillow termcolor
