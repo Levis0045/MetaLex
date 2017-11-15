@@ -34,14 +34,14 @@ before_install:
   - sudo pip install --upgrade pip  
   - sudo apt-get -y install zlib1g-dev libpng-dev libjpeg-dev 
   - sudo apt-get -y install build-essential libssl-dev libffi-dev
-  - sudo apt-get -y install tesseract-ocr libtesseract-dev libleptonica-dev
+  - sudo pip install Cython pillow
+  - sudo apt-get install tesseract-ocr libtesseract-dev libleptonica-dev
+  - sudo pip install tesserocr
   - sudo apt-get -y install tesseract-ocr-fra
   - sudo apt-get -y install tesseract-ocr-dev
   - sudo apt-get -y install cython
-  - sudo pip install Cython pillow
   - sudo apt-get install gcc g++
   - sudo apt-get install autoconf automake libtool checkinstall
-  - CPPFLAGS=-I/usr/local/include  pip install tesserocr
   - sudo apt-get -y install python-html5lib python-lxml python-bs4
   - sudo pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
 
