@@ -118,8 +118,8 @@ def folder_log():
         os.chdir(logs)
 
     currentdirlog = os.listdir(u'.')
-    if name not in currentdirlog :
-        logfile = codecs.open(name, 'a', 'utf-8')
+    if name not in currentdirlog:
+        logfile = codecs.open(name.replace('\n', ''), 'a', 'utf-8')
         return logfile
     else:
         pass
