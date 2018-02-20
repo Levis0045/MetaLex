@@ -1,6 +1,10 @@
 #! usr/bin/env python
 # coding: utf8
 
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 """
     metalex is general tool for lexicographic and metalexicographic activities
     Copyright (C) 2017  by Elvis MBONING
@@ -43,11 +47,14 @@ import metalex as dico
 
 import os
 import glob
-import ImageFilter as f
 import argparse
 import textwrap
 from termcolor import colored
-
+try:
+    from PIL import ImageFilter as f
+except ImportError:
+    import ImageFilter as f
+    
 # -----Exported Functions-----------------------------------------------------
 
 __all__ = ['commands']

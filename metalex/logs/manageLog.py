@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # coding: utf8
 
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
 """
     metalex is general tool for lexicographic and metalexicographic activities
@@ -35,9 +38,6 @@
 
 """
 
-# ----Internal Modules------------------------------------------------------
-
-import metalex
 
 # ----External Modules------------------------------------------------------
 
@@ -45,8 +45,12 @@ import codecs
 import os
 import re
 import unicodedata
-from string import maketrans
-from termcolor import colored, cprint
+import string
+import termcolor
+
+# ----Internal Modules------------------------------------------------------
+
+import metalex
 
 # -----Exported Functions-----------------------------------------------------
 
@@ -61,21 +65,22 @@ def get_date():
     strdate  = ''
     datefile = os.popen('date').read()
 
-    if re.search(ur'.+\(UTC+.*', datefile) :
-        try :
-            datetab  = datefile.split(',')[0].split(' ')
+    if re.search(r".+\(UTC+.*", datefile):
+        try:
+            datetab = datefile.split(',')[0].split(' ')
             for date in datetab[1:] :
                 strdate += date+'-'
             date = unicode(strdate.strip('-').translate(maketrans('û', 'u ')))
             date = unicodedata.normalize('NFKD', date).encode('ascii','ignore')
             return date
-        except :
-            datetab  = datefile.split(' ')
+        except:
+            print(datetab)
+            datetab = datefile.split(' ')
             for date in datetab :
                 strdate += date+'-'
             date = unicode(strdate.strip('-'))
             return date
-    else :
+    else:
         datetab = datefile.split(' ')
         day, month, year = datetab[2], datetab[1], datetab[5]
         strdate = day+'-'+month+'-'+year
@@ -112,17 +117,15 @@ def folder_log():
             os.chdir(logs)
         except os.error :
             message = u'We can cannot create logs folder in this directory ! It s right exception ?'
-            print u'%-8s : %-30s\n' %(colored(logsMessage, u'red', attrs=['reverse', 'blink', 'bold']), message)
+            print(u'%-8s : %-30s\n' %(colored(logsMessage, u'red', attrs=['reverse', 'blink', 'bold']), message))
             pass
-    else:
-        os.chdir(logs)
+    else: os.chdir(logs)
 
     currentdirlog = os.listdir(u'.')
     if name not in currentdirlog:
         logfile = codecs.open(name.replace('\n', ''), 'a', 'utf-8')
         return logfile
-    else:
-        pass
+    else: pass
 
 
 
@@ -136,15 +139,14 @@ def write_log(content, typ=u'ok'):
         with codecs.open(name, 'a', 'utf-8') as log :
             message = u'[metalex - '+hour+u'] '+content+u'\n\n'
             log.write(message)
-    else:
-        pass
+    else: pass
     message = u'[metalexLog - '+hour+u']'
     if typ == 'warm' :
-        print u'%-10s  %-30s\n' %(colored(message, u'yellow', attrs=['reverse', 'blink', 'bold']), content)
+        print(u'%-10s  %-30s\n' %(colored(message, u'yellow', attrs=['reverse', 'blink', 'bold']), content))
     elif typ == 'error' :
-        print u'%-10s  %-30s\n' %(colored(message, u'red', attrs=['reverse', 'blink', 'bold']), content)
+        print(u'%-10s  %-30s\n' %(colored(message, u'red', attrs=['reverse', 'blink', 'bold']), content))
     else :
-        print u'%-10s  %-30s\n' %(colored(message, u'green', attrs=['reverse', 'blink', 'bold']), content)
+        print(u'%-10s  %-30s\n' %(colored(message, u'green', attrs=['reverse', 'blink', 'bold']), content))
     
     
     

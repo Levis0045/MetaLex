@@ -1,6 +1,9 @@
 #!/usr/bin/python
 # coding: utf8 
 
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
 """
     MetaLex is general tool for lexicographic and metalexicographic activities
@@ -34,15 +37,15 @@
         
 """
 
-
 __version__ = "1.8.5"
+
 
 # ----Internal Modules------------------------------------------------------
 
-from normalizeImage  import EnhanceImages, get_images
-from makeOcr         import BuildOcrImages
-from normalizeText   import BuildTextWell, FileRule
-from wordsCorrection import correct_word, caract_replace, word_replace
+from .normalizeImage  import EnhanceImages, get_images
+from .makeOcr         import BuildOcrImages
+from .normalizeText   import BuildTextWell, FileRule
+from .wordsCorrection import correct_word, caract_replace, word_replace
 
 # -----Global Variables-----------------------------------------------------
 

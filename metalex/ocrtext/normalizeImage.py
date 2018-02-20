@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
- 
+
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 """
     metalex is general tool for lexicographic and metalexicographic activities
     Copyright (C) 2017  by Elvis MBONING
@@ -44,10 +48,6 @@
           
 """
 
-# ----Internal Modules------------------------------------------------------
-
-import metalex
-
 # ----External Modules------------------------------------------------------
 
 import os
@@ -56,6 +56,10 @@ from PIL import Image
 from PIL import ImageEnhance
 from shutil import copyfile
 from termcolor import colored
+
+# ----Internal Modules------------------------------------------------------
+
+import metalex
 
 # ----Exported Functions-----------------------------------------------------
 
@@ -81,14 +85,12 @@ def get_images(images):
                 imagedir = os.path.dirname(image)
                 pName = metalex.projectFolder.items()[0][0]
                 imagedirNew = u""
-                for tep in imagedir.split('/')[:-1] :
-                    imagedirNew += tep +u"/"
+                for tep in imagedir.split('/')[:-1]: imagedirNew += tep +u"/"
                 imagedirNew = imagedirNew+pName+u"/dicImages/"
                 
-                if not os.path.exists(imagedirNew) :
-                    os.mkdir(imagedirNew)
+                if not os.path.exists(imagedirNew): os.mkdir(imagedirNew)
                     
-                imagefileNew     = u"dic_image_"+str(num)+ext
+                imagefileNew = u"dic_image_"+str(num)+ext
                 imageLocationNew =  imagedirNew+imagefileNew
                 copyfile(image, imageLocationNew)
                 metalex.fileImages.append(imageLocationNew)
@@ -119,7 +121,7 @@ class EnhanceImages ():
     
     def __init__(self): 
         self.images = metalex.fileImages
-        print  u'\n --- %s ------------------------------------------------------------- \n\n' %colored('Part 1 : EnhanceImages', attrs=['bold'])
+        print(u'\n %s %s %s \n\n' %('---', '---'*20, colored('Part 1 : EnhanceImages', attrs=['bold'])))
         
     def contrast(self, value, show=False, save=False):
         """ Enhance image file with the contrast value
@@ -130,7 +132,6 @@ class EnhanceImages ():
         
         :return file: imagecontrast   
         """
-        
         if self.images >= 1 : 
             num = 1
             for image in  self.images :
@@ -139,8 +140,7 @@ class EnhanceImages ():
                 tempname = u'img_contrast_'+str(num)+ext
                 enh = ImageEnhance.Contrast(img)
                 
-                if show :
-                    enh.enhance(value).show()
+                if show : enh.enhance(value).show()
                 elif save :
                     metalex.project.create_temp()
                     if metalex.project.in_dir(tempname) :
@@ -171,7 +171,6 @@ class EnhanceImages ():
           
         :return file: imagesharp   
         """
-        
         if len(self.images) >= 1 :
             num = 1
             for image in  self.images :
@@ -181,8 +180,7 @@ class EnhanceImages ():
                 tempname = u'img_sharp_'+str(num)+ext
                 enh = ImageEnhance.Sharpness(img)
 
-                if show :
-                    enh.enhance(value).show()
+                if show: enh.enhance(value).show()
                 elif save :
                     metalex.project.create_temp()
                     if metalex.project.in_dir(tempname) :
@@ -225,8 +223,7 @@ class EnhanceImages ():
                 tempname = u'img_bright_'+str(num)+ext
                 enh = ImageEnhance.Brightness(img)
 
-                if show :
-                    enh.enhance(value).show()
+                if show: enh.enhance(value).show()
                 elif save :
                     metalex.project.create_temp()
                     if metalex.project.in_dir(tempname) :
@@ -320,15 +317,13 @@ class EnhanceImages ():
                 img = Image.open(image)
                 imagepart = metalex.project.get_part_file(image)
                 tempname = u'img_convert_'+str(num)+imagepart[1]
-                if show : 
-                    img.convert("L").show()
-                if save :
+                if show: img.convert("L").show()
+                if save:
                     metalex.project.create_temp()
                     if metalex.project.in_dir(tempname) :
                         img.convert("L").save(tempname)
                         return tempname
-                    else: 
-                        return tempname
+                    else: return tempname
                     
         else:
             message = u'convert() >> They are not images for the current treatment : input images!!' 
@@ -353,8 +348,7 @@ class EnhanceImages ():
                 imagename, ext = metalex.project.get_part_file(image)
                 tempname = u'img_filter_'+str(num)+ext
                 metalex.project.create_temp()
-                if show :
-                    img.filter(imgfilter).show()
+                if show: img.filter(imgfilter).show()
                 elif not show and metalex.project.in_dir(tempname) :
                     img.filter(imgfilter).save(tempname)
                 metalex.project.treat_image_append(tempname)
@@ -378,7 +372,6 @@ class EnhanceImages ():
           
         :return file: imageremovecolor
         """
-        
         if img :
             imagepart = metalex.project.get_part_file(img)
             tempname = u'img_color_remove_'+str(i)+imagepart[1]
@@ -390,24 +383,20 @@ class EnhanceImages ():
             for color in list(imgpil.getdata()) :
                 if color == find_color or color == replace_color :
                     new_image_data += [color]
-                else:
-                    pass
+                else: pass
             
             imgdir = os.path.dirname(img)
             namestore = u""
-            for tep in imgdir.split('/')[:-1] :
-                namestore += tep +u"/"
+            for tep in imgdir.split('/')[:-1]: namestore += tep +u"/"
             namestore = namestore+u"dicTemp/"+tempname
             imgpil.putdata(new_image_data)
-            if show :
-                imgpil.show()
+            if show: imgpil.show()
             if save :
                 metalex.project.create_temp()
                 if metalex.project.in_dir(tempname) : 
                     imgpil.save(tempname)
                     return namestore
-                else :
-                    return namestore
+                else: return namestore
         else:
             message = u'removeColor() >> They are not images for the current treatment : input images!!' 
             metalex.logs.manageLog.write_log(message, typ='error')

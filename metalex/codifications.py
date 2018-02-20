@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # coding: utf8
 
+#from __future__ import print_function
+#from __future__ import unicode_literals
 
 """MetaLex is general tool for lexicographic and metalexicographic activities
 
@@ -32,14 +34,16 @@ Usage:
     >>> codi    = codifications.get_codification(typ='text)
 """
 
-# ----Internal Modules------------------------------------------------------
-
-import logs
-import project
 
 # ----External Modules------------------------------------------------------
 
 import codecs
+
+# ----Internal Modules------------------------------------------------------
+
+import metalex
+from metalex import logs
+from metalex import project
 
 # -----Exported Functions---------------------------------------------------
 

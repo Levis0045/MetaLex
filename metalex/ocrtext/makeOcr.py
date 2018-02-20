@@ -1,6 +1,9 @@
 #! usr/bin/env python
 # coding: utf8
 
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
 """
     metalex is general tool for lexicographic and metalexicographic activities
@@ -41,9 +44,6 @@
     
 """
 
-# ----Internal Modules------------------------------------------------------
-
-import metalex
 
 # ----External Modules------------------------------------------------------
 
@@ -53,6 +53,10 @@ import sys
 from tesserocr import PyTessBaseAPI
 from multiprocessing import Pool
 from termcolor import colored
+
+# ----Internal Modules------------------------------------------------------
+
+import metalex
 
 # -----Exported Functions---------------------------------------------------
 
@@ -78,7 +82,7 @@ class BuildOcrImages():
         self.show = show
         self.save = save
         self.langIn = langIn
-        print  u'\n --- %s ---------------------------------------------------------------------- \n\n' %colored('Part 2 : OCR', attrs=['bold'])
+        print(u'\n --- %s ---------------------------------------------------------------------- \n\n' %colored('Part 2 : OCR', attrs=['bold']))
         
     def get_available_images(self):
         """Get all available path of dictionary images previously treated 
@@ -94,8 +98,7 @@ class BuildOcrImages():
             messageExit  = u'FATAL ERROR! We cannot continue, resolve the previous error'
             metalex.logs.manageLog.write_log(contentPrint, typ='error')
             sys.exit(metalex.logs.manageLog.write_log(messageExit, typ='error'))
-        else:
-            allimages = metalex.treatImages
+        else: allimages = metalex.treatImages
         return allimages
     
     
@@ -106,14 +109,10 @@ class BuildOcrImages():
         """
         processExec = 0
         lenImages = len(self.get_available_images())
-        if lenImages == 1: 
-            processExec = 1
-        elif lenImages == 2:
-            processExec = 2
-        elif lenImages > 2 and lenImages < 10 :
-            processExec = 3
-        elif lenImages > 10 :
-            processExec = 5
+        if lenImages == 1: processExec = 1
+        elif lenImages == 2: processExec = 2
+        elif lenImages > 2 and lenImages < 10 : processExec = 3
+        elif lenImages > 10: processExec = 5
         return processExec
             
     
@@ -157,9 +156,9 @@ class BuildOcrImages():
                     metalex.logs.manageLog.write_log(message) 
                     metalex.resultOcrData[img] = [textocr]
                 elif self.show :
-                    print u"\n\n*********************************************************\n\n"
-                    print textocr
-                    print u"\n\n*********************************************************\n\n"
+                    print(u"\n\n %s \n\n" %'**'*20)
+                    print(textocr)
+                    print(u" %s \n\n" %'**'*20)
                 else :
                     message = u"imageToText(show=False, save=False) : precise the action 'show=False or save=False'"
                     metalex.logs.manageLog.write_log(message, typ='warm') 

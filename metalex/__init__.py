@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
- 
+
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 """MetaLex is general tool for lexicographic and metalexicographic activities
 
 Copyright (C) 2017  by Elvis MBONING
@@ -32,13 +36,13 @@ __version__ = u"1.8.5"
 
 # ----Internal Modules------------------------------------------------------
 
-import codifications
-from api import *
+from .codifications import CodificationsStore
+from .api import *
 from .ocrtext import *
 from .xmlised import *
 from .logs import *
 from .plugins import *
-from  project import *
+from .project import *
 
 # -----Global Variables-----------------------------------------------------
 

@@ -135,7 +135,7 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 
     \START
     \MetaLex\project_name\type_of_project\lang\author\date
-    \W
+    \W  
     /t'/t
     /{/f.
     /E./f.
