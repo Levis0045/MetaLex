@@ -35,13 +35,14 @@ __version__ = "1.6.0"
 
 # ----External Modules------------------------------------------------------
 
-from .resources import *
-from .ocropy import *
+import sys, os
 
 # -----Global Variables-----------------------------------------------------
 
+__all__ = ['html_template', 'css_template']
 
 # --------------------------------------------------------------------------
 
 
-
+html_template = os.path.dirname(os.path.abspath(__file__))+'/metalex-template.html'
+css_template = os.path.dirname(os.path.abspath(__file__))+'/w3.css'

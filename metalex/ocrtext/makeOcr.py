@@ -192,7 +192,7 @@ class BuildOcrTesserocr():
     def __call__(self, img):   
         return self.ocr_exec(img)
 
-
+  
 class BuildOcrOcropy():    
     def __init__(self, debug=0):
         self.debug = debug

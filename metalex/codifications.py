@@ -67,14 +67,14 @@ class CodificationsStore() :
         if typ == u'text' :
             cats        = [u'n', u'adj', u'v', u'prép', u'adv', u'loc',
                            u'Fig', u'tr', u'intr', u'interj', u'art', u'conj', u'pron',
-                           u'loc.conj', u'loc.adv', u'loc.adj', u'pron.relat', u'pronom'
+                           u'loc.conj', u'loc.adv', u'loc.adj', u'pron.relat', u'pronom',
                            u'article']
             genres      = [u'm', u'f']
             marques     = [u'fam', u'anc', u'UK', u'US' , u'PHY', u'LITT', u'ADMIN',
                            u'AERON', u'AGRIC', u'ANAT', u'ANTIQ',  u'ANTIQ.ROM',
                            u'BIOCHIM', u'BIOL',  u'CHIM.TECHN', u'CONSTR', u'ÉLECTR',
                            u'GRAMM', u'GÉOL', u'HIST', u'LING', u'LITURG', u'MATH',
-                           u'MÉD', u'MÉTALL', u'MUS', u'POLIT', u'RELIG', u'ZOOL'
+                           u'MÉD', u'MÉTALL', u'MUS', u'POLIT', u'RELIG', u'ZOOL',
                            u'Phys']
             rections    = [u'tr', u't', u'intr', u't.dir', u't.indir', u'inv']
             nombres     = [u'plur', u'pl', u'sing', u'sg', u'neutre']
@@ -114,7 +114,7 @@ class CodificationsStore() :
             symbs        = [u'||', u'&#9830;', u'--']
             allnumbers   = [u'1',u'2',u'3',u'4',u'5',u'6',u'7',u'8',u'9',u'0']
             alphabs      = [u'a',u'b',u'c',u'd',u'e',u'f',u'g',u'h', u'i',u'j',
-                            u'k',u'l',u'm',u'n',u'o',u'q',u'r',u's',u't',u'v',
+                            u'k',u'l',u'm',u'n',u'o', u'p', u'q',u'r',u's',u't',u'v',
                             u'w',u'x', u'y', u'z']
             allcodisymbs = []
             for numb in allnumbers :
@@ -145,7 +145,7 @@ class CodificationsStore() :
         cats        = [u'n', u'adj', u'v', u'prép', u'adv', u'loc',
                        u'Fig', u'tr', u'intr', u'interj', u'art', u'conj', u'pron',
                        u'loc.conj', u'loc.adv', u'loc.adj', u'pron.relat', u'pronom',
-                       u'article', u'pr. rel']
+                       u'article', u'pr.rel']
         genres      = [u'm', u'f']
         marques     = [u'fam', u'anc', u'UK', u'US' , u'PHY', u'Phys', u'LITT', u'ADMIN',
                        u'AERON', u'AGRIC', u'ANAT', u'ANTIQ',  u'ANTIQ.ROM',
@@ -283,7 +283,7 @@ class CodificationsStore() :
         date = logs.get_date()
         if typ == u'text' :
             with codecs.open(namefile, 'a', 'utf-8') as f :
-                f.write('******************** MetaLex codifications file : %s *********************************' %date)
+                f.write('%s MetaLex codifications file : %s %s' %('**'*15, date, '**'*15))
                 f.write('\%10s : %s' %('Textuels', str(coditext)))
                 f.write('\%10s : %s' %('Graphematiques', str(codigraph)))
                 f.write('\%10s : %s' %('Symboliques', str(codisymb)))
