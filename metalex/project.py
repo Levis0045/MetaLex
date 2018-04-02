@@ -1,6 +1,10 @@
 #!/usr/bin/env python
 # coding: utf8
 
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 """metalex is general tool for lexicographic and metalexicographic activities
 
 Copyright (C) 2017  by Elvis MBONING
@@ -18,7 +22,7 @@ GNU Affero General Public License for more details.
 You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-Contact : levismboning@yahoo.fr
+Contact: levismboning@yahoo.fr
 
 ---------------------------------------------------------------------------
 
@@ -32,10 +36,6 @@ Usage:
      
 """
 
-# ----Internal Modules------------------------------------------------------
-
-import metalex
-
 # ----External Modules------------------------------------------------------
 
 import os
@@ -43,6 +43,10 @@ import codecs
 import re
 import pickle
 from termcolor import colored
+
+# ----Internal Modules------------------------------------------------------
+
+import metalex
 
 # -----Exported Functions---------------------------------------------------
 
@@ -82,30 +86,29 @@ def save_normalized_data(name, typ, form=None, data=None):
     else: dicArticles = read_temp_file(form)
         
     create_temp()
-    if typ == u'text':
+    if typ == 'text':
         if in_dir(name):
-            with codecs.open(name, 'a', 'utf-8') as fil :
+            with codecs.open(name, 'a', 'utf-8') as fil:
                 num = 1
                 for art in dicArticles:
                     for k, v in art.items():
-                        if k != u'article_1':
-                            fil.write('%10s : %s\n' %(k, v))
+                        if k != 'article_1': fil.write('%10s: %s\n' %(k, v))
                         else:
-                            if not data : fil.write('\n----- FILE: %s ---------------------------------------------------------------------------------\n\n' %num)
-                            fil.write('%10s : %s\n' %(k, v))
+                            if not data: fil.write('\n----- FILE: %s ---------------------------------------------------------------------------------\n\n' %num)
+                            fil.write('%10s: %s\n' %(k, v))
                             num += 1
-            message = u'save_normalize() >> '+u'*'+name+u'* is created and contain all text format data from html files > Saved in dicTemp folder'  
+            message = 'save_normalize() >> '+'*'+name+'* is created and contain all text format data from html files > Saved in dicTemp folder'  
             metalex.logs.manageLog.write_log(message) 
         else:
-            message = u'save_normalize() >> '+u'*'+name+u'* is created and contain all text format data from html files > Saved in dicTemp folder'  
+            message = 'save_normalize() >> '+'*'+name+'* is created and contain all text format data from html files > Saved in dicTemp folder'  
             metalex.logs.manageLog.write_log(message) 
     
-    if typ == u'pickle':  
+    if typ == 'pickle':  
         if in_dir(name) and file_pickle(dicArticles, name):
-            message = u'save_normalize() >> '+u'*'+name+u'* is created and contain pickle data object from html files > Saved in dicTemp folder'  
+            message = 'save_normalize() >> '+'*'+name+'* is created and contain pickle data object from html files > Saved in dicTemp folder'  
             metalex.logs.manageLog.write_log(message)         
         else:
-            message = u'save_normalize() >> '+u'*'+name+u'* is created and contain pickle data object from html files > Saved in dicTemp folder'  
+            message = 'save_normalize() >> '+'*'+name+'* is created and contain pickle data object from html files > Saved in dicTemp folder'  
             metalex.logs.manageLog.write_log(message)    
             
 
@@ -115,11 +118,11 @@ def get_hour():
     :return str: hour
     """
     datefile = os.popen('date').read()
-    try :
+    try:
         datetab = datefile.split(',')[1].split(' ')
         hour = datetab[1]
         return hour
-    except :
+    except:
         datetab = datefile.split(' ')[3]
         hour = datetab
         return hour
@@ -152,12 +155,12 @@ def read_temp_file(typ):
     result = []
     if typ == 'ocr':
         with codecs.open('temp_ocr.txt', 'r', 'utf-8') as s:
-            for line in s : treat_ocr_append(line.strip())
+            for line in s: treat_ocr_append(line.strip())
         os.remove('temp_ocr.txt')
     elif typ == 'norm': 
         with codecs.open('temp_norm.txt', 'r', 'utf-8') as s:
-            for line in s :
-                part = line.split(u'==')
+            for line in s:
+                part = line.split('==')
                 resultTemp = {part[0]:part[1]}
                 result.append(resultTemp)
         return result
@@ -171,7 +174,7 @@ def treat_image_append(namefile):
     
     :return ...
     """
-    tempnameLocation =  os.getcwd()+u'/'+namefile
+    tempnameLocation =  os.getcwd()+'/'+namefile
     metalex.treatImages.append(tempnameLocation)
 
 
@@ -183,12 +186,12 @@ def treat_ocr_append(namefile):
     :return ...
     """
     parentdir = os.listdir('..')
-    if u'logs' in parentdir:
+    if 'logs' in parentdir:
         os.chdir('../dicTemp')
-        tempnameLocation =  os.getcwd()+u'/'+namefile
+        tempnameLocation =  os.getcwd()+'/'+namefile
         metalex.resultOcrFiles.append(tempnameLocation)
-    else :
-        tempnameLocation =  os.getcwd()+u'/'+namefile
+    else:
+        tempnameLocation =  os.getcwd()+'/'+namefile
         metalex.resultOcrFiles.append(tempnameLocation)
      
      
@@ -200,7 +203,7 @@ def in_dir(fil):
     currentdir = os.listdir('.')
     if fil in currentdir:
         return False
-    else :
+    else:
         return True
 
 
@@ -212,12 +215,12 @@ def name_file(tab, ext):
       
     :return str: namepickle 
     """
-    name  = str(tab[0]).split(u'/')[-1].split(u',')[0].split(u'_')[:-1]
-    if ext == u'.art':
-        nametxt    = u'articles_'+u'_'.join(name)+u'.art'
+    name  = str(tab[0]).split('/')[-1].split(',')[0].split('_')[:-1]
+    if ext == '.art':
+        nametxt    = 'articles_'+'_'.join(name)+'.art'
         return nametxt
-    elif ext == u'.pickle':
-        namepickle = u'articles_'+u'_'.join(name)+u'.pickle'
+    elif ext == '.pickle':
+        namepickle = 'articles_'+'_'.join(name)+'.pickle'
         return namepickle
         
 
@@ -229,7 +232,7 @@ def file_pickle(data, name):
     
     :return Bool: True 
     """
-    with codecs.open(name, 'wb') as f :
+    with codecs.open(name, 'wb') as f:
         pickle.dump(data, f, pickle.HIGHEST_PROTOCOL)
         return True
     
@@ -241,7 +244,7 @@ def file_unpickle(fil):
     
     :return dict: data articles object
     """
-    with codecs.open(fil, 'rb') as f :
+    with codecs.open(fil, 'rb') as f:
         data = pickle.load(f)
         return data 
 
@@ -253,9 +256,9 @@ def file_get_text(fil):
     """
     datatext = {}
     with codecs.open(fil, 'r', 'utf-8') as f:
-        for line in f :
-            if re.search(ur'article_', line):
-                partline = line.split(u':')
+        for line in f:
+            if re.search(r'article_', line):
+                partline = line.split(':')
                 datatext[partline[0].strip()] = partline[1].strip()
     return datatext
 
@@ -267,7 +270,7 @@ def get_root_project():
     """
     projectF = metalex.projectFolder.items()[0][0]
     projectD = metalex.projectFolder.items()[0][1]
-    projetPath = projectD+u'/'+projectF
+    projetPath = projectD+'/'+projectF
     return projetPath
 
 
@@ -278,12 +281,12 @@ def read_conf():
     """
     confData = {}
     rootPath = get_root_project()
-    confPath = rootPath+u'/metalex.cnf'
+    confPath = rootPath+'/metalex.cnf'
     with codecs.open(confPath, 'r', 'utf-8') as conf:
-        for line in conf :
-            if line[0] == u'\\' : 
-                part  = line.strip().split(u':')
-                title = part[0][1:].replace(u' ', u'')
+        for line in conf:
+            if line[0] == '\\': 
+                part  = line.strip().split(':')
+                title = part[0][1:].replace(' ', '')
                 val   = part[1]
                 confData[title] = val
     return confData
@@ -303,14 +306,14 @@ def create_temp():
     if 'dicTemp' not in contentdir:
         try:
             os.mkdir(dicTemp)
-        except os.error :
-            message = u'We can cannot create dicTemp folder in this directory ! It s right exception ?'
+        except os.error:
+            message = 'We can cannot create dicTemp folder in this directory ! It s right exception ?'
             metalex.logs.manageLog.write_log(message, typ='error')
             pass
-        message = u'dicTemp folder >> is created an initialised with' 
+        message = 'dicTemp folder >> is created an initialised with' 
         metalex.logs.manageLog.write_log(message)
         os.chdir(dicTemp)
-    else :
+    else:
         os.chdir(dicTemp) 
         
 
@@ -347,7 +350,7 @@ class NewProject:
         self.lang = u""
         self.dicoType = u""
         self.project_folder()
-        print  u'\n --- %s ---------------------------------------------------------------- \n\n' %colored('Part 0 : New project', attrs=['bold'])
+        print('\n %s %s %s \n\n' %('--', colored('Part 0: New project', attrs=['bold']), '--'*20))
 
         
     def project_folder(self):
@@ -381,17 +384,17 @@ class NewProject:
         metalex.projectAuthor = author
         projectF = metalex.projectFolder.items()[0][0]
         projectD = metalex.projectFolder.items()[0][1]
-        acessDF  = projectF+u' | '+projectD
+        acessDF  = projectF+' | '+projectD
         project  = metalex.projectName
         Cdate    = metalex.logs.manageLog.get_date()
         Ctime    = get_hour()
-        dateInit = Cdate.decode('ascii')+u' à '+Ctime
-        log      = u'/logs'+u' | '+projectD+u'/'+projectF+u'/logs'
-        temp     = u'/dicTemp'+u' | '+projectD+u'/'+projectF+u'/dicTemp'
-        images   = u'/dicImages'+u' | '+projectD+u'/'+projectF+u'/dicImages'
-        Intro    = u'***************** metalex project configuration *****************\n\n'
-        access   = u'%-15s : %-10s \n' %(u'\Project folder', acessDF)
-        end      = u'***************************************************************** \n\n'
+        dateInit = Cdate.decode('ascii')+' à '+Ctime
+        log      = '/logs'+' | '+projectD+'/'+projectF+'/logs'
+        temp     = '/dicTemp'+' | '+projectD+'/'+projectF+'/dicTemp'
+        images   = '/dicImages'+' | '+projectD+'/'+projectF+'/dicImages'
+        Intro    = '***************** metalex project configuration *****************\n\n'
+        access   = '%-15s: %-10s \n' %('\Project folder', acessDF)
+        end      = '***************************************************************** \n\n'
    
         os.chdir(get_root_project())
         contentdir = os.listdir('.')
@@ -399,18 +402,17 @@ class NewProject:
             with codecs.open('metalex.cnf', 'w', 'utf-8') as conf:
                 conf.write(Intro)
                 conf.write(access)
-                conf.write(u'%-15s : %-10s \n'   %(u'\Project name', project))
-                conf.write(u'%-15s : %-10s \n'   %(u'\Creation date', dateInit))
-                conf.write(u'%-15s : %-10s \n'   %(u'\Author', author))
-                conf.write(u'%-15s : %-10s \n'   %(u'\Contributors', contrib))
-                conf.write(u'%-15s : %-10s \n'   %(u'\Comment', comment))
-                conf.write(u'%-15s : %-10s \n'   %(u'\Folder log', log))
-                conf.write(u'%-15s : %-10s \n'   %(u'\Folder temp', temp))
-                conf.write(u'%-15s : %-10s \n\n' %(u'\Folder images', images))
+                conf.write('%-15s: %-10s \n'   %('\Project name', project))
+                conf.write('%-15s: %-10s \n'   %('\Creation date', dateInit))
+                conf.write('%-15s: %-10s \n'   %('\Author', author))
+                conf.write('%-15s: %-10s \n'   %('\Contributors', contrib))
+                conf.write('%-15s: %-10s \n'   %('\Comment', comment))
+                conf.write('%-15s: %-10s \n'   %('\Folder log', log))
+                conf.write('%-15s: %-10s \n'   %('\Folder temp', temp))
+                conf.write('%-15s: %-10s \n\n' %('\Folder images', images))
                 conf.write(end)
                 
-    def get_project_name(self):
-        return metalex.projectName 
+    def get_project_name(self): return metalex.projectName 
 
     def get_file_images (self):
         if (len(metalex.fileImages)>= 1):
@@ -427,8 +429,7 @@ class NewProject:
             self.resultOcr += metalex.ocrtext.textOcr
             return self.resultOcr
         
-    def get_ocr_text (self):
-        return metalex.ocrtext.makeOcr
+    def get_ocr_text (self): return metalex.ocrtext.makeOcr
 
        
         

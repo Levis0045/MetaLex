@@ -1,6 +1,10 @@
 #! usr/bin/env python
 # coding: utf8
 
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 """MetaLex is general tool for lexicographic and metalexicographic activities
 
 Copyright (C) 2017  by Elvis MBONING
@@ -41,7 +45,7 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name="metalex",
-      version='1.6.0',
+      version='1.6.5',
       description='MetaLex is general tool for lexicographic and metalexicographic activities',
       author='Elvis MBONING',
       author_email='levismboning@yahoo.fr',
@@ -64,9 +68,9 @@ setup(name="metalex",
         'test': [''],
       },
       package_data={
-        'metalex/plugins/resources': ['metalex-template.html'],
-        'metalex/plugins/resources': ['metalexSchemaXml.xsd'],
-        'metalex/plugins/resources': ['w3.css'],
+        'metalex.plugins.resources': ['metalex-template.html'],
+        'metalex.plugins.resources': ['metalexSchemaXml.xsd'],
+        'metalex.plugins.resources': ['w3.css'],
         '.': ['README.rst'],
       },
       data_files=[('words_corpus', ['metalex/plugins/resources/METALEX_words-corpus.txt',

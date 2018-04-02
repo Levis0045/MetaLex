@@ -1,6 +1,9 @@
 #!/usr/bin/python
 # coding: utf8
 
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
 """MetaLex is general tool for lexicographic and metalexicographic activities
 
@@ -34,20 +37,19 @@ de traitement métalexicographique
 __version__ = "1.6.0"
 
 
-# ----Internal Modules------------------------------------------------------
-
-from .. import *
-from manageLog import *
-
 # ----External Modules------------------------------------------------------
 
 import sys
+
+# ----Internal Modules------------------------------------------------------
+
+from .. import *
+from .manageLog import *
 
 # -----Global Variables-----------------------------------------------------
 
 
 # --------------------------------------------------------------------------
-
 
 def version():
     return "dicLog package is in a version : %s \n" %__version__

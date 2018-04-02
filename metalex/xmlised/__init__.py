@@ -1,6 +1,10 @@
 #!/usr/bin/python
 # coding: utf8 
 
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 """
     MetaLex is general tool for lexicographic and metalexicographic activities
     Copyright (C) 2017  by Elvis MBONING
@@ -33,9 +37,9 @@ __version__ = "1.8.5"
 
 # ----Internal Modules------------------------------------------------------
 
-from composeArticle import parse_article, StructuredWithCodif
-from handleStat     import *
-from makeBalise     import *
+from .composeArticle import *
+from .handleStat     import *
+from .makeBalise     import *
 
 # -----Global Variables-----------------------------------------------------
 

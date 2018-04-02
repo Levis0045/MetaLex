@@ -1,6 +1,10 @@
 #! usr/bin/env python
 # coding: utf8
 
+from __future__ import print_function
+from __future__ import absolute_import
+from __future__ import unicode_literals
+
 """
     metalex is general tool for lexicographic and metalexicographic activities
     Copyright (C) 2017  by Elvis MBONING
@@ -18,7 +22,7 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <https://www.gnu.org/licenses/>.
     
-    Contact : levismboning@yahoo.fr
+    Contact: levismboning@yahoo.fr
     
     ---------------------------------------------------------------------------
     
@@ -35,12 +39,6 @@
     
 """
 
-# ----Internal Modules------------------------------------------------------
-
-import metalex
-from metalex import xmlised as Xml
-from metalex import codifications
-
 # ----External Modules------------------------------------------------------
 
 import re
@@ -52,6 +50,12 @@ import warnings
 from bs4 import BeautifulSoup
 from termcolor import colored
 from multiprocessing import Pool
+
+# ----Internal Modules------------------------------------------------------
+
+import metalex
+from metalex import xmlised as Xml
+from metalex import codifications
 
 # -----Exported Functions---------------------------------------------------
 
@@ -68,23 +72,23 @@ nametxt     = ''
 class BuildTextWell():
     """Extract and normalize all text data from HTML files 
     
-    :param file_rules: file containing dictionary rules
-    :param okCorrect: bool
-    :param log: bool
+   :param file_rules: file containing dictionary rules
+   :param okCorrect: bool
+   :param log: bool
     
-    :return array: list of path of 
+   :return array: list of path of 
     """
     
     def __init__(self, file_rules, okCorrect=False, log=False):
         self.okCorrect = okCorrect
         self.log = log
         self.file_rules = file_rules
-        print  u'\n --- %s ---------------------------------------------------------- \n\n' %colored('Part 3 : Correct OCR data', attrs=['bold'])
+        print('\n --- %s ---------------------------------------------------------- \n\n' %colored('Part 3: Correct OCR data', attrs=['bold']))
         debut = time.time()
-        filerule = FileRule(self.file_rules, typ=u'rule_wc')
+        filerule = FileRule(self.file_rules, typ='rule_wc')
         self.data_rules = filerule.file_rule_unpack()
         dfilerule = time.time() - debut
-        if self.log : print "--> %30s : %10.5f seconds\n" %("Durée d'extraction du fichier des règles", dfilerule)
+        if self.log: print("--> %30s: %10.5f seconds\n" %("Durée d'extraction du fichier des règles", dfilerule))
          
 
     def extract_correct(self, html):
@@ -94,7 +98,7 @@ class BuildTextWell():
         
         :return dicArticles: add corrected file in dicArticles
         """
-        with open(html, 'r') as html_file :
+        with open(html, 'r') as html_file:
             enhance_text(html_file, self.data_rules, self.okCorrect)  
 
     
@@ -105,14 +109,10 @@ class BuildTextWell():
         """
         processExec = 0
         lenHtmlOcrFiles = len(metalex.resultOcrFiles)
-        if lenHtmlOcrFiles == 1: 
-            processExec = 1
-        elif lenHtmlOcrFiles == 2:
-            processExec = 2
-        elif lenHtmlOcrFiles > 2 and lenHtmlOcrFiles < 10 :
-            processExec = 3
-        elif lenHtmlOcrFiles > 10 :
-            processExec = 5
+        if lenHtmlOcrFiles == 1: processExec = 1
+        elif lenHtmlOcrFiles == 2: processExec = 2
+        elif lenHtmlOcrFiles > 2 and lenHtmlOcrFiles < 10: processExec = 3
+        elif lenHtmlOcrFiles > 10: processExec = 5
         return processExec
     
     
@@ -123,19 +123,18 @@ class BuildTextWell():
         """
         html_ocr_files = metalex.resultOcrFiles
         processOcr = Pool(self.calculate_process())
-        if len(html_ocr_files) >= 1 :
-            processOcr.map(self, html_ocr_files)
-        else :
-            message = u'OCR  >> We are not found any OCR files to enhance text quality'
-            messageExit = u'FATAL ERROR! We cannot continue, resolve the previous error'
+        if len(html_ocr_files) >= 1: processOcr.map(self, html_ocr_files)
+        else:
+            message = 'OCR  >> We are not found any OCR files to enhance text quality'
+            messageExit = 'FATAL ERROR! We cannot continue, resolve the previous error'
             metalex.logs.manageLog.write_log(message, typ='error')
             return sys.exit(metalex.logs.manageLog.write_log(messageExit, typ='error'))
 
-        namepickle = metalex.project.name_file(html_ocr_files, u'.pickle')
-        nametxt = metalex.project.name_file(html_ocr_files, u'.art')
+        namepickle = metalex.project.name_file(html_ocr_files, '.pickle')
+        nametxt = metalex.project.name_file(html_ocr_files, '.art')
         
-        metalex.project.save_normalized_data(name=namepickle, typ=u'pickle', form=u'norm')
-        metalex.project.save_normalized_data(name=nametxt, typ=u'text', form=u'norm')
+        metalex.project.save_normalized_data(name=namepickle, typ='pickle', form='norm')
+        metalex.project.save_normalized_data(name=nametxt, typ='text', form='norm')
         
         metalex.project.create_temp()  
         os.remove('temp_norm.txt')
@@ -155,62 +154,60 @@ def enhance_text(html_file, rules, okCorrect):
     :return list: dicArticles
     """
     soup = BeautifulSoup(html_file, "html5lib")
-    div = soup.find(u'div', attrs={u'class': u'ocr_page'}) 
+    div = soup.find('div', attrs={'class': 'ocr_page'}) 
     art = 1
         
-    for div in div.findAll(u'div', attrs={u'class': u'ocr_carea'}) :
-        for para in div.findAll(u'p', attrs={u'class': u'ocr_par'}) :
-            contentOrigin = u''
-            contentCorrection = u''
-            if not re.search(ur'(@|>|ÊË|{/)', para.get_text().strip()) and not re.search(ur'(^\d)', para.get_text().strip()):
+    for div in div.findAll('div', attrs={'class': 'ocr_carea'}):
+        for para in div.findAll('p', attrs={'class': 'ocr_par'}):
+            contentOrigin = ''
+            contentCorrection = ''
+            if not re.search(r'(@|>|ÊË|{/)', para.get_text().strip()) \
+            and not re.search(r'(^\d)', para.get_text().strip()):
                 for span in para.stripped_strings:
-                    if span[-1] == u'—' or span[-1] == u'-' or span[-1] == u'— ' or span[-1] == u'- ':
+                    if span[-1] == '—' or span[-1] == '-' or span[-1] == '— ' or span[-1] == '- ':
                         span = span[:-1]
                         AllWords.append(span)
-                        if okCorrect :
+                        if okCorrect:
                             spanCorrect = metalex.correct_word(span)
                             contentCorrection += spanCorrect
-                        else :
-                            contentOrigin += span
-                        #print '*****  '+span + ' : ' + spanCorrect
-                    elif metalex.word_replace(span, rules[1], test=True) :
+                        else: contentOrigin += span
+                        #print '*****  '+span + ': ' + spanCorrect
+                    elif metalex.word_replace(span, rules[1], test=True):
                         spanR = metalex.word_replace(span, rules[1])
-                        if okCorrect :
+                        if okCorrect:
                             spanCorrect = metalex.correct_word(spanR)
-                            contentCorrection += spanCorrect+u' '
-                        else :
-                            contentOrigin += spanR+u' '
-                        #print '*****  '+span + ' : ' + spanR
+                            contentCorrection += spanCorrect+' '
+                        else: contentOrigin += spanR+' '
+                        #print '*****  '+span + ': ' + spanR
                     elif metalex.caract_replace(span, rules[2], test=True):
                         spanR = metalex.caract_replace(span, rules[2])
                         AllWords.append(spanR)
-                        if okCorrect :
+                        if okCorrect:
                             spanCorrect = metalex.correct_word(spanR)
-                            contentCorrection += spanCorrect+u' '
-                        else:
-                            contentOrigin += spanR+u' '
-                        #print '*****  '+span + ' : ' + spanR
+                            contentCorrection += spanCorrect+' '
+                        else: contentOrigin += spanR+' '
+                        #print '*****  '+span + ': ' + spanR
                     else:
-                        if okCorrect :
+                        if okCorrect:
                             AllWords.append(span)
                             spanCorrect = metalex.correct_word(span)
-                            contentCorrection += spanCorrect+u' '
-                        else :
+                            contentCorrection += spanCorrect+' '
+                        else:
                             AllWords.append(span)
-                            contentOrigin += span+u' '
-                    #print '*****  '+span + ' : ' + spanCorrect
-            else :
+                            contentOrigin += span+' '
+                    #print '*****  '+span + ': ' + spanCorrect
+            else:
                 pass
             
             #print contentOrigin+'\n'
-            artnum = u'article_'+str(art)
-            crtnum = u'correction_'+str(art)
+            artnum = 'article_'+str(art)
+            crtnum = 'correction_'+str(art)
             if len(contentOrigin) >= 15 and len(contentCorrection) == 0:
-                article = u'%s==%s' %(artnum, contentOrigin)
+                article = '%s==%s' %(artnum, contentOrigin)
                 metalex.project.write_temp_file(article, 'norm')
                 art += 1
-            elif len(contentOrigin) >= 15 and len(contentCorrection) >= 5 :
-                article = u'%s==%s | %s==%s' %(crtnum, contentCorrection, artnum, contentOrigin)
+            elif len(contentOrigin) >= 15 and len(contentCorrection) >= 5:
+                article = '%s==%s | %s==%s' %(crtnum, contentCorrection, artnum, contentOrigin)
                 metalex.project.write_temp_file(article, 'norm')
                 art += 1
                 
@@ -239,34 +236,33 @@ class FileRule():
         
         :return dict: metadata, ruleWords, ruleCaracts, ruleRegex
         """
-        word, caracter, regex = u'\W', u'\C', u'\R'
+        word, caracter, regex = '\W', '\C', '\R'
         metadata, ruleWords, ruleCaracts, ruleRegex = {}, {}, {}, {}
         startw, startc, startr = False, False, False
         
-        if self.file_rule_verified(self.typ) :
-            if self.typ == u'rule_wc' :
-                with codecs.open(self.file, 'r', 'utf-8') as rule :
-                    for line in rule : 
+        if self.file_rule_verified(self.typ):
+            if self.typ == 'rule_wc':
+                with codecs.open(self.file, 'r', 'utf-8') as rule:
+                    for line in rule: 
                         line = line.strip()
-                        if line.startswith(u'\metalex') : 
-                            names = (u'tool', u'project', u'theme', u'lang', u'admin', u'date')
-                            for name, cnt in zip(names, line.split(u'\\')[1:]) :
+                        if line.startswith('\metalex'): 
+                            names = ('tool', 'project', 'theme', 'lang', 'admin', 'date')
+                            for name, cnt in zip(names, line.split('\\')[1:]):
                                 metadata[name] = cnt
-                        if line == word : startw, startc, startr = True, False, False
-                        if line == caracter : startw, startc, startr = False, True, False
-                        if line == regex : startw, startc, startr = False, False, True
-                        if startw :
-                            linepart = line.split(u'/')
-                            if len(linepart) == 3 : ruleWords[linepart[1]] = linepart[2]
-                        if startc :
-                            linepart = line.split(u'/')
-                            if len(linepart) == 3 : ruleCaracts[linepart[1]] = linepart[2]
-                        if startr :
-                            linepart = line.split(u'/')
-                            if len(linepart) == 3 : ruleRegex[linepart[1]] = linepart[2]
-            if self.typ == u'rule_art' :
-                return False
-        else :
+                        if line == word: startw, startc, startr = True, False, False
+                        if line == caracter: startw, startc, startr = False, True, False
+                        if line == regex: startw, startc, startr = False, False, True
+                        if startw:
+                            linepart = line.split('/')
+                            if len(linepart) == 3: ruleWords[linepart[1]] = linepart[2]
+                        if startc:
+                            linepart = line.split('/')
+                            if len(linepart) == 3: ruleCaracts[linepart[1]] = linepart[2]
+                        if startr:
+                            linepart = line.split('/')
+                            if len(linepart) == 3: ruleRegex[linepart[1]] = linepart[2]
+            if self.typ == 'rule_art': return False
+        else:
             log = u"file_rule_unpack() >> Your file rule syntax is not correct. Please correct it as recommended"
             metalex.logs.manageLog.write_log(log, typ='warm')
             
@@ -281,31 +277,28 @@ class FileRule():
         :return Bool: True|Fase
         """
         module, synw, sync, synr, synrw, delimiter = (False for x in range(6))
-        try :
-            fileop = codecs.open(self.file, 'r', 'utf-8').readlines()
-        except :
+        try: fileop = codecs.open(self.file, 'r', 'utf-8').readlines()
+        except:
             log = u"file_rule_verified() >> We can't open your file rule. Please set it !"
             return metalex.logs.manageLog.write_log(log, typ='error')
         
-        if typ == u'rule_wc' :
-            if u'\START' == fileop[0].strip() and u'\END' == fileop[-1].strip() : delimiter = True
-            if len(fileop[1].strip().split(u'\\')) == 7 :
-                for el in fileop[1].strip().split(u'\\') :
-                    if el == u'metalex': module = True
+        if typ == 'rule_wc':
+            if '\START' == fileop[0].strip() and '\END' == fileop[-1].strip(): delimiter = True
+            if len(fileop[1].strip().split('\\')) == 7:
+                for el in fileop[1].strip().split('\\'):
+                    if el == 'metalex': module = True
             for lg in fileop:
                 lg = lg.strip()
-                if lg == u'\W' : synw = True
-                if lg == u'\C' : sync = True
-                if lg == u'\R' : synr = True
-                if lg[0] == u'/' : 
-                    if len(lg.split(u'/')) == 3 : synrw = True
-            if sync and synw and synr and module and delimiter and synrw :
+                if lg == '\W': synw = True
+                if lg == '\C': sync = True
+                if lg == '\R': synr = True
+                if lg[0] == '/': 
+                    if len(lg.split('/')) == 3: synrw = True
+            if sync and synw and synr and module and delimiter and synrw:
                 return True
-            else :
-                return False
+            else: return False
             
-        if typ == u'rule_art' :
-            return False
+        if typ == 'rule_art': return False
 
 
 
