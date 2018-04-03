@@ -42,7 +42,7 @@ from __future__ import unicode_literals
         >>> images.enhanceImages().filter(f.DETAIL)
         >>> images.imageToText(show=True, langIn='fra')
     
-"""
+""" 
 
 
 # ----External Modules------------------------------------------------------
