@@ -245,6 +245,7 @@ class BuildOcrOcropy():
             metalex.ocropy_command('rpred', param=' '+str(binFilesPart)+' -m '+model+\
                     ' -s '+str(show)+' --context '+str(context)+' '+quiet+' '+llocs+\
                     ' '+proba+' '+' '+conf_matrix+' '+errorcheck+'  -Q '+str(paral))
+
     
     def builds_out(self):
         rexHtmlName = metalex.project.get_root_project()+'/dicResults/results_ocr.html'
@@ -264,7 +265,8 @@ class BuildOcrOcropy():
         #self.segment()
         #self.recognize()
         self.builds_out()
-        
+    
+
         
         
         
