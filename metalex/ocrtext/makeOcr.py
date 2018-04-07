@@ -229,6 +229,7 @@ class BuildOcrOcropy():
                 clnsep+' --scale '+str(scale)+' --hscale '+str(hscale)+' --vscale '+\
                 str(vscale)+' --gray '+str(gray)+' -e '+str(expand)+'  --maxlines '+\
                 str(maxlines)+' -p '+str(padding)+'  '+binFilesPart+' -Q '+str(paral))
+            
     
     def recognize(self, model='', llocs='', proba='', errorcheck='', 
                     quiet='', show=-1, context=0, conf_matrix='', paral=1):
