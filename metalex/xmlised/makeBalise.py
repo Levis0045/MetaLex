@@ -37,6 +37,7 @@ Packages:
 Usage:
     >>> from metalex.dicXmilised import *
     >>> dicoHtml(save=True)
+    
 """
 
 # ----Internal Modules------------------------------------------------------
@@ -65,23 +66,26 @@ __all__ = ['BaliseXML', 'dico_html']
 
 components = {
     'xml' :   {
-                  'metalexMetadata' : ['metalexMetadata', 'projectName', 'author', 'dateCreation', 'comment', 'contributors', 'candidate'],
-                  'metalexContent'  : ['article', 'definition', 'example', 'figured', 'contrary',
-                                         'entry', 'flexion', 'category', 'gender', 'rection', 'phonetic',
-                                         'identificationComponent', 'treatmentComponent', 'cte_cat', 'cte_gender',
-                                         'processingUnit', 'cgr_pt', 'cgr_vrg', 'cgr_fpar', 'cgr_opar',
-                                         'cgr_ocrch', 'cgr_fcrch', 'metalexContent', 'metalexResultDictionary']
-                },
+                'metalexMetadata' : ['metalexMetadata', 'projectName', 'author', 
+                                     'dateCreation', 'comment', 'contributors', 'candidate'],
+                'metalexContent'  : ['article', 'definition', 'example', 'figured', 'contrary',
+                                     'entry', 'flexion', 'category', 'gender', 'rection', 'phonetic',
+                                     'identificationComponent', 'treatmentComponent', 'cte_cat', 'cte_gender',
+                                     'processingUnit', 'cgr_pt', 'cgr_vrg', 'cgr_fpar', 'cgr_opar',
+                                     'cgr_ocrch', 'cgr_fcrch', 'metalexContent', 'metalexResultDictionary']
+              },
     'tei' :   {
-                  'teiHeader'     : ['teiHeader', 'text', 'TEI', 'fileDesc', 'titleStmt', 'title', 'publicationStmt', 'p', 'sourceDesc', 'author'],
-                  'text'          : ['body', 'head', 'entry', 'form', 'orth', 'gramGrp', 'sense', 
-                                       'def', 'cite', 'quote', 'span', 'usg', 'bibl', 'pos', 'genre', 'number',
-                                       'pron', 'etym']
-                },
+                'teiHeader' : ['teiHeader', 'text', 'TEI', 'fileDesc', 'titleStmt', 
+                               'title', 'publicationStmt', 'p', 'sourceDesc', 'author'],
+                'text'      : ['body', 'head', 'entry', 'form', 'orth', 'gramGrp',
+                                'sense', 'def', 'cite', 'quote', 
+                                'span', 'usg', 'bibl', 'pos', 'genre', 'number', 'pron', 'etym']
+              },
     'lmf' :   {
-                  'GlobalInformation' : ['LexicalResource', 'feat', 'p', 'GlobalInformation'],
-                  'Lexicon'           : ['Lexicon', 'feat', 'LexicalEntry', 'WordForm', 'Definition', 'Sense', 'Lexicon']
-                },
+                'GlobalInformation' : ['LexicalResource', 'feat', 'p', 'GlobalInformation'],
+                'Lexicon'           : ['Lexicon', 'feat', 'LexicalEntry', 'WordForm', 
+                                       'Definition', 'Sense', 'Lexicon']
+               },
     'dtd' :   ['ELEMENT', 'ATTRIBUTE', 'PCDATA', 'CDATA', 'REQUIRED', 'IMPLIED'],
     'xsd' :   []
 }
@@ -93,33 +97,38 @@ codifArticles   = []
 def dico_html(save=False):
     """Build HTML editor file of the all articles 
     
-   :return file: metalexViewerEditor.html
+    :return file: metalexViewerEditor.html
     """
-    print('\n --- %s ---------------------------------------------------- \n\n' %colored('Part 4: Generate Output formats', attrs=['bold']))
+    print('\n --- %s %s \n\n' %(colored('Part 4: Generate Output formats', attrs=['bold']), '--'*25))
     
     metalex.plugins
     instanceHtml = BaliseHTML()
-    filepath     = sys.path[-1]+'/metalex-template.html'
+    filepath     = metalex.html_template
     metalex.project.create_temp()
     if metalex.project.in_dir('CopymetalexTemplate.html'):
         copyfile(filepath, 'CopymetalexTemplate.html')
         souphtl = instanceHtml.html_inject('CopymetalexTemplate.html')
-        if save: 
+        if save:
+            metalex.project.go_to_dicresult()
             with codecs.open('metalexViewerEditor.html', 'w') as htmlresult:
                 htmlresult.write(souphtl)
+            metalex.project.create_temp()
             os.remove('CopymetalexTemplate.html')
             message = "'metalexViewerEditor.html' has correctly been generated > Saved in dicTemp folder" 
             metalex.logs.manageLog.write_log(message)
     else:
         souphtl = instanceHtml.html_inject('CopymetalexTemplate.html')
-        if save: 
+        if save:
+            metalex.project.go_to_dicresult()
             with codecs.open('metalexViewerEditor.html', 'w') as htmlresult:
                 htmlresult.write(souphtl)
+            metalex.project.create_temp()
             os.remove('CopymetalexTemplate.html')
             message = "'metalexViewerEditor.html' has correctly been generated > Saved in dicTemp folder" 
             metalex.logs.manageLog.write_log(message)
     
-    print('\n\n --- %s --------------- \n\n' %colored('MetaLex Processes was ended: consult results data in "dicTemp" folder', 'green', attrs=['bold']))
+    print('\n\n --- %s --------------- \n\n' %colored('MetaLex Processes was ended: consult results data in "dicTemp" folder',
+                                                      'green', attrs=['bold']))
       
  
 class BaliseHTML():
@@ -137,7 +146,9 @@ class BaliseHTML():
         metalex.project.create_temp()
         soupXml        = BeautifulSoup(contentxml, "html.parser")
         projectconf    = metalex.project.read_conf()
-        Hauthor, Hname, Hdate, Hcomment, Hcontrib = projectconf['Author'], projectconf['Projectname'], projectconf['Creationdate'], projectconf['Comment'], projectconf['Contributors']
+        Hauthor, Hname = projectconf['Author'], projectconf['Projectname'],
+        Hdate,Hcomment = projectconf['Creationdate'], projectconf['Comment']
+        Hcontrib       = projectconf['Contributors']
         filetemplate   = codecs.open(template, 'r', 'utf-8')
         souphtml       = BeautifulSoup(filetemplate, "html5lib")
         content        = souphtml.find('div', attrs={'id': 'all-articles'}) 
@@ -197,6 +208,7 @@ class BaliseXML ():
         """
         metadata = self.xml_metadata(typ)
         content  = self.xml_content(typ)
+        metalex.project.go_to_dicresult()
         if typ == 'xml':
             if save:
                 name = 'metalex-'+metalex.projectName+'.xml'
@@ -206,6 +218,7 @@ class BaliseXML ():
                                                 'xsi:schemaLocation':'metalexSchemaXML.xsd'})
                 metalexXml = '<?xml version="1.0" encoding="UTF-8" ?>'+metalexXml
                 metalexXmlTree = BeautifulSoup(metalexXml, 'xml')
+                
                 if metalex.project.in_dir(name):
                     with codecs.open(name, 'w', 'utf-8') as fle:
                         fle.write(metalexXmlTree.prettify(formatter=None))
@@ -241,6 +254,7 @@ class BaliseXML ():
                 metalexXmlTree = BeautifulSoup(metalexXml, 'xml')
                 print(metalexXmlTree.prettify(formatter=None))
         if typ == 'lmf':
+            os.listdir('.')
             if save:
                 name = 'metalex-'+metalex.projectName+'-LMF.xml'
                 metalexXml = self.balise(metadata+content, 'LexicalResource', attr={'dtdVersion':'15'}, typ= 'lmf')
@@ -260,7 +274,6 @@ class BaliseXML ():
                 metalexXml = '<?xml version="1.0" encoding="UTF-8" ?>'+metalexXml
                 metalexXmlTree = BeautifulSoup(metalexXml, 'xml')
                 print(metalexXmlTree.prettify(formatter=None))
-
 
     def xml_metadata(self, typ='xml'):
         """Create xml metadata file with configuration of the project 
@@ -316,8 +329,7 @@ class BaliseXML ():
             meta        = self.balise('', 'p', attr={'att':'meta', 'val':'TEI metadata for metalex project output'}, typ='lmf', sclose=True)
             metadatalmf = self.balise(enc+pauthor+pname+meta+pdate+pcomment+pcontrib, 'GlobalInformation', typ='lmf')
             return metadatalmf
-            
-        
+                    
     def balise_content_article (self):
         data = get_data_articles('text')
         cod  = StructuredWithCodif(data, 'xml')
@@ -349,8 +361,7 @@ class BaliseXML ():
                         suite = 'hahaha'
         
         return resultArticles
-            
-           
+                      
     def xml_content(self, typ='xml', forme='text'): 
         """Create xml content file (representing articles) with data articles extracting
         
@@ -406,7 +417,8 @@ class BaliseXML ():
                 posB    = self.balise('', 'feat', attr={'att':'partOfSpeech','val':pos}, typ='lmf', sclose=True)
                 genB    = ''
                 if soupart.find('cte_gender'): genB = soupart.find('cte_gender').getText().strip()
-                if genB == 'f.' or genB == 'm.': genB = self.balise('', 'feat', attr={'att':'grammaticalNumber','val': genB}, typ='lmf', sclose=True)
+                if genB == 'f.' or genB == 'm.': 
+                    genB = self.balise('', 'feat', attr={'att':'grammaticalNumber','val': genB}, typ='lmf', sclose=True)
                 sens    = soupart.find('processingunit').getText().replace(' .', '.')
                 sensnb  = self.balise('', 'feat', attr={'att':'sensNumber','val':'1'}, typ='lmf', sclose=True)
                 definb  = self.balise('', 'feat', attr={'att':'text','val':sens.strip()}, typ='lmf', sclose=True)
@@ -417,9 +429,7 @@ class BaliseXML ():
             body = self.balise('', 'feat', attr={'att':'language','val':'fra'}, typ='lmf', sclose=True)+content
             contentXml   = self.balise(body, 'Lexicon', attr={'totalArticle': str(len(data))}, typ='lmf')
             return contentXml
-        
-        
-        
+                  
     def balise(self, element, markup, sclose=False, attr=None, typ='xml', art=False):
         """Markup data with a specific format type (xml|tei|lmf)
         
@@ -450,9 +460,7 @@ class BaliseXML ():
                 else: 
                     element = self.chevron(markup, attr)+element+self.chevron(markup, attr, False)
                     return element
-                
-    
-    
+                    
     def chevron(self, el, attr, openchev=True, art=False, sclose=False):
         """Put tag around the data of element
         
