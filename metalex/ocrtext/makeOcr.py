@@ -42,7 +42,7 @@ from __future__ import unicode_literals
         >>> images.enhanceImages().filter(f.DETAIL)
         >>> images.imageToText(show=True, langIn='fra')
     
-"""
+""" 
 
 
 # ----External Modules------------------------------------------------------
@@ -50,6 +50,7 @@ from __future__ import unicode_literals
 import codecs
 import os
 import sys
+import glob
 from tesserocr import PyTessBaseAPI
 from multiprocessing import Pool
 from termcolor import colored
@@ -60,14 +61,42 @@ import metalex
 
 # -----Exported Functions---------------------------------------------------
 
-__all__ = ['BuildOcrImages']
+__all__ = ['BuildOcrTesserocr', 'BuildOcrOcropy']
 
 # -----Global Variables-----------------------------------------------------
 
 
 
 # --------------------------------------------------------------------------
-    
+
+def get_available_images(typ='tesserocr'):
+    """Get all available path of dictionary images previously treated 
+
+    :return array: list of path of enhanced dictionary images
+    """
+    if typ == 'tesserocr':
+        if len(metalex.fileImages) >= 1 and not len(metalex.treatImages) >= 1 :
+            contentPrint = u"OCR ->> You don't have any previous treated image(s)!"+\
+            " Please treat them before OCR "
+            metalex.logs.manageLog.write_log(contentPrint, typ='error')
+            return None
+        elif not len(metalex.fileImages) >= 1 :
+            contentPrint = u"OCR ->>  You don't have any image(s) for this treatment"
+            messageExit  = u'FATAL ERROR! We cannot continue, resolve the previous error'
+            metalex.logs.manageLog.write_log(contentPrint, typ='error')
+            sys.exit(metalex.logs.manageLog.write_log(messageExit, typ='error'))
+        else: allimages = metalex.treatImages
+        return allimages
+    elif typ == 'ocropy':
+        if not len(metalex.fileImages) >= 1 :
+            contentPrint = u"OCR ->>  You don't have any image(s) for this treatment"
+            messageExit  = u'FATAL ERROR! We cannot continue, resolve the previous error'
+            metalex.logs.manageLog.write_log(contentPrint, typ='error')
+            sys.exit(metalex.logs.manageLog.write_log(messageExit, typ='error'))
+        else: allimages = metalex.fileImages
+        return allimages 
+      
+      
 class BuildOcrTesserocr():
     """Extract all text data from dictionary images files 
     
@@ -200,7 +229,6 @@ class BuildOcrOcropy():
                 clnsep+' --scale '+str(scale)+' --hscale '+str(hscale)+' --vscale '+\
                 str(vscale)+' --gray '+str(gray)+' -e '+str(expand)+'  --maxlines '+\
                 str(maxlines)+' -p '+str(padding)+'  '+binFilesPart+' -Q '+str(paral))
-                
     
     def recognize(self, model='', llocs='', proba='', errorcheck='', 
                     quiet='', show=-1, context=0, conf_matrix='', paral=1):
@@ -216,7 +244,6 @@ class BuildOcrOcropy():
             metalex.ocropy_command('rpred', param=' '+str(binFilesPart)+' -m '+model+\
                     ' -s '+str(show)+' --context '+str(context)+' '+quiet+' '+llocs+\
                     ' '+proba+' '+' '+conf_matrix+' '+errorcheck+'  -Q '+str(paral))
-
     
     def builds_out(self):
         rexHtmlName = metalex.project.get_root_project()+'/dicResults/results_ocr.html'

@@ -83,7 +83,7 @@ class BuildTextWell():
         self.okCorrect = okCorrect
         self.log = log
         self.file_rules = file_rules
-        print('\n --- %s ---------------------------------------------------------- \n\n' %colored('Part 3: Correct OCR data', attrs=['bold']))
+        print('\n --- %s %s \n\n' %(colored('Part 3: Correct OCR data', attrs=['bold']), '--'*20))
         debut = time.time()
         filerule = FileRule(self.file_rules, typ='rule_wc')
         self.data_rules = filerule.file_rule_unpack()
@@ -103,23 +103,22 @@ class BuildTextWell():
 
     
     def calculate_process(self):
-        """Calculate a number of processes usefull for OCR processing
+        """Calculate a number of processes useful for OCR processing
     
         :return int: number of processes
         """
-        processExec = 0
+        processExec = 1
         lenHtmlOcrFiles = len(metalex.resultOcrFiles)
         if lenHtmlOcrFiles == 1: processExec = 1
         elif lenHtmlOcrFiles == 2: processExec = 2
         elif lenHtmlOcrFiles > 2 and lenHtmlOcrFiles < 10: processExec = 3
-        elif lenHtmlOcrFiles > 10: processExec = 5
         return processExec
     
     
     def make_text_well(self):
-        """Run simultanously all html files processes to extract data articles
+        """Run simultaniously all html files processes to extract data articles
     
-        :return file: pickle object and texte data
+        :return file: pickle object and text data
         """
         html_ocr_files = metalex.resultOcrFiles
         processOcr = Pool(self.calculate_process())
