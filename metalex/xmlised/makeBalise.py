@@ -70,16 +70,17 @@ components = {
                                      'dateCreation', 'comment', 'contributors', 'candidate'],
                 'metalexContent'  : ['article', 'definition', 'example', 'figured', 'contrary',
                                      'entry', 'flexion', 'category', 'gender', 'rection', 'phonetic',
-                                     'identificationComponent', 'treatmentComponent', 'cte_cat', 'cte_gender',
+                                     'identificationComponent', 'treatmentComponent', 'cte_cat', 
                                      'processingUnit', 'cgr_pt', 'cgr_vrg', 'cgr_fpar', 'cgr_opar',
-                                     'cgr_ocrch', 'cgr_fcrch', 'metalexContent', 'metalexResultDictionary']
+                                     'cgr_ocrch', 'cgr_fcrch', 'metalexContent', 'cte_gender',
+                                     'metalexResultDictionary']
               },
     'tei' :   {
                 'teiHeader' : ['teiHeader', 'text', 'TEI', 'fileDesc', 'titleStmt', 
                                'title', 'publicationStmt', 'p', 'sourceDesc', 'author'],
                 'text'      : ['body', 'head', 'entry', 'form', 'orth', 'gramGrp',
-                                'sense', 'def', 'cite', 'quote', 
-                                'span', 'usg', 'bibl', 'pos', 'genre', 'number', 'pron', 'etym']
+                                'sense', 'def', 'cite', 'quote', 'span', 'usg', 'bibl', 
+                                'pos', 'genre', 'number', 'pron', 'etym']
               },
     'lmf' :   {
                 'GlobalInformation' : ['LexicalResource', 'feat', 'p', 'GlobalInformation'],
@@ -104,27 +105,28 @@ def dico_html(save=False):
     metalex.plugins
     instanceHtml = BaliseHTML()
     filepath     = metalex.html_template
-    metalex.project.create_temp()
-    if metalex.project.in_dir('CopymetalexTemplate.html'):
+    metalex.utils.create_temp()
+    if metalex.utils.in_dir('CopymetalexTemplate.html'):
         copyfile(filepath, 'CopymetalexTemplate.html')
         souphtl = instanceHtml.html_inject('CopymetalexTemplate.html')
         if save:
-            metalex.project.go_to_dicresult()
-            with codecs.open('metalexViewerEditor.html', 'w') as htmlresult:
+            metalex.utils.go_to_dicresult()
+            name = metalex.currentOcr+'_metalexViewerEditor.html'
+            with codecs.open(name, 'w') as htmlresult:
                 htmlresult.write(souphtl)
-            metalex.project.create_temp()
+            metalex.utils.create_temp()
             os.remove('CopymetalexTemplate.html')
-            message = "'metalexViewerEditor.html' has correctly been generated > Saved in dicTemp folder" 
+            message = "*"+name+"* has correctly been generated > Saved in dicTemp folder" 
             metalex.logs.manageLog.write_log(message)
     else:
         souphtl = instanceHtml.html_inject('CopymetalexTemplate.html')
         if save:
-            metalex.project.go_to_dicresult()
-            with codecs.open('metalexViewerEditor.html', 'w') as htmlresult:
+            metalex.utils.go_to_dicresult()
+            with codecs.open(name, 'w') as htmlresult:
                 htmlresult.write(souphtl)
-            metalex.project.create_temp()
+            metalex.utils.create_temp()
             os.remove('CopymetalexTemplate.html')
-            message = "'metalexViewerEditor.html' has correctly been generated > Saved in dicTemp folder" 
+            message = "*"+name+"* has correctly been generated > Saved in dicTemp folder" 
             metalex.logs.manageLog.write_log(message)
     
     print('\n\n --- %s --------------- \n\n' %colored('MetaLex Processes was ended: consult results data in "dicTemp" folder',
@@ -143,9 +145,9 @@ class BaliseHTML():
         """
         instanceXml    = BaliseXML()
         contentxml     = instanceXml.put_xml(typ='xml', save=True)
-        metalex.project.create_temp()
+        metalex.utils.create_temp()
         soupXml        = BeautifulSoup(contentxml, "html.parser")
-        projectconf    = metalex.project.read_conf()
+        projectconf    = metalex.utils.read_conf()
         Hauthor, Hname = projectconf['Author'], projectconf['Projectname'],
         Hdate,Hcomment = projectconf['Creationdate'], projectconf['Comment']
         Hcontrib       = projectconf['Contributors']
@@ -200,7 +202,11 @@ class BaliseXML ():
         
     def build_structure(self, data, Sfile=None, typ='dtd'):
         return False
-
+    
+    def message(self, name):
+        return  "*"+name+"*  dictionary articles formated in xml is"+\
+            " created > Saved in dicTemp folder"
+    
     def put_xml(self, typ='xml', save=False):
         """Create well formed (xml|tei|lmf) file with metadata and content xml 
         
@@ -208,25 +214,25 @@ class BaliseXML ():
         """
         metadata = self.xml_metadata(typ)
         content  = self.xml_content(typ)
-        metalex.project.go_to_dicresult()
+        metalex.utils.go_to_dicresult()
         if typ == 'xml':
             if save:
-                name = 'metalex-'+metalex.projectName+'.xml'
+                name = 'metalex-'+metalex.projectName+'_'+metalex.currentOcr+'.xml'
                 metalexXml = self.balise(metadata+content, 'metalexResultDictionary', 
                                          attr={'xmlns':'https://www.w3schools.com', 
-                                                'xmlns:xsi':'http://www.w3.org/2001/XMLSchema-in', 
-                                                'xsi:schemaLocation':'metalexSchemaXML.xsd'})
+                                               'xmlns:xsi':'http://www.w3.org/2001/XMLSchema-in', 
+                                               'xsi:schemaLocation':'metalexSchemaXML.xsd'})
                 metalexXml = '<?xml version="1.0" encoding="UTF-8" ?>'+metalexXml
                 metalexXmlTree = BeautifulSoup(metalexXml, 'xml')
                 
-                if metalex.project.in_dir(name):
+                if metalex.utils.in_dir(name):
                     with codecs.open(name, 'w', 'utf-8') as fle:
                         fle.write(metalexXmlTree.prettify(formatter=None))
-                    message = "'"+name+"' is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
-                    metalex.logs.manageLog.write_log(message)
+                    mge = self.message(name)
+                    metalex.logs.manageLog.write_log(mge)
                 else:
-                    message = "'"+name+"' is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
-                    metalex.logs.manageLog.write_log(message)
+                    mge = self.message(name)
+                    metalex.logs.manageLog.write_log(mge)
                 return metalexXml
             else:
                 metalexXml = self.balise(metadata+content, 'metalexResultDictionary', attr={})
@@ -235,18 +241,18 @@ class BaliseXML ():
                 print(metalexXmlTree.prettify(formatter=None))
         if typ == 'tei':
             if save:
-                name = 'metalex-'+metalex.projectName+'-TEI.xml'
+                name = 'metalex-'+metalex.projectName+'_'+metalex.currentOcr+'-TEI.xml'
                 metalexXml = self.balise(metadata+content, 'TEI', typ= 'tei')
                 metalexXml = '<?xml version="1.0" encoding="UTF-8" ?>'+metalexXml
                 metalexXmlTree = BeautifulSoup(metalexXml, 'xml')
-                if metalex.project.in_dir(name):
+                if metalex.utils.in_dir(name):
                     with codecs.open(name, 'w', 'utf-8') as fle:
                         fle.write(metalexXmlTree.prettify(formatter=None))
-                    message = "'"+name+"' is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
-                    metalex.logs.manageLog.write_log(message)
+                    mge = self.message(name)
+                    metalex.logs.manageLog.write_log(mge)
                 else:
-                    message = "'"+name+"' is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
-                    metalex.logs.manageLog.write_log(message)
+                    mge = self.message(name)
+                    metalex.logs.manageLog.write_log(mge)
                 return metalexXml
             else:
                 metalexXml = self.balise(metadata+content, 'TEI', typ= 'tei')
@@ -256,18 +262,18 @@ class BaliseXML ():
         if typ == 'lmf':
             os.listdir('.')
             if save:
-                name = 'metalex-'+metalex.projectName+'-LMF.xml'
+                name = 'metalex-'+metalex.projectName+'_'+metalex.currentOcr+'-LMF.xml'
                 metalexXml = self.balise(metadata+content, 'LexicalResource', attr={'dtdVersion':'15'}, typ= 'lmf')
                 metalexXml = '<?xml version="1.0" encoding="UTF-8" ?>'+metalexXml
                 metalexXmlTree = BeautifulSoup(metalexXml, 'xml')
-                if metalex.project.in_dir(name):
+                if metalex.utils.in_dir(name):
                     with codecs.open(name, 'w', 'utf-8') as fle:
                         fle.write(metalexXmlTree.prettify(formatter=None))
-                    message = "'"+name+"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
-                    metalex.logs.manageLog.write_log(message)
+                    mge = self.message(name)
+                    metalex.logs.manageLog.write_log(mge)
                 else:
-                    message = "'"+name+"'  is created and contain all dictionary articles formated in xml standard format > Saved in dicTemp folder"
-                    metalex.logs.manageLog.write_log(message)
+                    mge = self.message(name)
+                    metalex.logs.manageLog.write_log(mge)
                 return metalexXml
             else:
                 metalexXml = self.balise(metadata+content, 'LexicalResource', attr={'dtdVersion':'15'}, typ= 'lmf')
@@ -280,16 +286,17 @@ class BaliseXML ():
         
        :return str: metadata
         """
-        metalex.project.create_temp()
+        metalex.utils.create_temp()
         
-        projectconf = metalex.project.read_conf()
-        contribtab  = projectconf['Contributors'].split(',') if projectconf['Contributors'].find(',') else projectconf['Contributors']
+        projectconf = metalex.utils.read_conf()
+        contribtab  = projectconf['Contributors'].split(',') \
+        if projectconf['Contributors'].find(',') else projectconf['Contributors']
         contrib = ''
         if typ == 'xml':
-            author      = self.balise(projectconf['Author'], 'author', typ)
-            name        = self.balise(projectconf['Projectname'].strip(), 'projectName', typ)
-            date        = self.balise(projectconf['Creationdate'].strip(), 'dateCreation', typ)
-            comment     = self.balise(projectconf['Comment'], 'comment', typ)
+            author  = self.balise(projectconf['Author'], 'author', typ)
+            name    = self.balise(projectconf['Projectname'].strip(), 'projectName', typ)
+            date    = self.balise(projectconf['Creationdate'].strip(), 'dateCreation', typ)
+            comment = self.balise(projectconf['Comment'], 'comment', typ)
             if len(contribtab) > 1:
                 for data in contribtab: contrib += self.balise(data.strip(), 'candidate', typ) 
             else: contrib = self.balise(''.join(contribtab), 'candidate', typ)
@@ -301,7 +308,8 @@ class BaliseXML ():
         if typ == 'tei':
             if len(contribtab) > 1:
                 for data in contribtab: 
-                    if len(data) > 2: contrib += self.balise(data.strip(), 'span', attr={'content':'contributor'}, typ='tei') 
+                    if len(data) > 2: contrib += self.balise(data.strip(), 'span', 
+                                                             attr={'content':'contributor'}, typ='tei') 
             else: contrib = self.balise(''.join(contribtab), 'span', typ='tei')
             author      = self.balise(projectconf['Author'], 'author', typ='tei')
             title       = self.balise(projectconf['Projectname'], 'title', typ='tei')
@@ -320,13 +328,20 @@ class BaliseXML ():
                 for data in contribtab: 
                     if len(data) > 2: contrib += data.strip()+', '
             else: contrib = ', '.join(contribtab)
-            enc         = self.balise('', 'feat', attr={'att':'languageCoding', 'val':'utf-8'}, typ='lmf', sclose=True)
-            pauthor     = self.balise('', 'feat', attr={'att':'author', 'val':projectconf['Author'].strip()}, typ='lmf', sclose=True)
-            pdate       = self.balise('', 'feat', attr={'att':'dateCreation', 'val':projectconf['Creationdate'].strip()}, typ='lmf', sclose=True)
-            pname       = self.balise('', 'feat', attr={'att':'projectName', 'val':projectconf['Projectname'].strip()}, typ='lmf', sclose=True)
-            pcomment    = self.balise('', 'feat', attr={'att':'comment', 'val':projectconf['Comment'].strip()}, typ='lmf', sclose=True)
-            pcontrib    = self.balise('', 'feat', attr={'att':'contributors', 'val':contrib.strip(', ')}, typ='lmf', sclose=True)
-            meta        = self.balise('', 'p', attr={'att':'meta', 'val':'TEI metadata for metalex project output'}, typ='lmf', sclose=True)
+            enc      = self.balise('', 'feat', attr={'att':'languageCoding', 'val':'utf-8'}, 
+                                      typ='lmf', sclose=True)
+            pauthor  = self.balise('', 'feat', attr={'att':'author', 'val':projectconf['Author'].strip()}, 
+                                      typ='lmf', sclose=True)
+            pdate    = self.balise('', 'feat', attr={'att':'dateCreation', 'val':projectconf['Creationdate'].strip()},
+                                       typ='lmf', sclose=True)
+            pname    = self.balise('', 'feat', attr={'att':'projectName', 'val':projectconf['Projectname'].strip()},
+                                       typ='lmf', sclose=True)
+            pcomment = self.balise('', 'feat', attr={'att':'comment', 'val':projectconf['Comment'].strip()},
+                                       typ='lmf', sclose=True)
+            pcontrib = self.balise('', 'feat', attr={'att':'contributors', 'val':contrib.strip(', ')}, 
+                                      typ='lmf', sclose=True)
+            meta     = self.balise('', 'p', attr={'att':'meta', 'val':'TEI metadata for metalex project output'}, 
+                                      typ='lmf', sclose=True)
             metadatalmf = self.balise(enc+pauthor+pname+meta+pdate+pcomment+pcontrib, 'GlobalInformation', typ='lmf')
             return metadatalmf
                     
@@ -347,7 +362,8 @@ class BaliseXML ():
                     article = self.balise(ident+self.balise(treat, 'treatmentComponent'), 'article', attr={'id':id})
                     resultArticles.append(article)     
             if article_type_form(art) == '2':
-                partArt = re.search(r'(([a-zéèàûô]+)\s(<cte_cat>.+</cte_cat>\s<cte_gender>..</cte_gender>)\s(.+)<cgr_pt>\.</cgr_pt>)', art, re.I)
+                research = r'(([a-zéèàûô]+)\s(<cte_cat>.+</cte_cat>\s<cte_gender>..</cte_gender>)\s(.+)<cgr_pt>\.</cgr_pt>)'
+                partArt = re.search(research, art, re.I)
                 if partArt != None:
                     ident, entry, cat, treat = partArt.group(1), partArt.group(2), partArt.group(3), partArt.group(4)
                     id    = generate_id()
@@ -381,7 +397,7 @@ class BaliseXML ():
                 return contentXml
             else: 
                 for art in data: content += art
-                contentXml   = self.balise(content, 'metalexContent', attr={'totalArticle': str(len(data))})
+                contentXml = self.balise(content, 'metalexContent', attr={'totalArticle': str(len(data))})
                 return contentXml
         
         if typ == 'tei':
@@ -411,22 +427,28 @@ class BaliseXML ():
                 soupart = BeautifulSoup(art, 'html.parser')
                 orth    = soupart.find('entry').getText()
                 atOrth  = soupart.find('article').get('id')
-                orth    = self.balise('', 'feat', attr={'att':'writtenForm','val':orth}, typ='lmf', sclose=True)
+                orth    = self.balise('', 'feat', attr={'att':'writtenForm','val':orth}, 
+                                      typ='lmf', sclose=True)
                 wordF   = self.balise(orth, 'WordForm', attr={'id': atOrth}, typ='lmf')
                 pos     = soupart.find('cte_cat').getText()
-                posB    = self.balise('', 'feat', attr={'att':'partOfSpeech','val':pos}, typ='lmf', sclose=True)
+                posB    = self.balise('', 'feat', attr={'att':'partOfSpeech','val':pos}, 
+                                      typ='lmf', sclose=True)
                 genB    = ''
                 if soupart.find('cte_gender'): genB = soupart.find('cte_gender').getText().strip()
                 if genB == 'f.' or genB == 'm.': 
-                    genB = self.balise('', 'feat', attr={'att':'grammaticalNumber','val': genB}, typ='lmf', sclose=True)
+                    genB = self.balise('', 'feat', attr={'att':'grammaticalNumber','val': genB}, 
+                                       typ='lmf', sclose=True)
                 sens    = soupart.find('processingunit').getText().replace(' .', '.')
-                sensnb  = self.balise('', 'feat', attr={'att':'sensNumber','val':'1'}, typ='lmf', sclose=True)
-                definb  = self.balise('', 'feat', attr={'att':'text','val':sens.strip()}, typ='lmf', sclose=True)
+                sensnb  = self.balise('', 'feat', attr={'att':'sensNumber','val':'1'}, 
+                                      typ='lmf', sclose=True)
+                definb  = self.balise('', 'feat', attr={'att':'text','val':sens.strip()}, 
+                                      typ='lmf', sclose=True)
                 defi    = self.balise(definb, 'Definition', typ='lmf')
                 if sens != None: sens  = self.balise(sensnb+defi, 'Sense', typ='lmf')
                 entry   = self.balise(wordF+posB+genB+sens, 'LexicalEntry', typ='lmf')
                 content += entry
-            body = self.balise('', 'feat', attr={'att':'language','val':'fra'}, typ='lmf', sclose=True)+content
+            body = self.balise('', 'feat', attr={'att':'language','val':'fra'}, 
+                               typ='lmf', sclose=True)+content
             contentXml   = self.balise(body, 'Lexicon', attr={'totalArticle': str(len(data))}, typ='lmf')
             return contentXml
                   
@@ -436,7 +458,8 @@ class BaliseXML ():
        :return str: balised element
         """
         if typ == 'xml':
-            if markup in components['xml']['metalexContent'] or markup in components['xml']['metalexMetadata']:
+            if markup in components['xml']['metalexContent'] or markup \
+            in components['xml']['metalexMetadata']:
                 if art:
                     element = self.chevron(markup, attr, art=True)+element+self.chevron(markup, attr, False)
                     return element
