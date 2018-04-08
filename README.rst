@@ -98,33 +98,47 @@ How to run MetaLex ?
 
 .. code-block:: shell
     
-    metalex arguments :
+            ---------------------------------------------------------------
+            | * *    * *    * * *  * * *   * *     *      * * *   **   ** |
+            | *   * *  *   * *      *    * * *    *      * *        *     |
+            | *        *  * * *    *   *     *   * * *  * * *  **    **   |
+            ---------------------------------------------------------------
+    metalex is general tool for lexicographics and metalexicographics activities
+       
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      -v, --version         show program's version number and exit
+      -p PROJECTNAME, --project PROJECTNAME
+                            Defined metalex project name
+      -c author comment contributors, --confproject author comment contributors
+                            Defined metalex configuration for the current project
+      -i [IMAGEFILE], --dicimage [IMAGEFILE]
+                            Input one or multiple dictionary image(s) file(s) for
+                            current metalex project
+      -o {ocropy,tesserocr}, --ocrtype {ocropy,tesserocr}
+                            OCR type to use for current metalex project
+      -d IMAGESDIR, --imagedir IMAGESDIR
+                            Input folder name of dictionary image files for
+                            current metalex project
+      --imgalg actiontype value
+                            Set algorithm for enhancing dictionary image files for
+                            current metalex project (actiontype must be : contrast
+                            or bright or filter)
+      -r FILERULE, --filerule FILERULE
+                            Defined file rules that we use to enhance quality of
+                            OCR result
+      -l LANG, --lang LANG  Set language for optical characters recognition and
+                            others metalex treatment
+      -x {xml,lmf,tei}, --xml {xml,lmf,tei}
+                            Defined output result treatment of metalex
+      -s, --save            Save output result of the current project in files
+      -t, --terminal        Show result of the current treatment in the terminal
     
-    -h, --help            show this help message and exit
-    -v, --version         show program's version number and exit
-    -p PROJECTNAME, --project PROJECTNAME
-                          Defined metalex project name
-    -c author comment contributors, --confproject author comment contributors
-                          Defined metalex configuration for the current project
-    -i [IMAGEFILE], --dicimage [IMAGEFILE]
-                          Input one or multiple dictionary image(s) file(s) for
-                          current metalex project
-    -d IMAGESDIR, --imagedir IMAGESDIR
-                          Input folder name of dictionary image files for
-                          current metalex project
-    --imgalg actiontype value
-                          Set algorithm for enhancing dictionary image files for
-                          current metalex project (actiontype must be : constrat
-                          or bright or filter)
-    -r FILERULE, --filerule FILERULE
-                          Defined file rules that we use to enhance quality of
-                          OCR result
-    -l LANG, --lang LANG  Set language for optical characters recognition and
-                          others metalex treatment
-    -x {xml,lmf,tei} {xml,lmf,tei} {xml,lmf,tei}, --xml {xml,lmf,tei} {xml,lmf,tei} {xml,lmf,tei}
-                          Defined output result treatment of metalex
-    -s, --save            Save output result of the current project in files
-    -t, --terminal        Show result of the current treatment in the terminal
+    ------------------------------------------------------------------------------
+        metalex project : special Thank to Bill for metalex-vagrant version
+    ------------------------------------------------------------------------------
+
 
 
 - Build the file rules of the project.
@@ -151,9 +165,9 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 
 .. code-block:: shell
 
-    python runMetalex.py  -d 'dicImages' -s  # We defined a folder containing dictionary images for current process
+    python runMetalex.py  -d 'testImages' -o ocropy -s  # We defined a folder containing dictionary images for current process
     
-    python runMetalex.py  -i 'dicImages/dic_image_1.jpg' -s  # Or you can define a single dictionary image file
+    python runMetalex.py  -i 'testImages/LarClasIll_1911_gay-Trouin.jpg' -o tesserocr -s  # Or you can define a single dictionary image file
 
 
 - Run your project with your own set of parameters and save results
