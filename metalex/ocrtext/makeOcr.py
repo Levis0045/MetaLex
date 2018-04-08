@@ -334,8 +334,10 @@ class BuildOcrOcropy():
     
 
 class run_img_to_text():
-    def __init__(self, typ='ocropy'):
+    def __init__(self, typ='ocropy', save=True, langIn='fra'):
         self.typ = typ
+        self.save = save
+        self.lang = langIn
     
     def enhance_img(self, typ='filter', filter=flt.DETAIL, value=0, other=0):
         if self.typ == 'tesserocr':
@@ -353,7 +355,7 @@ class run_img_to_text():
         elif self.typ == 'tesserocr':
             print(u'\n --- %s %s \n\n' %(colored('Part 2 : OCR (Tesserocr)', 
                                                  attrs=['bold']), '---'*12))
-            tesserocr = BuildOcrTesserocr()
+            tesserocr = BuildOcrTesserocr(save=self.save, langIn=self.lang)
             tesserocr.image_to_text()
             htmls = [os.path.abspath(x) for x in glob.glob('tesserocr*.html')]
             metalex.utils.go_to_dicresult()
