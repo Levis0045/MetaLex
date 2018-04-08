@@ -114,7 +114,7 @@ def folder_log():
 
 def color(typ):
     hour = metalex.utils.get_hour()
-    message = u'[metalexLog - '+hour+u']'
+    message = u'[metalexLog-'+hour+u']'
     if typ == 'yellow':
         return colored(message, u'yellow', attrs=['reverse', 'blink', 'bold'])
     if typ == 'red':
