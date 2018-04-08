@@ -43,6 +43,7 @@ from .xmlised import *
 from .logs import *
 from .plugins import *
 from .project import *
+from .utils import *
 
 # -----Global Variables-----------------------------------------------------
 
@@ -55,6 +56,7 @@ resultOcrFiles = []
 resultOcrData = {}
 codifications = {}
 projectFolder = {}
+currentOcr = ''
 
 # ----------------------------------------------------------
 
