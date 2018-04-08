@@ -87,7 +87,7 @@ def log_name():
 
 
 def folder_log():
-    hour = metalex.project.get_hour()
+    hour = metalex.utils.get_hour()
     name = log_name()
     parentdir = os.listdir('..')
     projectF = metalex.projectFolder.items()[0][0]
@@ -112,26 +112,34 @@ def folder_log():
         return logfile
     else: pass
 
-
-
+def color(typ):
+    hour = metalex.utils.get_hour()
+    message = u'[metalexLog - '+hour+u']'
+    if typ == 'yellow':
+        return colored(message, u'yellow', attrs=['reverse', 'blink', 'bold'])
+    if typ == 'red':
+        return colored(message, u'red', attrs=['reverse', 'blink', 'bold'])
+    if typ == 'green':
+        return colored(message, u'green', attrs=['reverse', 'blink', 'bold'])
+        
 def write_log(content, typ=u'ok'):
     name = log_name()
-    hour = metalex.project.get_hour()
+    hour = metalex.utils.get_hour()
 
     folder_log()
     currentdirlog = os.listdir(u'.')
     if name in currentdirlog :
         with codecs.open(name, 'a', 'utf-8') as log :
-            message = u'[metalex - '+hour+u'] '+content+u'\n\n'
+            message = u'[metalex-'+hour+u'] '+content+u'\n\n'
             log.write(message)
     else: pass
-    message = u'[metalexLog - '+hour+u']'
+    
     if typ == 'warm' :
-        print(u'%-10s  %-30s\n' %(colored(message, u'yellow', attrs=['reverse', 'blink', 'bold']), content))
+        print(u'%-10s  %-30s\n' %(color('yellow'), content))
     elif typ == 'error' :
-        print(u'%-10s  %-30s\n' %(colored(message, u'red', attrs=['reverse', 'blink', 'bold']), content))
+        print(u'%-10s  %-30s\n' %(color('red'), content))
     else :
-        print(u'%-10s  %-30s\n' %(colored(message, u'green', attrs=['reverse', 'blink', 'bold']), content))
+        print(u'%-10s  %-30s\n' %(color('green'), content))
     
     
     
