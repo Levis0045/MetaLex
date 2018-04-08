@@ -84,54 +84,55 @@ def article_type_form(art):
         if re.search(r'<cte_cat>', unicode(soup.contents[1])):
             if re.search(r'<cte_gender>', unicode(soup.contents[3])):
                 if re.search(r'<cte_rection>', unicode(soup.contents[5])):
+                    #print ('***gender*** '+art+'*****')
                     return '7' #cat, gender and rection
-                    #print '****gender**** '+art+'*****\n'
                 else: return '2' #cat and gender
             elif re.search(r'<cte_rection>', unicode(soup.contents[3])):
+                #print ('***rection*** '+art+'*****')
                 return '4' #cat and rection
-                #print '*****rection*** '+art+'*****\n'
-            else: return '1' #cat
-                #print '*****cat*** '+art+'*****\n'
+            else: 
+                #print ('***cat*** '+art+'*****')
+                return '1' #cat
+                
         elif re.search(r'<cgr_vrg>', unicode(soup.contents[1])): 
-            if re.search(r'<cgr_vrg>', unicode(soup.contents[3])): return '3' #vrg, vrg and cat
-                #print '*****cat*** '+art+'*****\n'  
-            else: return '8' #vrg and cat
-                #print '*****cat*** '+art+'*****\n'
+            if re.search(r'<cgr_vrg>', unicode(soup.contents[3])): 
+                #print('***cat*** '+art+'*****')
+                return '3' #vrg, vrg and cat
+            else: 
+                #print('***cat*** '+art+'*****')
+                return '8' #vrg and cat
+                
         elif re.search(r'<cgr_ocrh>', unicode(soup.contents[1])): 
-            if re.search(r'<cte_gender>', unicode(soup.contents[7])): return '6' #crh, crh, cat and gender
-                #print '*****cat*** '+art+'*****\n'
+            if re.search(r'<cte_gender>', unicode(soup.contents[7])):
+                #print('***cat*** '+art+'*****')
+                return '6' #crh, crh, cat and gender
             else: return '5' #crh, crh, cat and rection
-        else: return '9' #Problematic case
-            #print '*****cat*** '+art+'*****\n'
+        else: 
+            #print ('***cat*** '+art+'*****\n')
+            return '9' #Problematic case
+            
     except IndexError: pass
     
-    
+        
 def get_data_articles(typ):
     """Get data article from the store data file depending of the type wanted   
     
     :return dic: datapickle or datatext
     """
-    metalex.project.create_temp()
-    contentdir = os.listdir('.')
-    filepickle = ''
-    filetext   = ''
-    for fil in contentdir:
-        if fil.split('.')[1] == 'pickle': filepickle = fil 
-        elif fil.split('.')[1] == 'art': filetext = fil
-    if typ == 'pickle':
-        datapickle = metalex.project.file_unpickle(filepickle)
-        return datapickle
-    if typ == 'text':
-        datatext = metalex.project.file_get_text(filetext)
-        return datatext
+    metalex.utils.create_temp()
+    filepickle, filetext = '', ''
+    for fil in os.listdir('.'):
+        if fil.endswith('.pickle'): filepickle = fil 
+        elif fil.endswith('.art'): filetext = fil
+    if typ == 'pickle': return metalex.utils.file_unpickle(filepickle)
+    if typ == 'text': return metalex.utils.file_get_text(filetext)
 
 
 def de_specialised(strng):
     if strng.find(')'): return strng.replace(')', '\)')
     if strng.find('.'): return strng.replace('.', '\.')
 
-       
- 
+
 class MetalexGenerateXml():
     """Generate XML file   
     
@@ -174,8 +175,7 @@ class MetalexGenerateXml():
         else: 
             m2.append(self.trans(nexts))
             m1.append(m2)
-        
-                
+                      
     def make_rule_html_xml(self, datarule, typ='xml'):
         elements = re.split(r'->', datarule)
         master   = self.trans(elements[0])
