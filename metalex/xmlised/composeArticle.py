@@ -40,12 +40,6 @@ sage:
         
 """
 
-# ----Internal Modles------------------------------------------------------
-
-from metalex import codifications
-from metalex import project
-from .dicXmlTool import * 
-
 # ----External Modles------------------------------------------------------
 
 import re
@@ -54,6 +48,13 @@ import codecs
 import time
 from bs4  import BeautifulSoup
 from lxml import etree
+
+# ----Internal Modles------------------------------------------------------
+
+import metalex 
+from metalex import codifications
+from metalex import utils
+from .dicXmlTool import * 
 
 # -----Exported Fnctions---------------------------------------------------
 
@@ -242,7 +243,8 @@ class StructuredWithCodif():
             print("Durée normalisation texte por codif: %10.3f seconds\n" %dnormal)
             print("Durée parsage codif texte: %10.3f seconds\n" %dcodif)
             
-        project.save_normalized_data(name='articles_codified.art', typ='text', data=datacodified)
+        utils.save_normalized_data(name='articles_'+metalex.currentOcr+'-codified.art', 
+                                   typ='text', data=datacodified)
         return datacodified
          
          
