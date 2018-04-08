@@ -37,13 +37,13 @@ Functions :
         
 """
 
-__version__ = "1.8.5"
+__version__ = "1.9.0"
 
 
 # ----Internal Modules------------------------------------------------------
 
 from .normalizeImage  import EnhanceImages, get_images
-from .makeOcr         import BuildOcrTesserocr, BuildOcrOcropy
+from .makeOcr         import run_img_to_text
 from .normalizeText   import BuildTextWell, FileRule
 from .wordsCorrection import correct_word, caract_replace, word_replace 
 

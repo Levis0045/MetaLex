@@ -27,8 +27,8 @@ Contact : levismboning@yahoo.fr
 ----------------------------------------------------
 entry_points={
   'console_scripts': [
-      'metalex=api:commands() -h',
-      'metalex=api:commands -d dicImages -s',
+      'metalex=metalex.runMetaLex -h',
+      'metalex=metalex.runMetaLex -d testImages -s',
   ],
 }
 ----------------------------------------------------
@@ -45,11 +45,14 @@ with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name="metalex",
-      version='1.6.5',
+      version='2.0',
       description='MetaLex is general tool for lexicographic and metalexicographic activities',
       author='Elvis MBONING',
       author_email='levismboning@yahoo.fr',
-      packages=['metalex', 'metalex.logs', 'metalex.ocrtext', 'metalex.plugins', 'metalex.xmlised', ],
+      packages=['metalex', 'metalex.logs', 'metalex.ocrtext', 'metalex.plugins', 
+                'metalex.xmlised', 'metalex.plugins.ocropy', 'metalex.plugins.resources',
+                'metalex.plugins.ocropy.ocrolib', 'metalex.plugins.ocropy.tests',
+                'metalex.plugins.ocropy.models'],
       license='AGPL',
       url='https://github.com/Levis0045/MetaLex',
       long_description=long_description,
@@ -60,22 +63,30 @@ setup(name="metalex",
         'License :: OSI Approved :: AGPL License',
         'Programming Language :: Python :: 2.7',
       ],
-      install_requires=['tesserocr', 'bs4', 'lxml', 'beautifulsoup4', 'PIL', 'sphinxcontrib-websupport',
-                        'Sphinx', 'html5lib', 'Pillow', 'termcolor', 'Cython', 'termcolor', 'pylint',
-                        'webencodings', 'imagesize'],
+      install_requires=['tesserocr', 'bs4', 'lxml', 'beautifulsoup4', 'PIL', 
+                        'html5lib', 'Pillow', 'termcolor', 'Cython', 'termcolor', 
+                        'imagesize', 'psutil'],
       extras_require={
         'dev': [''],
         'test': [''],
       },
       package_data={
-        'metalex.plugins.resources': ['metalex-template.html'],
-        'metalex.plugins.resources': ['metalexSchemaXml.xsd'],
-        'metalex.plugins.resources': ['w3.css'],
+        'metalex.plugins.resources': ['metalex-template.html','metalexSchemaXml.xsd','w3.css',
+                                      'METALEX_words-corpus.txt', 'METALEX_words-corpus2.txt'],
+        'metalex.plugins.ocropy.models': ['en-default.pyrnn.gz', 'REX-models_00287000_5-653.pyrnn.gz', 
+                                        'REX-models_00290000_4-271.pyrnn.gz', 'README.md'],
+        'metalex.plugins.ocropy': ['ocropus-dewarp', 'ocropus-econf', 'ocropus-errs', 'ocropus-gpageseg',
+                                 'ocropus-gtedit', 'ocropus-hocr', 'ocropus-linegen', 'ocropus-lpred',
+                                 'ocropus-ltrain', 'ocropus-nlbin', 'ocropus-rpred', 'ocropus-rtrain',
+                                 'ocropus-visualize-results', 'LICENSE', 'PACKAGES', 'README.md', 
+                                 'circle.yml', 'requirements.txt'],
         '.': ['README.rst'],
       },
-      data_files=[('words_corpus', ['metalex/plugins/resources/METALEX_words-corpus.txt',
-                                    'metalex/plugins/resources/METALEX_words-corpus2.txt'])
-                 ]
+      entry_points={
+            'console_scripts': [
+                'metalex=metalex.runMetaLex:run_metalex_test',
+            ]
+      },
       
     )
 

@@ -48,7 +48,8 @@ import metalex as dico
 import os
 import glob
 import ImageFilter as f
-import argparse, textwrap
+import argparse
+import textwrap
 from termcolor import colored
 
 # ----Functions to run metalex in system args------------------------------------------------------
@@ -69,39 +70,46 @@ class TestMetalex:
                 ---------------------------------------------------------------
         metalex is general tool for lexicographics and metalexicographics activities
                                         
-                                        ''', 'blue', attrs=['blink', 'bold'])),
-                                         epilog=textwrap.dedent('''
-                                         ------------------------------------------------------------------------------
-                                             metalex project : special Thank to Bill for metalex-vagrant version
-                                         ------------------------------------------------------------------------------
-                                         '''),
-                                         prefix_chars='-')
+        ''', 'blue', attrs=['blink', 'bold'])),
+         epilog=textwrap.dedent('''
+         ------------------------------------------------------------------------------
+             metalex project : special Thank to Bill for metalex-vagrant version
+         ------------------------------------------------------------------------------
+         '''),
+         prefix_chars='-')
         
         metalexArgsParser.add_argument('-v', '--version', action='version', version='%(prog)s v0.2')
         
         metalexArgsParser.add_argument('-p', '--project',  help='Defined  %(prog)s project name', 
                             dest='projectName', action='store')
         
-        metalexArgsParser.add_argument('-c', '--confproject', action='store', help='Defined  %(prog)s configuration for the current project', 
+        metalexArgsParser.add_argument('-c', '--confproject', action='store', 
+                                       help='Defined  %(prog)s configuration for the current project', 
                             dest='confProject', nargs=3, metavar=('author', 'comment', 'contributors'))
         
         metalexArgsParser.add_argument('-i', '--dicimage', dest='imageFile', action='append', nargs='?', 
                             help='Input one or multiple dictionary image(s) file(s) for current  %(prog)s project')
         
-        metalexArgsParser.add_argument('-d', '--imagedir', help='Input folder name of dictionary image files for current  %(prog)s project',
-                            type=str, required=True, action='store', dest='imagesDir')
+        metalexArgsParser.add_argument('-o', '--ocrtype', dest='ocrType', choices=('ocropy', 'tesserocr'), 
+                                       help='OCR type to use for current  %(prog)s project', type=str)
         
-        metalexArgsParser.add_argument('--imgalg', help='Set algorithm for enhancing dictionary image files for current  %(prog)s project (actiontype must be : constrat or bright or filter)',
-                            type=str, action='store', nargs=2, dest='imgalg', metavar=('actiontype', 'value'))
+        metalexArgsParser.add_argument('-d', '--imagedir', required=True, action='store', 
+                                       help='Input folder name of dictionary image files for current  %(prog)s project',
+                                       type=str, dest='imagesDir')
+        
+        metalexArgsParser.add_argument('--imgalg', type=str, action='store', nargs=2, dest='imgalg',
+                                       help='Set algorithm for enhancing dictionary image files for current'+\
+                                       '  %(prog)s project (actiontype must be : contrast or bright or filter)',
+                                       metavar=('actiontype', 'value'), choices=('contrast', 'bright', 'filter'))
         
         metalexArgsParser.add_argument('-r', '--filerule', dest='fileRule', type=str,
                                        help='Defined file rules that we use to enhance quality of OCR result')
         
-        metalexArgsParser.add_argument('-l', '--lang', help='Set language for optical characters recognition and others  %(prog)s treatment',
-                            type=str)
+        metalexArgsParser.add_argument('-l', '--lang', type=str, 
+                                       help='Set language for optical characters recognition and others  %(prog)s treatment')
         
         metalexArgsParser.add_argument('-x', '--xml', help='Defined output result treatment of  %(prog)s',
-                            type=str, nargs=3, choices=('xml', 'lmf', 'tei'))
+                            type=str, nargs=1, choices=('xml', 'lmf', 'tei'))
          
         metalexArgsParser.add_argument('-s', '--save', help='Save output result of the current project in files', 
                             action='store_true')
@@ -122,7 +130,7 @@ class TestMetalex:
             imagelist.append(metalexArgs.imageFile)
                 
         elif metalexArgs.imagesDir:
-            content = './'+metalexArgs.imagesDir+'/*.*g'
+            content = './'+metalexArgs.imagesDir+'/*.*'
             for imagefile in glob.glob(content) :
                 name = os.getcwd()+'/'+imagefile
                 imagelist.append(name)
@@ -130,9 +138,10 @@ class TestMetalex:
                 message = u"Your current directory don't have image(s)" 
                 dico.logs.manageLog.write_log(message, typ='warm')
         else :
-            message = u"You must define folder containing image of dictionary or image of dictionary for your project otherwise default folder must be use" 
+            message = u"You must define folder containing image of dictionary or image"+\
+            u" of dictionary for your project otherwise default folder must be use" 
             dico.logs.manageLog.write_log(message, typ='warm')
-            for imagefile in glob.glob('imagesInputFiles/*.*g') :
+            for imagefile in glob.glob('testImages/*.*') :
                 name = os.getcwd()+'/'+imagefile
                 imagelist.append(name)
             if len(imagelist) < 1 :   
@@ -154,44 +163,47 @@ class TestMetalex:
             author, comment, contrib = metalexArgs.confProject[0], metalexArgs.confProject[1], metalexArgs.confProject[2]
             project.set_conf_project(author, comment, contrib)
         else :
-            message = u'Please set metadata for the current project. default metadata data must be apply' 
+            message = u'Please set metadata for the current project. Default metadata data must be apply' 
             dico.logs.manageLog.write_log(message, typ='error')
             project.set_conf_project(u'metalex_user', u'Comment_user', u'metalex_contributors')
             
        
         # ----Input dictionary images to project---------------------------------
         images  = project.metalex.get_images(imagelist)
-        
-        
-        # ----Enhance quality of dictionary image files -------------------------
-        if metalexArgs.imgalg :
-            actionType, value = metalexArgs.imgalg
-            if actionType == 'constrat' :
-                images.EnhanceImages().constrast(value)
-            elif actionType == 'bright' :
-                images.EnhanceImages().bright(value)
-            elif actionType == 'filter' :
-                images.EnhanceImages().filter(f.DETAIL)
-            else :
-                message = u"Your input string 'actiontype' don't match (constrat or bright or filter)" 
-                dico.logs.manageLog.write_log(message, typ='warm')
-        else :    
-            images.EnhanceImages().filter(f.DETAIL)
+              
             
-            
-        # ----Start optical recognition of dictionary image files----------------
+        # ----Enhance quality  and Start optical recognition of dictionary image files----------------
+
         if metalexArgs.save and metalexArgs.lang :
-            execOcr = images.BuildOcrImages(save=True, langIn=metalexArgs.lang)
-            execOcr.image_to_text()
+            execOcr = images.run_img_to_text(typ=metalexArgs.ocrType, save=True, 
+                                             langIn=metalexArgs.lang)
+            
+            if metalexArgs.imgalg :
+                actionType, value = metalexArgs.imgalg
+                if actionType == 'contrast' :
+                    execOcr.enhance_img_quality(typ='contrast', value=value)
+                elif actionType == 'bright' :
+                    execOcr.enhance_img_quality(typ='bright', value=value)
+                elif actionType == 'filter' :
+                    execOcr.enhance_img_quality(typ='filter')
+                else :
+                    message = u"Your input string 'actiontype' don't match (constrat or bright or filter)" 
+                    dico.logs.manageLog.write_log(message, typ='warm')
+            else:    
+                execOcr.enhance_img(typ='filter')
+            
         elif metalexArgs.lang :
-            execOcr = images.BuildOcrImages(save=False, langIn=metalexArgs.lang)
-            execOcr.image_to_text()
+            execOcr = images.run_img_to_text(typ=metalexArgs.ocrType, save=False, 
+                                             langIn=metalexArgs.lang)
+            execOcr.run_ocr()
         elif metalexArgs.terminal and metalexArgs.lang :
-            execOcr = images.BuildOcrImages(show=True, langIn=metalexArgs.lang)
-            execOcr.image_to_text()
+            execOcr = images.run_img_to_text(typ=metalexArgs.ocrType, save=False, 
+                                             langIn=metalexArgs.lang)
+            execOcr.run_ocr()
         else :
-            execOcr = images.BuildOcrImages(save=True, langIn='fra')
-            execOcr.image_to_text()
+            execOcr = images.run_img_to_text(typ=metalexArgs.ocrType, save=True, 
+                                             langIn='fra')
+            execOcr.run_ocr()
         
         # ----Normalize result of ocr files ------------------------------------
         if metalexArgs.fileRule :
@@ -219,3 +231,6 @@ class TestMetalex:
 if __name__ == '__main__':
     test = TestMetalex()
     test.run_metalex_test()
+    
+    
+    

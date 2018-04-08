@@ -83,12 +83,14 @@ class BuildTextWell():
         self.okCorrect = okCorrect
         self.log = log
         self.file_rules = file_rules
-        print('\n --- %s ---------------------------------------------------------- \n\n' %colored('Part 3: Correct OCR data', attrs=['bold']))
+        print('\n --- %s %s \n\n' %(colored('Part 3: Correct OCR data', 
+                                            attrs=['bold']), '--'*20))
         debut = time.time()
         filerule = FileRule(self.file_rules, typ='rule_wc')
         self.data_rules = filerule.file_rule_unpack()
         dfilerule = time.time() - debut
-        if self.log: print("--> %30s: %10.5f seconds\n" %("Durée d'extraction du fichier des règles", dfilerule))
+        if self.log: print("--> %30s: %10.5f seconds\n" 
+                           %("Durée d'extraction du fichier des règles", dfilerule))
          
 
     def extract_correct(self, html):
@@ -100,29 +102,15 @@ class BuildTextWell():
         """
         with open(html, 'r') as html_file:
             enhance_text(html_file, self.data_rules, self.okCorrect)  
-
-    
-    def calculate_process(self):
-        """Calculate a number of processes usefull for OCR processing
-    
-        :return int: number of processes
-        """
-        processExec = 0
-        lenHtmlOcrFiles = len(metalex.resultOcrFiles)
-        if lenHtmlOcrFiles == 1: processExec = 1
-        elif lenHtmlOcrFiles == 2: processExec = 2
-        elif lenHtmlOcrFiles > 2 and lenHtmlOcrFiles < 10: processExec = 3
-        elif lenHtmlOcrFiles > 10: processExec = 5
-        return processExec
     
     
     def make_text_well(self):
-        """Run simultanously all html files processes to extract data articles
+        """Run simultaniously all html files processes to extract data articles
     
-        :return file: pickle object and texte data
+        :return file: pickle object and text data
         """
         html_ocr_files = metalex.resultOcrFiles
-        processOcr = Pool(self.calculate_process())
+        processOcr = Pool(metalex.utils.calculate_process())
         if len(html_ocr_files) >= 1: processOcr.map(self, html_ocr_files)
         else:
             message = 'OCR  >> We are not found any OCR files to enhance text quality'
@@ -130,13 +118,13 @@ class BuildTextWell():
             metalex.logs.manageLog.write_log(message, typ='error')
             return sys.exit(metalex.logs.manageLog.write_log(messageExit, typ='error'))
 
-        namepickle = metalex.project.name_file(html_ocr_files, '.pickle')
-        nametxt = metalex.project.name_file(html_ocr_files, '.art')
+        namepickle = metalex.utils.name_file(html_ocr_files, '.pickle')
+        nametxt = metalex.utils.name_file(html_ocr_files, '.art')
         
-        metalex.project.save_normalized_data(name=namepickle, typ='pickle', form='norm')
-        metalex.project.save_normalized_data(name=nametxt, typ='text', form='norm')
+        metalex.utils.save_normalized_data(name=namepickle, typ='pickle', form='norm')
+        metalex.utils.save_normalized_data(name=nametxt, typ='text', form='norm')
         
-        metalex.project.create_temp()  
+        metalex.utils.create_temp()  
         os.remove('temp_norm.txt')
     
     def __call__(self, html):
@@ -155,61 +143,68 @@ def enhance_text(html_file, rules, okCorrect):
     """
     soup = BeautifulSoup(html_file, "html5lib")
     div = soup.find('div', attrs={'class': 'ocr_page'}) 
-    art = 1
-        
-    for div in div.findAll('div', attrs={'class': 'ocr_carea'}):
-        for para in div.findAll('p', attrs={'class': 'ocr_par'}):
-            contentOrigin = ''
-            contentCorrection = ''
-            if not re.search(r'(@|>|ÊË|{/)', para.get_text().strip()) \
-            and not re.search(r'(^\d)', para.get_text().strip()):
-                for span in para.stripped_strings:
-                    if span[-1] == '—' or span[-1] == '-' or span[-1] == '— ' or span[-1] == '- ':
-                        span = span[:-1]
+    art, dataContent = 1, []
+    
+    if metalex.currentOcr == 'ocropy':
+        for span in div.findAll('span', attrs={'class': 'ocr_line'}):
+            dataContent.append(span)
+    if metalex.currentOcr == 'tesserocr':
+        for div in div.findAll('div', attrs={'class': 'ocr_carea'}):
+            for para in div.findAll('p', attrs={'class': 'ocr_par'}):
+                dataContent.append(para)       
+                     
+    spanCorrect = ''   
+    for para in dataContent:
+        contentOrigin = ''
+        contentCorrection = ''
+        if not re.search(r'(@|>|ÊË|{/)', para.get_text().strip()) \
+        and not re.search(r'(^\d)', para.get_text().strip()):
+            for span in para.stripped_strings:
+                if span[-1] == '—' or span[-1] == '-' or span[-1] == '— ' or span[-1] == '- ':
+                    span = span[:-1]
+                    AllWords.append(span)
+                    if okCorrect:
+                        spanCorrect = metalex.correct_word(span)
+                        contentCorrection += spanCorrect
+                    else: contentOrigin += span
+                    #print('*****  '+span + ': ' + spanCorrect)
+                elif metalex.word_replace(span, rules[1], test=True):
+                    spanR = metalex.word_replace(span, rules[1])
+                    if okCorrect:
+                        spanCorrect = metalex.correct_word(spanR)
+                        contentCorrection += spanCorrect+' '
+                    else: contentOrigin += spanR+' '
+                    #print ('*****  '+span + ': ' + spanR)
+                elif metalex.caract_replace(span, rules[2], test=True):
+                    spanR = metalex.caract_replace(span, rules[2])
+                    AllWords.append(spanR)
+                    if okCorrect:
+                        spanCorrect = metalex.correct_word(spanR)
+                        contentCorrection += spanCorrect+' '
+                    else: contentOrigin += spanR+' '
+                    #print ('*****  '+span + ': ' + spanR)
+                else:
+                    if okCorrect:
                         AllWords.append(span)
-                        if okCorrect:
-                            spanCorrect = metalex.correct_word(span)
-                            contentCorrection += spanCorrect
-                        else: contentOrigin += span
-                        #print '*****  '+span + ': ' + spanCorrect
-                    elif metalex.word_replace(span, rules[1], test=True):
-                        spanR = metalex.word_replace(span, rules[1])
-                        if okCorrect:
-                            spanCorrect = metalex.correct_word(spanR)
-                            contentCorrection += spanCorrect+' '
-                        else: contentOrigin += spanR+' '
-                        #print '*****  '+span + ': ' + spanR
-                    elif metalex.caract_replace(span, rules[2], test=True):
-                        spanR = metalex.caract_replace(span, rules[2])
-                        AllWords.append(spanR)
-                        if okCorrect:
-                            spanCorrect = metalex.correct_word(spanR)
-                            contentCorrection += spanCorrect+' '
-                        else: contentOrigin += spanR+' '
-                        #print '*****  '+span + ': ' + spanR
+                        spanCorrect = metalex.correct_word(span)
+                        contentCorrection += spanCorrect+' '
                     else:
-                        if okCorrect:
-                            AllWords.append(span)
-                            spanCorrect = metalex.correct_word(span)
-                            contentCorrection += spanCorrect+' '
-                        else:
-                            AllWords.append(span)
-                            contentOrigin += span+' '
-                    #print '*****  '+span + ': ' + spanCorrect
-            else:
-                pass
-            
-            #print contentOrigin+'\n'
-            artnum = 'article_'+str(art)
-            crtnum = 'correction_'+str(art)
-            if len(contentOrigin) >= 15 and len(contentCorrection) == 0:
-                article = '%s==%s' %(artnum, contentOrigin)
-                metalex.project.write_temp_file(article, 'norm')
-                art += 1
-            elif len(contentOrigin) >= 15 and len(contentCorrection) >= 5:
-                article = '%s==%s | %s==%s' %(crtnum, contentCorrection, artnum, contentOrigin)
-                metalex.project.write_temp_file(article, 'norm')
-                art += 1
+                        AllWords.append(span)
+                        contentOrigin += span+' '
+                #print ('*****  '+span + ': ' + spanCorrect)
+        else: pass
+        
+        #print contentOrigin+'\n'
+        artnum = 'article_'+str(art)
+        crtnum = 'correction_'+str(art)
+        if len(contentOrigin) >= 15 and len(contentCorrection) == 0:
+            article = '%s==%s' %(artnum, contentOrigin)
+            metalex.utils.write_temp_file(article, 'norm')
+            art += 1
+        elif len(contentOrigin) >= 15 and len(contentCorrection) >= 5:
+            article = '%s==%s | %s==%s' %(crtnum, contentCorrection, artnum, contentOrigin)
+            metalex.utils.write_temp_file(article, 'norm')
+            art += 1
                 
     formFile = str(html_file).split('/')[-1].split("'")[0]
     message = u"enhance_text() >> *"+formFile+u"* has been extracted and corrected"

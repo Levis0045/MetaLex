@@ -36,15 +36,9 @@ Packages:
 sage:
     >>> from metalex.dicOcrText import *
     >>> parseArticle()
-    >>> strctredWithCodif()
+    >>> structredWithCodif()
         
 """
-
-# ----Internal Modles------------------------------------------------------
-
-from metalex import codifications
-from metalex import project
-from .dicXmlTool import * 
 
 # ----External Modles------------------------------------------------------
 
@@ -55,9 +49,16 @@ import time
 from bs4  import BeautifulSoup
 from lxml import etree
 
+# ----Internal Modles------------------------------------------------------
+
+import metalex 
+from metalex import codifications
+from metalex import utils
+from .dicXmlTool import * 
+
 # -----Exported Fnctions---------------------------------------------------
 
-__all__ = ['parse_article', 'StrctredWithCodif']
+__all__ = ['parse_article', 'StructuredWithCodif']
 
 # -----Global Variables-----------------------------------------------------
 
@@ -112,7 +113,7 @@ def bild_replace_codif(codif, typ):
         elif typ == 'graph' and codif in v and k == typ:
             for i, t in graphCodif.items():
                 if codif == t and i == 'point'   : return ' <cgr_pt>'+codif+'</cgr_pt> '
-                if codif == t and i == 'virgle'  : return ' <cgr_vrg>'+codif+'</cgr_vrg> '
+                if codif == t and i == 'virgule'  : return ' <cgr_vrg>'+codif+'</cgr_vrg> '
                 if codif == t and i == 'pointv'  : return ' <cgr_ptvrg>'+codif+'</cgr_ptvrg> '
                 if codif == t and i == 'dpoint'  : return ' <cgr_dpt>'+codif+'</cgr_dpt> '
                 if codif == t and i == 'ocrochet': return ' <cgr_ocrh>'+codif+'</cgr_ocrh> '
@@ -128,7 +129,7 @@ class ParserCodification():
     """
     
     def __init__(self, log):
-        self.reslt = ''
+        self.result = ''
         self.codif = ['text', 'symb', 'typo', 'graph']
         self.log = log
         
@@ -143,8 +144,9 @@ class ParserCodification():
             if codift == 'graph': replac = bild_replace_codif(codifs[codift][num], 'graph')
             if codift == 'typo': replac = ' <cty>'+codifs[codift][num]+'</cty> '
             if codift == 'symb': replac = bild_replace_codif(codifs[codift][num], 'symb')
+            if self.log: print('%-10s -- %s ' %(codi, replac))
             artcodi = art.replace(codi, replac)
-            self.reslt = artcodi
+            self.result = artcodi
             num += 1
             if num < len(codifs[codift]):
                 if self.log: print('4', codifs[codift][num])
@@ -155,7 +157,7 @@ class ParserCodification():
                 self.proc_codi(artcodi, num, c, self.codif, codifs, self.log)
                 if self.log: print(artcodi, codif[c])
             if c == 3 and art == None:
-                self.reslt = art
+                self.result = art
         else: 
             num += 1
             if num < len(codifs[codift]):
@@ -166,13 +168,13 @@ class ParserCodification():
                 num = 0
                 self.proc_codi(art, num, c, self.codif, codifs, self.log)
             elif c == 3 and art == None:
-                self.reslt = art
+                self.result = art
 
-        return self.reslt
+        return self.result
 
 
 
-class StrctredWithCodif():
+class StructuredWithCodif():
     """Extract all single article from date articles codified
     
    :return dict: contentall
@@ -238,10 +240,11 @@ class StrctredWithCodif():
             datacodified[art] = artcodif
         dcodif  = time.time() - debut
         if self.log:
-            print("Drée normalisation texte por codif: %10.3f seconds\n" %dnormal)
-            print("Drée parsage codif texte: %10.3f seconds\n" %dcodif)
+            print("Durée normalisation texte por codif: %10.3f seconds\n" %dnormal)
+            print("Durée parsage codif texte: %10.3f seconds\n" %dcodif)
             
-        project.save_normalized_data(name='articles_codified.art', typ='text', data=datacodified)
+        utils.save_normalized_data(name='articles_'+metalex.currentOcr+'-codified.art', 
+                                   typ='text', data=datacodified)
         return datacodified
          
          
@@ -260,7 +263,7 @@ class StrctredWithCodif():
     def segment_articles (self, article, log):
         if re.search(r'.+\s<cgr_pt>\.</cgr_pt>\s.+\s<cte_cat>.+', article): 
             arts = re.search(r'(.+\s<cgr_pt>\.</cgr_pt>)(\s.+\s<cte_cat>.+)', article)
-            art1, art2 = arts.grop(1), arts.grop(2)
+            art1, art2 = arts.group(1), arts.group(2)
             self.segment_articles(art1, self.log)
             self.segment_articles(art2, self.log)
         else:
@@ -276,7 +279,7 @@ class StrctredWithCodif():
         dataCodified = self.codified_articles()
         for i, article in dataCodified.items():
             if i == 'article1': self.treat_articles.append('sep')
-            if article.cont('<cgr_pt>.</cgr_pt>') >= 2:
+            if article.count('<cgr_pt>.</cgr_pt>') >= 2:
                 if re.search(r'<cgr_pt>\.</cgr_pt>\s<cte_cat>', article):
                     self.treat_articles.append(article)
                     if self.log: print('1-----------------------------\n'+article+'---------------------------\n\n')
