@@ -4,6 +4,7 @@
 from __future__ import print_function
 from __future__ import absolute_import
 from __future__ import unicode_literals
+from Crypto.Random.random import shuffle
 
 """
     metalex is general tool for lexicographic and metalexicographic activities
@@ -51,6 +52,8 @@ import codecs
 import os
 import sys
 import glob
+import shutil
+import ImageFilter as flt
 from tesserocr import PyTessBaseAPI
 from multiprocessing import Pool
 from termcolor import colored
@@ -61,7 +64,7 @@ import metalex
 
 # -----Exported Functions---------------------------------------------------
 
-__all__ = ['BuildOcrTesserocr', 'BuildOcrOcropy']
+__all__ = ['run_img_to_text']
 
 # -----Global Variables-----------------------------------------------------
 
@@ -74,12 +77,13 @@ def get_available_images(typ='tesserocr'):
 
     :return array: list of path of enhanced dictionary images
     """
+    allimages = ''
     if typ == 'tesserocr':
         if len(metalex.fileImages) >= 1 and not len(metalex.treatImages) >= 1 :
             contentPrint = u"OCR ->> You don't have any previous treated image(s)!"+\
             " Please treat them before OCR "
             metalex.logs.manageLog.write_log(contentPrint, typ='error')
-            return None
+            allimages = metalex.fileImages
         elif not len(metalex.fileImages) >= 1 :
             contentPrint = u"OCR ->>  You don't have any image(s) for this treatment"
             messageExit  = u'FATAL ERROR! We cannot continue, resolve the previous error'
@@ -111,21 +115,40 @@ class BuildOcrTesserocr():
         self.show = show
         self.save = save
         self.langIn = langIn
-        print(u'\n --- %s %s \n\n' %(colored('Part 2 : OCR (Tesserocr)', attrs=['bold']), '---'*15))
-      
-    def calculate_process(self):
-        """Calculate a number of processes useful for OCR processing
+        metalex.currentOcr = 'tesserocr'
     
-        :return int: number of processes
+    def enhance_img_quality(self, typ='filter', filter=flt.DETAIL, value=0, other=0):
+        """Enhance quality of image input files
+        
+        :param typ: type of enhancement
+        :param filter: filter to use with typ=filter
+        :param value: first value
+        :param other: second value
+        
+        :return image enhanced
         """
-        processExec = 0
-        lenImages = len(get_available_images())
-        if lenImages == 1: processExec = 1
-        elif lenImages == 2: processExec = 2
-        elif lenImages > 2 and lenImages < 10 : processExec = 5
-        elif lenImages > 10: processExec = 8
-        return processExec          
-    
+        tiff = False
+        for img in metalex.fileImages:
+            if img.endswith('.tiff') or img.endswith('.tif'):
+                messag = u"Tiff image is generally unstable for enhancement *"+img+u"*"+\
+                " Instead use [png, jpg] format"
+                metalex.logs.manageLog.write_log(messag, typ='warm')
+                user = ''
+                while user != 'y' or user != 'n':
+                    user = raw_input('\tDo you really want to continue ? (y/n): ')
+                    if user == 'y': 
+                        tiff = True
+                        break
+                    elif user == 'n': return None
+                break
+        
+        if tiff != True:   
+            if typ == 'filter': metalex.EnhanceImages().filter(filter)
+            if typ == 'contrast': metalex.EnhanceImages().contrast(value)
+            if typ == 'bright': metalex.EnhanceImages().bright(value)
+            if typ == 'sharp': metalex.EnhanceImages().sharp(value)
+            if typ == 'contrastbright': metalex.EnhanceImages().contrast_bright(value, other)
+                          
     def ocr_exec(self, img):
         """Take image files, ocrized and save them to 'dicTemp' folder
         
@@ -140,24 +163,24 @@ class BuildOcrTesserocr():
             api.Init(lang=self.langIn)
             api.SetImageFile(img)
             
-            image, ext = metalex.project.get_part_file(img)
+            image, ext = metalex.utils.get_part_file(img)
             imagepart = image.split('_')[:3]
             imagefile = image+ext
             
             imageconcat = u''
             for i in imagepart: imageconcat +=u'_'+i 
             imageconcat = imageconcat.split(u'.')[0]
-            tempname = u'text_ocr'+imageconcat+u'.html'
+            tempname = u'tesserocr'+imageconcat+u'-ocr.html'
             
-            metalex.project.create_temp()
-            if metalex.project.in_dir(tempname) :
+            metalex.utils.go_to_dicresult()
+            if metalex.utils.in_dir(tempname) :
                 message = u"Starting optical characters recognition of *"+imagefile+u"* "
                 metalex.logs.manageLog.write_log(message)
                 textocr = api.GetHOCRText(2)
                 messag = u"Ending optical characters recognition of *"+imagefile+u"* "
                 metalex.logs.manageLog.write_log(messag)
                 
-                metalex.project.create_temp()
+                metalex.utils.go_to_dicresult()
                 if self.save:
                     with codecs.open(tempname, 'w', "utf-8") as wr :
                         wr.write(textocr)
@@ -174,20 +197,29 @@ class BuildOcrTesserocr():
                     " precise the action 'show=False or save=False'"
                     metalex.logs.manageLog.write_log(message, typ='warm') 
             else :
-                messag = u"Ending optical characters recognition of *"+imagefile+u"* "
+                messag = u"[Treated] Ending optical characters recognition of *"+imagefile+u"* "
                 metalex.logs.manageLog.write_log(messag)
             
-            metalex.project.write_temp_file(tempname, 'ocr')
+            metalex.utils.write_temp_file(tempname, 'ocr')
                 
     def image_to_text(self):
         """Run simultanously all OCR processes of dictionary files
     
         :return array: list of path of HTML files
-        """ 
+        """
         allimages = get_available_images()
-        processOcr = Pool(self.calculate_process())
-        processOcr.map(self, allimages)
-        metalex.project.read_temp_file('ocr')
+        processOcr = Pool(metalex.utils.calculate_process())
+        if allimages == None: 
+            contentPrint = u"OCR ->> You don't have any previous treated image(s)!"+\
+            " Please treat them before OCR or change image format to [png] or [jpg] "
+            messageExit  = u'We are going to use no enhance images'
+            metalex.logs.manageLog.write_log(contentPrint, typ='error')
+            sys.exit(metalex.logs.manageLog.write_log(messageExit, typ='warm'))
+            processOcr.map(self, metalex.fileImages)
+            metalex.utils.read_temp_file('ocr')
+        else:
+            processOcr.map(self, allimages)
+            metalex.utils.read_temp_file('ocr')
        
     def __call__(self, img):   
         return self.ocr_exec(img)
@@ -196,77 +228,144 @@ class BuildOcrTesserocr():
 class BuildOcrOcropy():    
     def __init__(self, debug=0):
         self.debug = debug
-        metalex.project.go_to_dicresult()
-        metalex.project.create_temp()
-        self.allimages = get_available_images('ocropy')
-        print(u'\n --- %s %s \n\n' %(colored('Part 2: OCR (Ocropy)',
-                                             attrs=['bold']), '---'*15))
+        metalex.utils.go_to_dicresult()
+        metalex.utils.create_temp()
+        self.allimages = get_available_images('ocropy')       
+        self.allimagesProc = []
+        metalex.currentOcr = 'ocropy'
         
+    def make_ocropy_folder(self):
+        metalex.utils.create_temp()
+        if 'ocropy_temp' not in os.listdir('.'): os.mkdir('ocropy_temp')
+        os.chdir('ocropy_temp')
+        for img in self.allimages: 
+            if img not in os.listdir('.'): shutil.copy(img, '.')
+              
     def binarized(self, black=5, errcheck='', white=90, percen=0, escale=1.0, paral=8):
-        messag = u"Starting Ocropy-Binarization -------- "
+        messag = u"Starting Ocropy-Binarization ... "
         metalex.logs.manageLog.write_log(messag)
-        metalex.project.create_temp()
-        groupImgFiles = metalex.project.chunck_list(self.allimages, 1000)
+        self.make_ocropy_folder()
+        for inImg in os.listdir('.'): 
+            for ext in ['.png', '.jpg', '.tiff', '.jpeg']:
+                if inImg.endswith(ext): self.allimagesProc.append(inImg)
+        
+        groupImgFiles = metalex.utils.chunck_list(self.allimagesProc, 1000)
         for i, imgFilesPart in enumerate(groupImgFiles):
             imgFilesPart = ' '.join(imgFilesPart)
+            if len(glob.glob('*.nrm.png')) == len(self.allimages): 
+                metalex.logs.manageLog.write_log('Binarization already treated ...', typ='warm')
+                return None
             metalex.ocropy_command('nlbin', param=' '+errcheck+' --lo '+str(black)+\
                 ' -p '+str(percen)+' -e '+str(escale)+' '+imgFilesPart+' --debug '+\
-                str(self.debug)+' --hi '+str(white)+' -Q '+str(paral)+' -o ocropy')
-            
-             
+                str(self.debug)+' --hi '+str(white)+' -Q '+str(paral))
+                         
     def segment(self, scale=0.0, errcheck='', gray='', expand=3, padding=3, 
                      clnsep='', vscale=1.0, hscale=1.0, paral=8, maxlines=300):
-        messag = u"Starting Ocropy-Segmentation -------- "
+        messag = u"Starting Ocropy-Segmentation ... "
+        print('\n')
         metalex.logs.manageLog.write_log(messag)
-        metalex.project.create_temp()
+        self.make_ocropy_folder()
         
-        binFiles = glob.glob('ocropy/*.bin.png')
-        
-        groupBinFiles = metalex.project.chunck_list(binFiles, 1000)
+        binFiles = glob.glob('*.bin.png')
+        groupBinFiles = metalex.utils.chunck_list(binFiles, 1000)
         for i, binFilesPart in enumerate(groupBinFiles):
             binFilesPart = ' '.join(binFilesPart)
+            if len(glob.glob('*.pseg.png')) == len(self.allimages): 
+                metalex.logs.manageLog.write_log('Segmentation already treated ...', typ='warm')
+                return None
             metalex.ocropy_command('pageseg', param=' '+errcheck+' --maxlines 1000 '+\
                 clnsep+' --scale '+str(scale)+' --hscale '+str(hscale)+' --vscale '+\
                 str(vscale)+' --gray '+str(gray)+' -e '+str(expand)+'  --maxlines '+\
                 str(maxlines)+' -p '+str(padding)+'  '+binFilesPart+' -Q '+str(paral))
-            
-    
+             
     def recognize(self, model='', llocs='', proba='', errorcheck='', 
                     quiet='', show=-1, context=0, conf_matrix='', paral=1):
-        messag = u"Starting Ocropy-Recognition -------- "
+        messag = u"Starting Ocropy-Recognition ... "
+        print('\n')
         metalex.logs.manageLog.write_log(messag)
-        metalex.project.create_temp()
+        self.make_ocropy_folder()
         
-        binFiles = glob.glob('ocropy/*/*.bin.png')
+        binFiles = glob.glob('*/*.bin.png')
         if len(model) <= 1: model = metalex.model4
-        groupBinFiles = metalex.project.chunck_list(binFiles, 1000)
+        groupBinFiles = metalex.utils.chunck_list(binFiles, 1000)
         for binFilesPart in groupBinFiles:
             binFilesPart = ' '.join(binFilesPart)
+            if len(glob.glob('*/*.txt')) > 20: 
+                metalex.logs.manageLog.write_log('Recognition already treated ...', typ='warm')
+                return None
             metalex.ocropy_command('rpred', param=' '+str(binFilesPart)+' -m '+model+\
                     ' -s '+str(show)+' --context '+str(context)+' '+quiet+' '+llocs+\
                     ' '+proba+' '+' '+conf_matrix+' '+errorcheck+'  -Q '+str(paral))
 
-    
     def builds_out(self):
-        rexHtmlName = metalex.project.get_root_project()+'/dicResults/results_ocr.html'
-        rexHtmlEditName = metalex.project.get_root_project()+'/dicResults/results_ocr-edit.html'
-        metalex.ocropy_command('hocr', param='  *.bin.png  -o '+rexHtmlName)
-        metalex.ocropy_command('edit', param=' html  -o '+rexHtmlEditName+' */*.bin.png')
+        self.make_ocropy_folder()
+        nameFolder = [x.replace('/', '') for x in glob.glob('*/')]
+        messag = u"Starting Ocropy-BuildVisualisation ... "
+        print('\n')
+        metalex.logs.manageLog.write_log(messag)
+        self.make_ocropy_folder()
         
+        dicresults = metalex.utils.get_root_project()+'/dicResults/'
+        for fld in nameFolder:
+            rexHtmlName = dicresults+'ocropy_'+fld+'-ocr.html'
+            rexHtmlEditName = dicresults+'ocropy_'+fld+'-edit.html'
+            if fld+'-ocr.html' and fld+'-edit.html' in os.listdir(dicresults): 
+                metalex.logs.manageLog.write_log('BuildVisualisation already treated ...',
+                                                  typ='warm')
+            else:
+                metalex.ocropy_command('hocr', param=' '+fld+'.bin.png  -o '+rexHtmlName)
+                metalex.ocropy_command('edit', param=' html  -o '+rexHtmlEditName+' '+fld+'/*.bin.png')
+        
+        for img in glob.glob(dicresults+'*-ocr.html'):
+            metalex.resultOcrFiles.append(img)
+            
+        """  
         rexname = 'results'
-        rexFolderN = metalex.project.get_root_project()+'/dicTemp#'+rexname
+        rexFolderN = metalex.utils.get_root_project()+'/dicTemp#'+rexname
         rexOrgName = rexname+'_ocr.txt'
         metalex.ocropy_command('edit', param=' write -x _write.txt '+rexOrgName+'  '+rexFolderN)
-
+        """
     
     def image_to_text(self):
-        #self.binarized()
-        os.chdir('ocropy')
-        #self.segment()
-        #self.recognize()
+        self.binarized()
+        self.segment()
+        self.recognize()
         self.builds_out()
     
 
+class run_img_to_text():
+    def __init__(self, typ='ocropy'):
+        self.typ = typ
+    
+    def enhance_img(self, typ='filter', filter=flt.DETAIL, value=0, other=0):
+        if self.typ == 'tesserocr':
+            tesserocr = BuildOcrTesserocr()
+            tesserocr.enhance_img_quality(typ=typ, filter=filter, value=value, other=other)
+        
+    def run_ocr(self):
+        if self.typ == 'ocropy': 
+            print(u'\n --- %s %s \n\n' %(colored('Part 2: OCR (Ocropy)',
+                                                 attrs=['bold']), '---'*12))
+            ocropy = BuildOcrOcropy()
+            ocropy.make_ocropy_folder()
+            ocropy.image_to_text()
+        
+        elif self.typ == 'tesserocr':
+            print(u'\n --- %s %s \n\n' %(colored('Part 2 : OCR (Tesserocr)', 
+                                                 attrs=['bold']), '---'*12))
+            tesserocr = BuildOcrTesserocr()
+            tesserocr.image_to_text()
+            htmls = [os.path.abspath(x) for x in glob.glob('tesserocr*.html')]
+            metalex.utils.go_to_dicresult()
+            if len(htmls) >= 1:
+                for html in htmls:
+                    name = html.split('/')[-1]
+                    if name not in os.listdir('.'): shutil.move(html, '.')
+                    else: os.remove(html)
+        else:
+            messag = u"You must choice between [ocropy] or [tesserocr] "
+            metalex.logs.manageLog.write_log(messag, typ='warm')
+            return None
         
         
         
