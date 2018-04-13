@@ -46,6 +46,7 @@ before_install:
 
 script:
   # run static analysis tools on modified files if needed
+  - pwd
   - cd test
   - python runMetalex.py -h  --stderr
   - python runMetalex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -o ocropy -m modeldef -s  --stderr
