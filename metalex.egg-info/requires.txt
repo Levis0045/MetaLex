@@ -3,17 +3,15 @@ bs4
 lxml
 beautifulsoup4
 PIL
-sphinxcontrib-websupport
-Sphinx
 html5lib
 Pillow
 termcolor
 Cython
 termcolor
-pylint
-webencodings
 imagesize
+psutil
 
 [dev]
 
 [test]
+metalex.test

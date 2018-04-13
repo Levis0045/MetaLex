@@ -17,7 +17,7 @@ git:
   
 branches:
   only:
-  - v1.0
+  - v2.0
   - master
   
 notifications:
@@ -48,5 +48,5 @@ script:
   # run static analysis tools on modified files if needed
   - cd test/
   - python runMetalex.py -h  --stderr
-  - python runMetalex.py -p 'projectTestName' -c 'testAuthor' 'testComment' 'testContributors' -d 'dicImages' -r 'file_Rule.dic' -l 'fra' -s  --stderr
+  - python runMetalex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -o ocropy -m modeldef -s  --stderr
 

@@ -285,7 +285,7 @@ class BuildOcrOcropy():
         self.make_ocropy_folder()
         
         binFiles = glob.glob('*/*.bin.png')
-        if len(model) <= 1: model = metalex.model4
+        if len(model) <= 1: model = metalex.modeldef
         groupBinFiles = metalex.utils.chunck_list(binFiles, 1000)
         for binFilesPart in groupBinFiles:
             binFilesPart = ' '.join(binFilesPart)
@@ -325,10 +325,10 @@ class BuildOcrOcropy():
         metalex.ocropy_command('edit', param=' write -x _write.txt '+rexOrgName+'  '+rexFolderN)
         """
     
-    def image_to_text(self):
+    def image_to_text(self, model=''):
         self.binarized()
         self.segment()
-        self.recognize()
+        self.recognize(model=model)
         self.builds_out()
     
 
@@ -343,13 +343,13 @@ class run_img_to_text():
             tesserocr = BuildOcrTesserocr()
             tesserocr.enhance_img_quality(typ=typ, filter=filter, value=value, other=other)
         
-    def run_ocr(self):
+    def run_ocr(self, model=''):
         if self.typ == 'ocropy': 
             print(u'\n --- %s %s \n\n' %(colored('Part 2: OCR (Ocropy)',
                                                  attrs=['bold']), '---'*12))
             ocropy = BuildOcrOcropy()
             ocropy.make_ocropy_folder()
-            ocropy.image_to_text()
+            ocropy.image_to_text(model=model)
         
         elif self.typ == 'tesserocr':
             print(u'\n --- %s %s \n\n' %(colored('Part 2 : OCR (Tesserocr)', 

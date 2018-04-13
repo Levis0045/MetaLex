@@ -93,6 +93,9 @@ class TestMetalex:
         metalexArgsParser.add_argument('-o', '--ocrtype', dest='ocrType', choices=('ocropy', 'tesserocr'), 
                                        help='OCR type to use for current  %(prog)s project', type=str)
         
+        metalexArgsParser.add_argument('-m', '--model', dest='modelRef', choices=('modeldef', ''), 
+                                       help='OCR LSTM model to use for current  %(prog)s project', type=str)
+        
         metalexArgsParser.add_argument('-d', '--imagedir', required=True, action='store', 
                                        help='Input folder name of dictionary image files for current  %(prog)s project',
                                        type=str, dest='imagesDir')
@@ -173,7 +176,10 @@ class TestMetalex:
               
             
         # ----Enhance quality  and Start optical recognition of dictionary image files----------------
-
+        model = ''
+        if metalexArgs.modelRef: model = metalexArgs.modelRef
+            
+            
         if metalexArgs.save and metalexArgs.lang :
             execOcr = images.run_img_to_text(typ=metalexArgs.ocrType, save=True, 
                                              langIn=metalexArgs.lang)
@@ -195,15 +201,15 @@ class TestMetalex:
         elif metalexArgs.lang :
             execOcr = images.run_img_to_text(typ=metalexArgs.ocrType, save=False, 
                                              langIn=metalexArgs.lang)
-            execOcr.run_ocr()
+            execOcr.run_ocr(model)
         elif metalexArgs.terminal and metalexArgs.lang :
             execOcr = images.run_img_to_text(typ=metalexArgs.ocrType, save=False, 
                                              langIn=metalexArgs.lang)
-            execOcr.run_ocr()
+            execOcr.run_ocr(model)
         else :
             execOcr = images.run_img_to_text(typ=metalexArgs.ocrType, save=True, 
                                              langIn='fra')
-            execOcr.run_ocr()
+            execOcr.run_ocr(model)
         
         # ----Normalize result of ocr files ------------------------------------
         if metalexArgs.fileRule :
@@ -224,11 +230,17 @@ class TestMetalex:
         else :
             images.dico_html(save=False)
     
+    
+    
+#------------RUN FUNCTION-----------------------------------------------
 
-
+def run_metalex():
+    test = TestMetalex()
+    test.run_metalex_test()
+    
+    
 #------------RUN APPLICATION-----------------------------------------------
 
 if __name__ == '__main__':
-    test = TestMetalex()
-    test.run_metalex_test()
+    run_metalex()
     

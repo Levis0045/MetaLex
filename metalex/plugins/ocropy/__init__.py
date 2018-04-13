@@ -7,8 +7,9 @@
 # ---------Exported functions ---------------------------------------------
 
 __all__ = ['ocropusRpred', 'ocropusLpred', 'ocropusGpageseg', 'ocropusRtrain', 
-           'ocropusVisualizeResults', 'ocropusLtrain', 'ocropusHocr', 'ocropusGtedit', 'ocropusErrs',
-           'ocropusLinegen', 'ocropusCnfErrs', 'ocropusNlbin', 'modelDef', 'model4', 'model5']
+           'ocropusVisualizeResults', 'ocropusLtrain', 'ocropusHocr', 'ocropusGtedit', 
+           'ocropusLinegen', 'ocropusCnfErrs', 'ocropusNlbin', 'modelDef',
+           'ocropusErrs',]
 
 
 __author__ = 'Elvis MBONING'
@@ -43,8 +44,7 @@ ocropusErrs = os.path.join(currentFile, 'ocropus-errs')
 ocropusCnfErrs = os.path.join(currentFile, 'ocropus-econf')
 ocropusLinegen = os.path.join(currentFile, 'ocropus-linegen')
 modelDef = os.path.join(currentFile, os.path.join('models', 'en-default.pyrnn.gz'))
-model4 = os.path.join(currentFile, os.path.join('models', 'REX-models_00290000_4-271.pyrnn.gz'))
-model5 = os.path.join(currentFile, os.path.join('models', 'REX-models_00287000_5-653.pyrnn.gz'))
+#model4 = os.path.join(currentFile, os.path.join('models', 'REX-models_00290000_4-271.pyrnn.gz'))
 
  
 # -------------------------------------------------------------------------

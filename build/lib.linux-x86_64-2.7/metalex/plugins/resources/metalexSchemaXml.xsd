@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+    <xs:element name="MetaLexResultDictionary">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="MetaLexMetadata"/>
+                <xs:element ref="MetaLexContent"/>
+            </xs:sequence>
+            <xs:anyAttribute processContents="lax"></xs:anyAttribute>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="MetaLexMetadata">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="projectName" type="xs:string"/>
+                <xs:element name="author" type="xs:string"/>
+                <xs:element name="dateCreation" type="xs:string"/>
+                <xs:element name="comment" type="xs:string"/>
+                <xs:element ref="contributors"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="contributors">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="candidate" type="xs:string" maxOccurs="5"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="MetaLexContent">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="article" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="entryLemma" type="xs:string"/>
+    <xs:element name="article">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="identificationComponent" />
+                <xs:element ref="treatmentComponent"/>
+            </xs:sequence>
+            <xs:attribute name="id" use="required" type="xs:NCName"/>
+            <xs:attribute name="source" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="identificationComponent">
+        <xs:complexType>
+            <xs:choice>
+                <xs:element ref="simpleEntry"/>
+                <xs:element ref="complexEntry"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="simpleEntry">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="entry"/>
+                <xs:element ref="sound" minOccurs="0"/>
+                <xs:element ref="etymon" minOccurs="0"/>
+                <xs:element ref="cte_cat" minOccurs="1"/>
+                <xs:element ref="cte_rection" minOccurs="0"/>
+                <xs:element ref="cte_gender" minOccurs="0"/>
+                <xs:element name="trademark" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="sound">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="\[[a-z]+\]"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="etymon">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="\([a-z]+\)"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="cte_gender">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="(f.|m.)"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="cte_cat">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="[a-zA-Z]+\."/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="cte_rection">
+        <xs:simpleType>
+            <xs:restriction base="xs:string">
+                <xs:pattern value="[a-zA-Z]+\."/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:element>
+    <xs:element name="entry">
+        <xs:complexType>
+            <xs:choice>
+                <xs:element ref="entryLemma"/>
+                <xs:element ref="entryLemmaFex"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="entryLemmaFex">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="entryLemma"/>
+                <xs:element name="cgr_vrg">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value=","/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="flex" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="complexEntry">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="entryLemmaFex"></xs:element>
+                <xs:element name="sep">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value="ou"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element ref="entryLemmaFex"></xs:element>
+                <xs:element ref="cte_cat"></xs:element>
+                <xs:element ref="cte_gender"></xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="treatmentComponent">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="processingUnit" minOccurs="1" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="processingUnit">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="domainMark" type="xs:string" minOccurs="0"/>
+                <xs:element ref="cte_cat" minOccurs="0"/>
+                <xs:element ref="cte_rection" minOccurs="0"/>
+                <xs:element ref="cte_gender"  minOccurs="0"/>
+                <xs:element name="definition" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element name="example" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

@@ -2,8 +2,6 @@
 # coding: utf8
 
 from __future__ import print_function
-from __future__ import absolute_import
-from __future__ import unicode_literals
 
 """MetaLex is general tool for lexicographic and metalexicographic activities
 
@@ -37,16 +35,18 @@ entry_points={
 from  setuptools import setup, find_packages
 from codecs import open
 from os import path
-
+import glob
 
 here = path.abspath(path.dirname(__file__))
+
+scripts = [c for c in glob.glob("metalex/runMetalex.py") if "." not in c and "~" not in c]
 
 with open(path.join(here, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(name="metalex",
       version='2.0',
-      description='MetaLex is general tool for lexicographic and metalexicographic activities',
+      description='MetaLex is tool for lexicographic and metalexicographic activities',
       author='Elvis MBONING',
       author_email='levismboning@yahoo.fr',
       packages=['metalex', 'metalex.logs', 'metalex.ocrtext', 'metalex.plugins', 
@@ -56,6 +56,7 @@ setup(name="metalex",
       license='AGPL',
       url='https://github.com/Levis0045/MetaLex',
       long_description=long_description,
+      keywords='OCR numerisation lexicographie linguistique TAL LSTM ML TAL',
       classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Developers - Lexicographers - Metalexicographers',
@@ -68,23 +69,24 @@ setup(name="metalex",
                         'imagesize', 'psutil'],
       extras_require={
         'dev': [''],
-        'test': [''],
+        'test': ['metalex.test'],
       },
       package_data={
         'metalex.plugins.resources': ['metalex-template.html','metalexSchemaXml.xsd','w3.css',
                                       'METALEX_words-corpus.txt', 'METALEX_words-corpus2.txt'],
-        'metalex.plugins.ocropy.models': ['en-default.pyrnn.gz', 'REX-models_00287000_5-653.pyrnn.gz', 
-                                        'REX-models_00290000_4-271.pyrnn.gz', 'README.md'],
-        'metalex.plugins.ocropy': ['ocropus-dewarp', 'ocropus-econf', 'ocropus-errs', 'ocropus-gpageseg',
-                                 'ocropus-gtedit', 'ocropus-hocr', 'ocropus-linegen', 'ocropus-lpred',
-                                 'ocropus-ltrain', 'ocropus-nlbin', 'ocropus-rpred', 'ocropus-rtrain',
-                                 'ocropus-visualize-results', 'LICENSE', 'PACKAGES', 'README.md', 
-                                 'circle.yml', 'requirements.txt'],
-        '.': ['README.rst'],
+        'metalex.plugins.ocropy.models': ['en-default.pyrnn.gz', 'README.md'],
+        'metalex.plugins.ocropy': ['ocropus-dewarp', 'ocropus-econf', 'ocropus-errs', 
+                                 'ocropus-gtedit', 'ocropus-hocr', 'ocropus-linegen', 
+                                 'ocropus-lpred', 'ocropus-gpageseg','ocropus-rtrain',
+                                 'ocropus-ltrain', 'ocropus-nlbin', 'ocropus-rpred', 
+                                 'ocropus-visualize-results', 'LICENSE', 'PACKAGES',  
+                                 'circle.yml', 'requirements.txt', 'README.md'],
+        '.': ['README.rst']
       },
+      scripts= scripts,
       entry_points={
             'console_scripts': [
-                'metalex=metalex.runMetaLex:run_metalex_test',
+                'metalex=metalex.runMetalex:run_metalex',
             ]
       },
       

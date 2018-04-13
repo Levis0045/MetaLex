@@ -1,0 +1,3 @@
+[console_scripts]
+metalex = metalex.runMetalex:run_metalex
+
