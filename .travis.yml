@@ -43,6 +43,7 @@ before_install:
   - sudo pip install --upgrade pip  
   - sudo pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
   - sudo pip install Cython pillow termcolor
+  - sudo pip install utilspie
 
 script:
   # run static analysis tools on modified files if needed
