@@ -37,9 +37,7 @@
         >>> sudo pip install termcolor
 """
 
-import sys 
 
-import metalex as dico
 
 # ----External Modules------------------------------------------------------
 
@@ -49,6 +47,10 @@ import ImageFilter as f
 import argparse
 import textwrap
 from termcolor import colored
+import sys 
+
+
+import metalex
 
 # ----Functions to run metalex in system args------------------------------------------------------
 
@@ -137,26 +139,26 @@ class TestMetalex:
                 imagelist.append(name)
             if len(imagelist) < 1 :   
                 message = u"Your current directory don't have image(s)" 
-                dico.logs.manageLog.write_log(message, typ='warm')
+                metalex.logs.manageLog.write_log(message, typ='warm')
         else :
             message = u"You must define folder containing image of dictionary or image"+\
             u" of dictionary for your project otherwise default folder must be use" 
-            dico.logs.manageLog.write_log(message, typ='warm')
+            metalex.logs.manageLog.write_log(message, typ='warm')
             for imagefile in glob.glob('testImages/*.*') :
                 name = os.getcwd()+'/'+imagefile
                 imagelist.append(name)
             if len(imagelist) < 1 :   
                 message = u"Your current directory don't have image(s)" 
-                dico.logs.manageLog.write_log(message, typ='warm')
+                metalex.logs.manageLog.write_log(message, typ='warm')
                 
                 
         # ----Defined New project name-------------------------------------------
         if metalexArgs.projectName :
-            project = dico.NewProject(metalexArgs.projectName)
+            project = metalex.NewProject(metalexArgs.projectName)
         else :
             message = u"Your current project name is not set! Please correct it otherwise default name must be use" 
-            project = dico.NewProject(u'metalex_projectName')
-            dico.logs.manageLog.write_log(message, typ='warm')
+            project = metalex.NewProject(u'metalex_projectName')
+            metalex.logs.manageLog.write_log(message, typ='warm')
             
             
         # ----Set metadata for the current project-------------------------------
@@ -165,7 +167,7 @@ class TestMetalex:
             project.set_conf_project(author, comment, contrib)
         else :
             message = u'Please set metadata for the current project. Default metadata data must be apply' 
-            dico.logs.manageLog.write_log(message, typ='error')
+            metalex.logs.manageLog.write_log(message, typ='error')
             project.set_conf_project(u'metalex_user', u'Comment_user', u'metalex_contributors')
             
        
@@ -192,7 +194,7 @@ class TestMetalex:
                     execOcr.enhance_img_quality(typ='filter')
                 else :
                     message = u"Your input string 'actiontype' don't match (constrat or bright or filter)" 
-                    dico.logs.manageLog.write_log(message, typ='warm')
+                    metalex.logs.manageLog.write_log(message, typ='warm')
             else:    
                 execOcr.enhance_img(typ='filter')
             
@@ -216,7 +218,7 @@ class TestMetalex:
         else :
             message = u"FileRule() >> You don't defined file rules for this project. *file_Rule.dic* will be used instead" 
             execNormalize = images.BuildTextWell(u'../../file_Rule.dic')
-            dico.logs.manageLog.write_log(message, typ='warm')
+            metalex.logs.manageLog.write_log(message, typ='warm')
             execNormalize.make_text_well()
         
         #-----Produce HTML output file for project------------------------------
