@@ -43,7 +43,6 @@
 
 import os
 import glob
-import ImageFilter as f
 import argparse
 import textwrap
 from termcolor import colored
