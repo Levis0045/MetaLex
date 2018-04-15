@@ -39,8 +39,6 @@
 
 import sys 
 
-sys.path.append('..')
-
 import metalex as dico
 
 # ----External Modules------------------------------------------------------
