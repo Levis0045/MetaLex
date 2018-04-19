@@ -41,10 +41,10 @@ before_install:
   - CPPFLAGS=-I/usr/local/include pip install tesserocr
   - sudo pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
   - sudo pip install dist/metalex-2.0-py2.py3-none-any.whl
+  - sudo pip install utilspie
 
 script:
   # run static analysis tools on modified files if needed (running test)
-  - sudo pip install utilspie
   - python runMetalex.py -h 
   - python runMetalex.py -p 'p_ocropy' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -o ocropy -m modeldef -s 
   - python runMetalex.py -p 'p_tesserocr' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -o tesserocr -s 
