@@ -79,34 +79,33 @@ def get_images(images):
     if len(images) >= 1 :
         num = 1
         for image in images : 
-            exts = (u'.png', u'.jpg', u'.JPG', u'.jpeg', u'.PNG', u'.JPEG', 
-                    u'.tiff', u'.gif', u'tif')
+            exts = ('.png', '.jpg', '.JPG', '.jpeg', '.PNG', '.JPEG', 
+                    '.tiff', '.gif', 'tif')
             imageroot, ext = metalex.utils.get_part_file(image)
             if os.path.isfile(image) and ext in exts:
-                imagedir = os.path.dirname(image)
-                pName = metalex.projectFolder.items()[0][0]
-                imagedirNew = u""
-                for tep in imagedir.split('/')[:-1]: imagedirNew += tep +u"/"
-                imagedirNew = imagedirNew+pName+u"/dicImages/"
+            
+                mainFolder = 'metalex_'+metalex.projectName
+                mainPath = metalex.projectFolder[mainFolder]
                 
+                imagedirNew = mainPath+'/'+mainFolder+"/dicImages/"
                 if not os.path.exists(imagedirNew): os.mkdir(imagedirNew)
                     
-                imagefileNew = u"dic_image_"+str(num)+ext
+                imagefileNew = "dic_image_"+str(num)+ext
                 imageLocationNew =  imagedirNew+imagefileNew
                 copyfile(image, imageLocationNew)
                 metalex.fileImages.append(imageLocationNew)
                 num += 1
             else :
-                message = u"getImages(images) >> The input image *"+imageroot+ext+u"* is not a file image"
+                message = "getImages(images) >> The input image *"+imageroot+ext+"* is not a file image"
                 metalex.logs.manageLog.write_log(message, typ='error')
                  
         imagestr = str(images)
-        message  = u' *'+imagestr +u'* >> are append for the current treatment' 
+        message  = ' *'+imagestr +'* >> are append for the current treatment' 
         metalex.logs.manageLog.write_log(message)
     else: 
-        message = u'getImages(images) >> They are not images for the current treatment : input images !!' 
+        message = 'getImages(images) >> They are not images for the current treatment : input images !!' 
         metalex.logs.manageLog.write_log(message, typ='error')
-        messageExit = u'FATAL ERROR! We cannot continue, resolve the previous error'
+        messageExit = 'FATAL ERROR! We cannot continue, resolve the previous error'
         sys.exit(metalex.logs.manageLog.write_log(messageExit, typ='error'))
     return metalex
     

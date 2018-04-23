@@ -150,7 +150,8 @@ def save_normalized_data(name, typ, form=None, data=None):
             result = {k:v}
             dicArticles.append(result)
     else: dicArticles = read_temp_file(form)
-        
+    
+    img = '* is created and contain pickle data object from html files > Saved in dicTemp folder' 
     create_temp()
     if typ == 'text':
         if in_dir(name):
@@ -163,18 +164,18 @@ def save_normalized_data(name, typ, form=None, data=None):
                             if not data: fil.write('\n----- FILE: %s %s \n\n' %(num, '--'*20))
                             fil.write('%10s: %s\n' %(k, v))
                             num += 1
-            message = 'save_normalize() >> '+'*'+name+'* is created and contain all text format data from html files > Saved in dicTemp folder'  
+            message = 'save_normalize() >> '+'*'+name+img  
             metalex.logs.manageLog.write_log(message) 
         else:
-            message = 'save_normalize() >> '+'*'+name+'* is created and contain all text format data from html files > Saved in dicTemp folder'  
+            message = 'save_normalize() >> '+'*'+name+img
             metalex.logs.manageLog.write_log(message) 
     
     if typ == 'pickle':  
         if in_dir(name) and file_pickle(dicArticles, name):
-            message = 'save_normalize() >> '+'*'+name+'* is created and contain pickle data object from html files > Saved in dicTemp folder'  
+            message = 'save_normalize() >> '+'*'+name+img
             metalex.logs.manageLog.write_log(message)         
         else:
-            message = 'save_normalize() >> '+'*'+name+'* is created and contain pickle data object from html files > Saved in dicTemp folder'  
+            message = 'save_normalize() >> '+'*'+name+img 
             metalex.logs.manageLog.write_log(message)    
             
 def get_hour():
