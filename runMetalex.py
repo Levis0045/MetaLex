@@ -131,7 +131,7 @@ class TestMetalex:
         elif metalexArgs.imagesDir:
             content = metalexArgs.imagesDir+'/*.*'
             for imagefile in glob.glob(content) :
-                name = os.getcwd()+'/'+imagefile
+                name = os.path.abspath(imagefile)
                 imagelist.append(name)
             if len(imagelist) < 1 :   
                 message = u"Your current directory don't have image(s)" 
@@ -141,7 +141,7 @@ class TestMetalex:
             u" of dictionary for your project otherwise default folder must be use" 
             metalex.logs.manageLog.write_log(message, typ='warm')
             for imagefile in glob.glob('test/testImages/*.*') :
-                name = os.getcwd()+'/'+imagefile
+                name = os.path.abspath(imagefile)
                 imagelist.append(name)
             if len(imagelist) < 1 :   
                 message = u"Your current directory don't have image(s)" 
@@ -152,14 +152,17 @@ class TestMetalex:
         if metalexArgs.projectName :
             project = metalex.NewProject(metalexArgs.projectName)
         else :
-            message = u"Your current project name is not set! Please correct it otherwise default name must be use" 
+            message = u"Your current project name is not set! "+\
+                        u"Please correct it otherwise default name must be use" 
             project = metalex.NewProject(u'metalex_projectName')
             metalex.logs.manageLog.write_log(message, typ='warm')
             
             
         # ----Set metadata for the current project-------------------------------
         if metalexArgs.confProject :
-            author, comment, contrib = metalexArgs.confProject[0], metalexArgs.confProject[1], metalexArgs.confProject[2]
+            author = metalexArgs.confProject[0]
+            comment =  metalexArgs.confProject[1]
+            contrib = metalexArgs.confProject[2]
             project.set_conf_project(author, comment, contrib)
         else :
             message = u'Please set metadata for the current project. Default metadata data must be apply' 
@@ -173,10 +176,11 @@ class TestMetalex:
             
         # ----Enhance quality  and Start optical recognition of dictionary image files----------------
         model = ''
-        if metalexArgs.modelRef: model = metalexArgs.modelRef
+        if metalexArgs.modelRef != 'modeldef': model = metalexArgs.modelRef
+        elif metalexArgs.modelRef == 'modeldef': model = metalex.modelDef
             
             
-        if metalexArgs.save and metalexArgs.lang :
+        if metalexArgs.ocrType == 'tesserocr' and metalexArgs.save and metalexArgs.lang :
             execOcr = images.run_img_to_text(typ=metalexArgs.ocrType, save=True, 
                                              langIn=metalexArgs.lang)
             
@@ -188,8 +192,9 @@ class TestMetalex:
                     execOcr.enhance_img_quality(typ='bright', value=value)
                 elif actionType == 'filter' :
                     execOcr.enhance_img_quality(typ='filter')
-                else :
-                    message = u"Your input string 'actiontype' don't match (constrat or bright or filter)" 
+                else:
+                    message = u"Your input string 'actiontype' don't match"+\
+                                u"(contrast or bright or filter)" 
                     metalex.logs.manageLog.write_log(message, typ='warm')
             else:    
                 execOcr.enhance_img(typ='filter')
@@ -202,7 +207,7 @@ class TestMetalex:
             execOcr = images.run_img_to_text(typ=metalexArgs.ocrType, save=False, 
                                              langIn=metalexArgs.lang)
             execOcr.run_ocr(model)
-        else :
+        else:
             execOcr = images.run_img_to_text(typ=metalexArgs.ocrType, save=True, 
                                              langIn='fra')
             execOcr.run_ocr(model)
