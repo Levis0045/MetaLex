@@ -52,7 +52,7 @@ import os
 import sys
 import glob
 import shutil
-import ImageFilter as flt
+from PIL import ImageFilter as flt
 from tesserocr import PyTessBaseAPI
 from multiprocessing import Pool
 from termcolor import colored
