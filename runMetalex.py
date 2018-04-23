@@ -129,7 +129,7 @@ class TestMetalex:
             imagelist.append(metalexArgs.imageFile)
                 
         elif metalexArgs.imagesDir:
-            content = './'+metalexArgs.imagesDir+'/*.*'
+            content = '/'+metalexArgs.imagesDir+'/*.*'
             for imagefile in glob.glob(content) :
                 name = os.getcwd()+'/'+imagefile
                 imagelist.append(name)
