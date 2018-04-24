@@ -92,7 +92,7 @@ class TestMetalex:
         metalexArgsParser.add_argument('-m', '--model', dest='modelRef', choices=('modeldef', ''), 
                                        help='OCR LSTM model to use for current  %(prog)s project', type=str)
         
-        metalexArgsParser.add_argument('-d', '--imagedir', required=True, action='store', 
+        metalexArgsParser.add_argument('-d', '--imagedir', action='store', 
                                        help='Input folder name of dictionary image files for current  %(prog)s project',
                                        type=str, dest='imagesDir')
         
