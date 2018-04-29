@@ -165,11 +165,11 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 
 .. code-block:: shell
     
-    # We defined a folder containing dictionary images for current process
+    # [OCRopy OCR]    We defined a folder containing dictionary images for current process
     
     python runMetalex.py  -d 'testImages' -o ocropy -m modeldef -s 
     
-    # Or you can define a single dictionary image file
+    # [Tesserocr OCR] Or you can define a single dictionary image file
     
     python runMetalex.py  -i 'testImages/LarClasIll_1911_gay-Trouin.jpg' -o tesserocr -m modeldef -s  
 
