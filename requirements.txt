@@ -35,3 +35,4 @@ subprocess32==3.2.7
 bs4==0.0.1
 cytoolz==0.8.2
 docutils==0.14
+matplotlib==2.1.0
