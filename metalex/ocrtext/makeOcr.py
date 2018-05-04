@@ -79,21 +79,21 @@ def get_available_images(typ='tesserocr'):
     allimages = ''
     if typ == 'tesserocr':
         if len(metalex.fileImages) >= 1 and not len(metalex.treatImages) >= 1 :
-            contentPrint = u"OCR ->> You don't have any previous treated image(s)!"+\
+            contentPrint = "OCR ->> You don't have any previous treated image(s)!"+\
             " Please treat them before OCR "
             metalex.logs.manageLog.write_log(contentPrint, typ='error')
             allimages = metalex.fileImages
         elif not len(metalex.fileImages) >= 1 :
-            contentPrint = u"OCR ->>  You don't have any image(s) for this treatment"
-            messageExit  = u'FATAL ERROR! We cannot continue, resolve the previous error'
+            contentPrint = "OCR ->>  You don't have any image(s) for this treatment"
+            messageExit  = 'FATAL ERROR! We cannot continue, resolve the previous error'
             metalex.logs.manageLog.write_log(contentPrint, typ='error')
             sys.exit(metalex.logs.manageLog.write_log(messageExit, typ='error'))
         else: allimages = metalex.treatImages
         return allimages
     elif typ == 'ocropy':
         if not len(metalex.fileImages) >= 1 :
-            contentPrint = u"OCR ->>  You don't have any image(s) for this treatment"
-            messageExit  = u'FATAL ERROR! We cannot continue, resolve the previous error'
+            contentPrint = "OCR ->>  You don't have any image(s) for this treatment"
+            messageExit  = 'FATAL ERROR! We cannot continue, resolve the previous error'
             metalex.logs.manageLog.write_log(contentPrint, typ='error')
             sys.exit(metalex.logs.manageLog.write_log(messageExit, typ='error'))
         else: allimages = metalex.fileImages
@@ -165,38 +165,38 @@ class BuildOcrTesserocr():
             image, ext = metalex.utils.get_part_file(img)
             imagepart = image.split('_')[:3]
             imagefile = image+ext
-            
-            imageconcat = u''
-            for i in imagepart: imageconcat +=u'_'+i 
+
+            imageconcat = ''
+            for i in imagepart: imageconcat +='_'+i 
             imageconcat = imageconcat.split(u'.')[0]
-            tempname = u'tesserocr'+imageconcat+u'-ocr.html'
+            tempname = 'tesserocr'+imageconcat+'-ocr.html'
             
             metalex.utils.go_to_dicresult()
             if metalex.utils.in_dir(tempname) :
-                message = u"Starting optical characters recognition of *"+imagefile+u"* "
+                message = "Starting optical characters recognition of *"+imagefile+u"* "
                 metalex.logs.manageLog.write_log(message)
                 textocr = api.GetHOCRText(2)
-                messag = u"Ending optical characters recognition of *"+imagefile+u"* "
+                messag = "Ending optical characters recognition of *"+imagefile+u"* "
                 metalex.logs.manageLog.write_log(messag)
                 
                 metalex.utils.go_to_dicresult()
                 if self.save:
                     with codecs.open(tempname, 'w', "utf-8") as wr :
                         wr.write(textocr)
-                    message = u"*"+ imagefile +u"* is ocrized to > *"+\
-                    tempname+u"* > Saved in dicTemp folder" 
+                    message = "*"+ imagefile +"* is ocrized to > *"+\
+                    tempname+"* > Saved in dicTemp folder" 
                     metalex.logs.manageLog.write_log(message) 
                     metalex.resultOcrData[img] = [textocr]
                 elif self.show :
-                    print(u"\n\n %s \n\n" %'**'*20)
+                    print("\n\n %s \n\n" %'**'*20)
                     print(textocr)
-                    print(u" %s \n\n" %'**'*20)
+                    print(" %s \n\n" %'**'*20)
                 else :
-                    message = u"imageToText(show=False, save=False) :"+\
+                    message = "imageToText(show=False, save=False) :"+\
                     " precise the action 'show=False or save=False'"
                     metalex.logs.manageLog.write_log(message, typ='warm') 
             else :
-                messag = u"[Treated] Ending optical characters recognition of *"+imagefile+u"* "
+                messag = "[Treated] Ending optical characters recognition of *"+imagefile+u"* "
                 metalex.logs.manageLog.write_log(messag)
             
             metalex.utils.write_temp_file(tempname, 'ocr')
@@ -345,14 +345,14 @@ class run_img_to_text():
         
     def run_ocr(self, model=''):
         if self.typ == 'ocropy': 
-            print(u'\n --- %s %s \n\n' %(colored('Part 2: OCR (Ocropy)',
+            print('\n --- %s %s \n\n' %(colored('Part 2 : OCR (Ocropy)',
                                                  attrs=['bold']), '---'*12))
             ocropy = BuildOcrOcropy()
             ocropy.make_ocropy_folder()
             ocropy.image_to_text(model=model)
         
         elif self.typ == 'tesserocr':
-            print(u'\n --- %s %s \n\n' %(colored('Part 2 : OCR (Tesserocr)', 
+            print('\n --- %s %s \n\n' %(colored('Part 2 : OCR (Tesserocr)', 
                                                  attrs=['bold']), '---'*12))
             tesserocr = BuildOcrTesserocr(save=self.save, langIn=self.lang)
             tesserocr.image_to_text()
@@ -364,7 +364,7 @@ class run_img_to_text():
                     if name not in os.listdir('.'): shutil.move(html, '.')
                     else: os.remove(html)
         else:
-            messag = u"You must choice between [ocropy] or [tesserocr] "
+            messag = "You must choice between [ocropy] or [tesserocr] "
             metalex.logs.manageLog.write_log(messag, typ='warm')
             return None
         

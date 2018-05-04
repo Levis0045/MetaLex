@@ -82,6 +82,7 @@ def get_images(images):
             exts = ('.png', '.jpg', '.JPG', '.jpeg', '.PNG', '.JPEG', 
                     '.tiff', '.gif', 'tif')
             imageroot, ext = metalex.utils.get_part_file(image)
+
             if os.path.isfile(image) and ext in exts:
             
                 mainFolder = 'metalex_'+metalex.projectName
@@ -227,7 +228,7 @@ class EnhanceImages ():
                 img_conv = self.convert(image, save=True)
                 img = Image.open(img_conv)
                 imagename, ext = metalex.utils.get_part_file(image)
-                tempname = u'img_bright_'+str(num)+ext
+                tempname = 'img_bright_'+str(num)+ext
                 enh = ImageEnhance.Brightness(img)
 
                 if show: enh.enhance(value).show()
@@ -237,23 +238,23 @@ class EnhanceImages ():
                         enh.enhance(value).save(tempname)
                         metalex.utils.treat_image_append(tempname)
                         os.remove(img_conv)
-                        message = u'*'+imagename+u'* is modified with bright (' +str(value)+\
-                         u') > *'+tempname+u'* > Saved in dicTemp folder'  
+                        message = '*'+imagename+'* is modified with bright (' +str(value)+\
+                         ') > *'+tempname+'* > Saved in dicTemp folder'  
                         metalex.logs.manageLog.write_log(message) 
                         num += 1 
                     else :
                         metalex.utils.treat_image_append(tempname)
                         os.remove(img_conv)
-                        message = u'*'+imagename+u'* is modified with contrast (' +str(value)+\
-                         u') > *'+tempname+u'* > Saved in dicTemp folder'  
+                        message = '*'+imagename+'* is modified with contrast (' +str(value)+\
+                         ') > *'+tempname+'* > Saved in dicTemp folder'  
                         metalex.logs.manageLog.write_log(message) 
                         num += 1
                 else :
-                    message =  u'bright(value, show=False, save=False) -->'+\
+                    message =  'bright(value, show=False, save=False) -->'+\
                     ' You must define one action for the current treatment : show=true or save=true '
                     metalex.logs.manageLog.write_log(message, typ='warm')
         else:
-            message = u'bright(images) >> They are not images for the current treatment : input images!!' 
+            message = 'bright(images) >> They are not images for the current treatment : input images!!' 
             metalex.logs.manageLog.write_log(message, typ='error')
                        
     def contrast_bright(self, contrast, bright, show=False, save=False):
@@ -273,7 +274,7 @@ class EnhanceImages ():
                 img_conv = self.removeColor(i, image, save=True)
                 imgpil = Image.open(img_conv)
                 imagename, ext = metalex.utils.get_part_file(image)
-                tempname = u'img_bright_'+str(num)+ext
+                tempname = 'img_bright_'+str(num)+ext
                 enhbright = ImageEnhance.Brightness(imgpil)
                 metalex.utils.create_temp()
                 enhbright.enhance(bright).save(tempname)
@@ -287,14 +288,14 @@ class EnhanceImages ():
                     os.remove(tempname)
                     os.remove(img_conv_file)
                 if save :
-                    tempname2 = u'img_contrast_bright_'+str(num)+ext
+                    tempname2 = 'img_contrast_bright_'+str(num)+ext
                     metalex.utils.create_temp()
                     if metalex.utils.in_dir(tempname2) :
                         enhconst.enhance(contrast).save(tempname2)
                         os.remove(tempname)
                         os.remove(img_conv_file)
                         metalex.utils.treat_image_append(tempname2)
-                        message = u'*'+imagename+u'* is modified with  contrast (' +str(contrast)+\
+                        message = '*'+imagename+'* is modified with  contrast (' +str(contrast)+\
                          ') and  bright ('+str(bright)+') > '+tempname2+' > Saved in dicTemp folder'  
                         metalex.logs.manageLog.write_log(message) 
                         imgpil.close()
@@ -303,13 +304,13 @@ class EnhanceImages ():
                         os.remove(img_conv_file)
                         os.remove(tempname)
                         metalex.utils.treat_image_append(tempname2)
-                        message = u'*'+imagename+u'* is modified with  contrast (' +str(contrast)+\
-                         u') and  bright ('+str(bright)+u') > *'+tempname2+u'* > Saved in dicTemp folder'  
+                        message = '*'+imagename+'* is modified with  contrast (' +str(contrast)+\
+                         ') and  bright ('+str(bright)+') > *'+tempname2+'* > Saved in dicTemp folder'  
                         metalex.logs.manageLog.write_log(message) 
                         imgpil.close()
                         num += 1
         else:
-            message = u'contrastBright() >> They are not images for the current treatment : input images!!' 
+            message = 'contrastBright() >> They are not images for the current treatment : input images!!' 
             metalex.logs.manageLog.write_log(message, typ='error')  
                       
     def convert (self, img, show=False, save=False):
@@ -347,25 +348,24 @@ class EnhanceImages ():
           
         :return file: imagefilter  
         """
-        print(self.images)
         if len(self.images) >= 1 :
             num = 1
             for image in  self.images :
                 img_conv = self.convert(image, save=True)
                 img = Image.open(img_conv)
                 imagename, ext = metalex.utils.get_part_file(image)
-                tempname = u'img_filter_'+str(num)+ext
+                tempname = 'img_filter_'+str(num)+ext
                 metalex.utils.create_temp()
                 if show: img.filter(imgfilter).show()
                 elif not show and metalex.utils.in_dir(tempname) :
                     img.filter(imgfilter).save(tempname)
                 metalex.utils.treat_image_append(tempname)
-                message = u'*'+imagename+u'* is modified with  filter (' +str(imgfilter)+ u')  > *'+tempname+u'* > Saved in dicTemp folder'  
+                message = '*'+imagename+'* is modified with  filter (' +str(imgfilter)+ ')  > *'+tempname+u'* > Saved in dicTemp folder'  
                 metalex.logs.manageLog.write_log(message)
                 #img.close()
                 num += 1
         else:
-            message = u'filter() >> They are not images for the current treatment : input images!!' 
+            message = 'filter() >> They are not images for the current treatment : input images!!' 
             metalex.logs.manageLog.write_log(message, typ='error')
                                               
     def removeColor(self, i, img, show=False, save=False):
@@ -380,7 +380,7 @@ class EnhanceImages ():
         """
         if img :
             imagepart = metalex.utils.get_part_file(img)
-            tempname = u'img_color_remove_'+str(i)+imagepart[1]
+            tempname = 'img_color_remove_'+str(i)+imagepart[1]
             
             imgpil = Image.open(img)
             replace_color = (255, 255, 255)
@@ -392,9 +392,9 @@ class EnhanceImages ():
                 else: pass
             
             imgdir = os.path.dirname(img)
-            namestore = u""
-            for tep in imgdir.split('/')[:-1]: namestore += tep +u"/"
-            namestore = namestore+u"dicTemp/"+tempname
+            namestore = ""
+            for tep in imgdir.split('/')[:-1]: namestore += tep +"/"
+            namestore = namestore+"dicTemp/"+tempname
             imgpil.putdata(new_image_data)
             if show: imgpil.show()
             if save :
@@ -404,7 +404,7 @@ class EnhanceImages ():
                     return namestore
                 else: return namestore
         else:
-            message = u'removeColor() >> They are not images for the current treatment : input images!!' 
+            message = 'removeColor() >> They are not images for the current treatment : input images!!' 
             metalex.logs.manageLog.write_log(message, typ='error')
             
                     
