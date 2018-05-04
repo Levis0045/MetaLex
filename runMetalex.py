@@ -140,7 +140,7 @@ class TestMetalex:
             message = u"You must define folder containing image of dictionary or image"+\
             u" of dictionary for your project otherwise default folder must be use" 
             metalex.logs.manageLog.write_log(message, typ='warm')
-            for imagefile in glob.glob('test/testImages/*.*') :
+            for imagefile in glob.glob('test-files/images/*.*') :
                 name = os.path.abspath(imagefile)
                 imagelist.append(name)
             if len(imagelist) < 1 :   
@@ -167,7 +167,8 @@ class TestMetalex:
         else :
             message = u'Please set metadata for the current project. Default metadata data must be apply' 
             metalex.logs.manageLog.write_log(message, typ='error')
-            project.set_conf_project(u'metalex_user', u'Comment_user', u'metalex_contributors')
+            project.set_conf_project(u'metalex_user', u'Comment_user',
+                                      u'metalex_contributors')
             
        
         # ----Input dictionary images to project---------------------------------
@@ -218,7 +219,7 @@ class TestMetalex:
         else :
             message = u"FileRule() >> You don't defined file rules for this project."+\
                       u" *file_Rule.dic* will be used instead" 
-            execNormalize = images.BuildTextWell(u'test/file_Rule.dic')
+            execNormalize = images.BuildTextWell(u'test-files/file_Rule.dic')
             metalex.logs.manageLog.write_log(message, typ='warm')
             execNormalize.make_text_well()
         

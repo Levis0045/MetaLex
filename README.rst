@@ -161,24 +161,24 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
     
 
 
-- Run your project with the default parameters except dictionary images data and save results. You must create a folder containing dictionary image files such as **testImages/**.
+- Run your project with the default parameters except dictionary images data and save results. You must create a folder containing dictionary image files such as **test-files/images/**.
 
 .. code-block:: shell
     
     # [OCRopy OCR]    We defined a folder containing dictionary images for current process
     
-    python runMetalex.py  -d 'testImages' -o ocropy -m modeldef -s 
+    python runMetalex.py  -d 'test-files/images' -o ocropy -m modeldef -s 
     
     # [Tesserocr OCR] Or you can define a single dictionary image file
     
-    python runMetalex.py  -i 'testImages/LarClasIll_1911_gay-Trouin.jpg' -o tesserocr -m modeldef -s  
+    python runMetalex.py  -i 'test-files/images/LarClasIll_1911_gay-Trouin.jpg' -o tesserocr -m modeldef -s  
 
 
 - Run your project with your own set of parameters and save results
 
 .. code-block:: shell
  
-    python runMetalex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -o tesserocr -m modeldef -s
+    python runMetalex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'test-files/images' -r 'test-files/file_Rule.dic' -l 'fra' -o tesserocr -m modeldef -s
 
 
 - **OUTPUT :** For the first command (without parameters), the result in the console will produce this. **NB :** With parameters, error and warning messages will disappear.
