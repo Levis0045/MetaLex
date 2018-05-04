@@ -87,12 +87,12 @@ class TestMetalex:
                             help='Input one or multiple dictionary image(s) file(s) for current  %(prog)s project')
         
         metalexArgsParser.add_argument('-o', '--ocrtype', dest='ocrType', choices=('ocropy', 'tesserocr'), 
-                                       help='OCR type to use for current  %(prog)s project', type=str)
+                                       help='OCR type to use for current  %(prog)s project', type=str, default="tesserocr")
         
         metalexArgsParser.add_argument('-m', '--model', dest='modelRef', choices=('modeldef', ''), 
                                        help='OCR LSTM model to use for current  %(prog)s project', type=str)
         
-        metalexArgsParser.add_argument('-d', '--imagedir', required=True, action='store', 
+        metalexArgsParser.add_argument('-d', '--imagedir', action='store', 
                                        help='Input folder name of dictionary image files for current  %(prog)s project',
                                        type=str, dest='imagesDir')
         
@@ -126,7 +126,7 @@ class TestMetalex:
         imagelist = []
         
         if metalexArgs.imageFile :
-            imagelist.append(metalexArgs.imageFile)
+            imagelist = [os.path.abspath(x) for x in metalexArgs.imageFile]
                 
         elif metalexArgs.imagesDir:
             content = metalexArgs.imagesDir+'/*.*'
@@ -140,7 +140,7 @@ class TestMetalex:
             message = u"You must define folder containing image of dictionary or image"+\
             u" of dictionary for your project otherwise default folder must be use" 
             metalex.logs.manageLog.write_log(message, typ='warm')
-            for imagefile in glob.glob('test/testImages/*.*') :
+            for imagefile in glob.glob('test-files/images/*.*') :
                 name = os.path.abspath(imagefile)
                 imagelist.append(name)
             if len(imagelist) < 1 :   
@@ -167,7 +167,8 @@ class TestMetalex:
         else :
             message = u'Please set metadata for the current project. Default metadata data must be apply' 
             metalex.logs.manageLog.write_log(message, typ='error')
-            project.set_conf_project(u'metalex_user', u'Comment_user', u'metalex_contributors')
+            project.set_conf_project(u'metalex_user', u'Comment_user',
+                                      u'metalex_contributors')
             
        
         # ----Input dictionary images to project---------------------------------
@@ -180,10 +181,9 @@ class TestMetalex:
         elif metalexArgs.modelRef == 'modeldef': model = metalex.modelDef
             
             
-        if metalexArgs.ocrType == 'tesserocr' and metalexArgs.save and metalexArgs.lang :
+        if metalexArgs.ocrType == 'tesserocr' and metalexArgs.save :
             execOcr = images.run_img_to_text(typ=metalexArgs.ocrType, save=True, 
                                              langIn=metalexArgs.lang)
-            
             if metalexArgs.imgalg :
                 actionType, value = metalexArgs.imgalg
                 if actionType == 'contrast' :
@@ -199,26 +199,27 @@ class TestMetalex:
             else:    
                 execOcr.enhance_img(typ='filter')
             
-        elif metalexArgs.lang :
-            execOcr = images.run_img_to_text(typ=metalexArgs.ocrType, save=False, 
-                                             langIn=metalexArgs.lang)
+            execOcr.run_ocr()
+            
+        elif metalexArgs.ocrType == 'ocropy' and metalexArgs.save :
+            execOcr = images.run_img_to_text(typ=metalexArgs.ocrType, save=True, 
+                                             langIn='fra')
             execOcr.run_ocr(model)
+            
         elif metalexArgs.terminal and metalexArgs.lang :
             execOcr = images.run_img_to_text(typ=metalexArgs.ocrType, save=False, 
                                              langIn=metalexArgs.lang)
             execOcr.run_ocr(model)
-        else:
-            execOcr = images.run_img_to_text(typ=metalexArgs.ocrType, save=True, 
-                                             langIn='fra')
-            execOcr.run_ocr(model)
+        
         
         # ----Normalize result of ocr files ------------------------------------
         if metalexArgs.fileRule :
             execNormalize = images.BuildTextWell(metalexArgs.fileRule)
             execNormalize.make_text_well()
         else :
-            message = u"FileRule() >> You don't defined file rules for this project. *file_Rule.dic* will be used instead" 
-            execNormalize = images.BuildTextWell(u'test/file_Rule.dic')
+            message = u"FileRule() >> You don't defined file rules for this project."+\
+                      u" *file_Rule.dic* will be used instead" 
+            execNormalize = images.BuildTextWell(u'test-files/file_Rule.dic')
             metalex.logs.manageLog.write_log(message, typ='warm')
             execNormalize.make_text_well()
         

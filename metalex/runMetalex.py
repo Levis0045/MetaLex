@@ -130,12 +130,13 @@ class TestMetalex:
         imagelist = []
         
         if metalexArgs.imageFile :
-            imagelist.append(metalexArgs.imageFile)
-                
+            files = [cpath+x for x in metalexArgs.imageFile]
+            imagelist = files
+            
         elif metalexArgs.imagesDir:
             content = './'+metalexArgs.imagesDir+'/*.*'
             for imagefile in glob.glob(content) :
-                name = os.getcwd()+'/'+imagefile
+                name = cpath+imagefile
                 imagelist.append(name)
             if len(imagelist) < 1 :   
                 message = u"Your current directory don't have image(s)" 
@@ -147,6 +148,7 @@ class TestMetalex:
             for imagefile in glob.glob('testImages/*.*') :
                 name = os.getcwd()+'/'+imagefile
                 imagelist.append(name)
+                print(imagelist)
             if len(imagelist) < 1 :   
                 message = u"Your current directory don't have image(s)" 
                 dico.logs.manageLog.write_log(message, typ='warm')

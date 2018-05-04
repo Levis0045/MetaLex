@@ -46,6 +46,6 @@ before_install:
 script:
   # run static analysis tools on modified files if needed (running test)
   - python runMetalex.py -h 
-  - python runMetalex.py -p 'p_ocropy' -c 'author' 'comment' 'contributors' -d 'test/testImages' -r 'test/file_Rule.dic' -o ocropy -m modeldef -s 
-  - python runMetalex.py -p 'p_tesserocr' -c 'author' 'comment' 'contributors' -d 'test/testImages' -r 'test/file_Rule.dic' -l 'fra' -o tesserocr -s 
+  - python runMetalex.py -p 'p_ocropy' -c 'author' 'comment' 'contributors' -d 'test-files/images' -r 'test-files/file_Rule.dic' -o ocropy -m modeldef -s 
+  - python runMetalex.py -p 'p_tesserocr' -c 'author' 'comment' 'contributors' -i 'test-files/images/LarClasIll_1911_gay-Trouin.jpg' -r 'test-files/file_Rule.dic' -l 'fra' -o tesserocr -s 
 

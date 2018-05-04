@@ -133,6 +133,7 @@ def get_part_file(namefile):
     
     :return list: (imageroot, ext)
     """
+    if type(namefile) is list: namefile = os.path.abspath(namefile[0])
     (imageroot, ext) = os.path.splitext(os.path.basename(namefile))
     return (imageroot, ext)
 
