@@ -40,7 +40,7 @@ before_install:
   - sudo apt-get -y install tesseract-ocr-fra
   - CPPFLAGS=-I/usr/local/include pip install tesserocr
   - sudo pip install http://effbot.org/downloads/Imaging-1.1.7.tar.gz
-  - sudo pip install dist/metalex-2.0-py2.py3-none-any.whl
+  - sudo pip install dist/metalex-2.6.5-py2.py3-none-any.whl
   - sudo pip install utilspie
 
 script:
