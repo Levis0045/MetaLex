@@ -124,7 +124,7 @@ class BuildTextWell():
         metalex.utils.save_normalized_data(name=namepickle, typ='pickle', form='norm')
         metalex.utils.save_normalized_data(name=nametxt, typ='text', form='norm')
         
-        metalex.utils.create_temp()  
+        metalex.utils.create_temp()
         os.remove('temp_norm.txt')
     
     def __call__(self, html):
@@ -132,8 +132,8 @@ class BuildTextWell():
     
     
 def enhance_text(html_file, rules, okCorrect):
-    """Enhance quality of text by remove all inconvenients characters and optionally 
-       correct malformed words.
+    """Enhance quality of text by remove all inconvenients characters  
+       and optionally correct malformed words.
     
     :param html_file: str file
     :param rules: str
@@ -153,14 +153,15 @@ def enhance_text(html_file, rules, okCorrect):
             for para in div.findAll('p', attrs={'class': 'ocr_par'}):
                 dataContent.append(para)       
                      
-    spanCorrect = ''   
+    spanCorrect = ''
     for para in dataContent:
         contentOrigin = ''
         contentCorrection = ''
         if not re.search(r'(@|>|ÊË|{/)', para.get_text().strip()) \
         and not re.search(r'(^\d)', para.get_text().strip()):
             for span in para.stripped_strings:
-                if span[-1] == '—' or span[-1] == '-' or span[-1] == '— ' or span[-1] == '- ':
+                if span[-1] == '—' or span[-1] == '-' or span[-1] == '— '\
+                                    or span[-1] == '- ':
                     span = span[:-1]
                     AllWords.append(span)
                     if okCorrect:
