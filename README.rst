@@ -1,9 +1,13 @@
+
 MetaLex Tool (tool for lexicographers and metalexicographers)
 ===============================================================
+
 
 .. image:: https://travis-ci.org/Levis0045/MetaLex.svg?branch=master
     :target: https://travis-ci.org/Levis0045/MetaLex/
     
+    
+
 
 **metalex** is general tool in AGPL License for **lexicographics** and **metalexicographics** activities.
 For current development version of this tool, see `MetaLex/v2.0  <https://github.com/Levis0045/MetaLex/tree/v2.0>`_
