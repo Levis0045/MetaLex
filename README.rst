@@ -3,7 +3,6 @@ MetaLex Tool (tool for lexicographers and metalexicographers)
 ===============================================================
 
 
-
 .. image:: https://travis-ci.org/Levis0045/MetaLex.svg?branch=v2.0
     :target: https://travis-ci.org/Levis0045/MetaLex/
     
