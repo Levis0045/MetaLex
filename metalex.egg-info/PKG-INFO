@@ -1,11 +1,12 @@
 Metadata-Version: 1.1
 Name: metalex
-Version: 2.0
+Version: 2.6.5
 Summary: MetaLex is tool for lexicographic and metalexicographic activities
 Home-page: https://github.com/Levis0045/MetaLex
 Author: Elvis MBONING
-Author-email: levismboning@yahoo.fr
+Author-email: levismboning@ntealan.org
 License: AGPL
+Download-URL: https://github.com/Levis0045/MetaLex
 Description-Content-Type: UNKNOWN
 Description: MetaLex Tool (tool for lexicographers and metalexicographers)
         ===============================================================
@@ -18,9 +19,16 @@ Description: MetaLex Tool (tool for lexicographers and metalexicographers)
         Usage
         =====
         
-        - metalex proceeds in this way (written in french)
+        - metalex proceeds in this way (open github project page to see the graphic)
         
-        .. image:: ./docs/metalex_process.png
+        ::
+            
+            1-> Enhance image quality 
+            2-> OCR 
+            3-> Enhance quality of OCR text
+            4-> Codification parser of articles dictionaries
+            5-> Text codification (XML, HTML, LMF, TEI)
+            6-> Tools for metalexicographic analysis 
         
         
         - This is an example of this process used with metalex 
@@ -67,7 +75,7 @@ Description: MetaLex Tool (tool for lexicographers and metalexicographers)
         
         MetaLex is developed in **Python 2.7** environment, the following packages are required :
         
-        - We can install all package dependencies manually
+        - We can install all extra package dependencies manually
         
         .. code-block:: shell
         
@@ -85,7 +93,7 @@ Description: MetaLex Tool (tool for lexicographers and metalexicographers)
             sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
         
         
-        - Or follow these steps 
+        - Or follow these steps from github project page
         
         .. code-block:: shell
             
@@ -94,27 +102,35 @@ Description: MetaLex Tool (tool for lexicographers and metalexicographers)
             sudo pip install -r requirements.txt  # Install python module dependencies
         
         
+        - or merely use (the preferred option is to begin with the extra linux packages)
+        
+        .. code-block:: shell
+            
+            sudo pip install metalex
+        
         
         How to run MetaLex ?
         ====================
         
-        - Go to the **test/** folder and run build help command
+        - Run the help command 
         
         .. code-block:: shell
             
-            python runMetalex.py -h
+            metalex -h
         
         
         .. code-block:: shell
             
-                    ---------------------------------------------------------------
-                    | * *    * *    * * *  * * *   * *     *      * * *   **   ** |
-                    | *   * *  *   * *      *    * * *    *      * *        *     |
-                    | *        *  * * *    *   *     *   * * *  * * *  **    **   |
-                    ---------------------------------------------------------------
-            metalex is general tool for lexicographics and metalexicographics activities
-               
         
+                        ---------------------------------------------------------------
+                        | * *    * *    * * *  * * *   * *     *      * * *   **   ** |
+                        | *   * *  *   * *      *    * * *    *      * *        *     |
+                        | *        *  * * *    *   *     *   * * *  * * *  **    **   |
+                        ---------------------------------------------------------------
+                metalex is general tool for lexicographics and metalexicographics activities
+            
+                    
+            
             optional arguments:
               -h, --help            show this help message and exit
               -v, --version         show program's version number and exit
@@ -125,8 +141,12 @@ Description: MetaLex Tool (tool for lexicographers and metalexicographers)
               -i [IMAGEFILE], --dicimage [IMAGEFILE]
                                     Input one or multiple dictionary image(s) file(s) for
                                     current metalex project
+              --dld DOWNLOAD        Download ocropy model from Github for current metalex
+                                    project
               -o {ocropy,tesserocr}, --ocrtype {ocropy,tesserocr}
                                     OCR type to use for current metalex project
+              -m {modeldef,}, --model {modeldef,}
+                                    OCR LSTM model to use for current metalex project
               -d IMAGESDIR, --imagedir IMAGESDIR
                                     Input folder name of dictionary image files for
                                     current metalex project
@@ -150,6 +170,7 @@ Description: MetaLex Tool (tool for lexicographers and metalexicographers)
         
         
         
+        
         - Build the file rules of the project.
         
         MetaLex takes files using specific structure to enhance output text of OCR data (from dictionary image files). **\\W** for word replacement, **\\C** for character replacement and **\\R**  for regular expression replacement. The spaces between headers are used to to describe remplacement.
@@ -168,32 +189,38 @@ Description: MetaLex Tool (tool for lexicographers and metalexicographers)
             /a-z+/ij
             \END
             
-        
-        
-        - Run your project with the default parameters except dictionary images data and save results. You must create a folder containing dictionary image files such as **testImages/**.
+        - If you want to use ocropy OCR, please download its models first : It is save at **$home/metalex/models**.
         
         .. code-block:: shell
             
-            # We defined a folder containing dictionary images for current process
+            metalex --dld modelDef
             
-            python runMetalex.py  -d 'testImages' -o ocropy -m modeldef -s 
             
-            # Or you can define a single dictionary image file
+        - Run your project with the default parameters except dictionary images data and save results. You must create a folder containing dictionary image files such as **test-files/images/**.
+        
+        .. code-block:: shell
             
-            python runMetalex.py  -i 'testImages/LarClasIll_1911_gay-Trouin.jpg' -o tesserocr -m modeldef -s  
+            # [OCRopy OCR]    We defined a folder containing dictionary images for current process
+            
+            metalex -d 'test-files/images' -o ocropy -m modeldef -s 
+            
+            # [Tesserocr OCR] Or you can define a single dictionary image file
+            
+            metalex  -i 'test-files/images/LarClasIll_1911_gay-Trouin.jpg' -o tesserocr -m modeldef -s  
         
         
         - Run your project with your own set of parameters and save results
         
         .. code-block:: shell
          
-            python runMetalex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'imagesInput' -r 'file_Rule.dic' -l 'fra' -o tesserocr -m modeldef -s
+            metalex -p 'projectname' -c 'author' 'comment' 'contributors' -d 'test-files/images' -r 'test-files/file_Rule.dic' -l 'fra' -o tesserocr -m modeldef -s
         
         
         - **OUTPUT :** For the first command (without parameters), the result in the console will produce this. **NB :** With parameters, error and warning messages will disappear.
         
+        .. code-block:: latex
         
-        .. image:: ./docs/results_process.png
+            Open github project page to see the graphix
          
         
         Contributors
@@ -226,7 +253,14 @@ Description: MetaLex Tool (tool for lexicographers and metalexicographers)
 Keywords: OCR numerisation lexicographie linguistique TAL LSTM ML TAL
 Platform: UNKNOWN
 Classifier: Development Status :: 3 - Alpha
-Classifier: Intended Audience :: Developers - Lexicographers - Metalexicographers
+Classifier: Intended Audience :: Developers
 Classifier: Topic :: Software Development :: Build Tools
-Classifier: License :: OSI Approved :: AGPL License
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3
+Classifier: License :: OSI Approved :: Academic Free License (AFL)
+Classifier: Topic :: Text Processing :: Linguistic
+Classifier: Topic :: Text Processing :: Markup
+Classifier: Topic :: Scientific/Engineering :: Image Recognition
+Classifier: Topic :: Scientific/Engineering :: Information Analysis
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.6
 Classifier: Programming Language :: Python :: 2.7

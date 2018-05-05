@@ -1,7 +1,6 @@
 MetaLex Tool (tool for lexicographers and metalexicographers)
 ===============================================================
 
-
 **metalex** is general tool in AGPL License for **lexicographics** and **metalexicographics** activities.
 For current development version of this tool, see `MetaLex/v2.0  <https://github.com/Levis0045/MetaLex/tree/v2.0>`_
 
@@ -10,9 +9,16 @@ For current development version of this tool, see `MetaLex/v2.0  <https://github
 Usage
 =====
 
-- metalex proceeds in this way (written in french)
+- metalex proceeds in this way (open github project page to see the graphic)
 
-.. image:: ./docs/metalex_process.png
+::
+    
+    1-> Enhance image quality 
+    2-> OCR 
+    3-> Enhance quality of OCR text
+    4-> Codification parser of articles dictionaries
+    5-> Text codification (XML, HTML, LMF, TEI)
+    6-> Tools for metalexicographic analysis 
 
 
 - This is an example of this process used with metalex 
@@ -59,7 +65,7 @@ Requirements
 
 MetaLex is developed in **Python 2.7** environment, the following packages are required :
 
-- We can install all package dependencies manually
+- We can install all extra package dependencies manually
 
 .. code-block:: shell
 
@@ -77,7 +83,7 @@ MetaLex is developed in **Python 2.7** environment, the following packages are r
     sudo CPPFLAGS=-I/usr/local/include pip install tesserocr
 
 
-- Or follow these steps 
+- Or follow these steps from github project page
 
 .. code-block:: shell
     
@@ -86,7 +92,7 @@ MetaLex is developed in **Python 2.7** environment, the following packages are r
     sudo pip install -r requirements.txt  # Install python module dependencies
 
 
-- Or merely use (the preferred option is to begin with the extra linux packages)
+- or merely use (the preferred option is to begin with the extra linux packages)
 
 .. code-block:: shell
     
@@ -96,15 +102,16 @@ MetaLex is developed in **Python 2.7** environment, the following packages are r
 How to run MetaLex ?
 ====================
 
-- Go to the **test/** folder and run build help command
+- Run the help command 
 
 .. code-block:: shell
     
-    python runMetalex.py -h
-        # metalex -h
+    metalex -h
+
 
 .. code-block:: shell
     
+
                 ---------------------------------------------------------------
                 | * *    * *    * * *  * * *   * *     *      * * *   **   ** |
                 | *   * *  *   * *      *    * * *    *      * *        *     |
@@ -176,39 +183,34 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 
 .. code-block:: shell
     
-    # from source file
-    python runMetalex.py  --dld modelDef
-    
-    # when metalex is installed
     metalex --dld modelDef
-
+    
+    
 - Run your project with the default parameters except dictionary images data and save results. You must create a folder containing dictionary image files such as **test-files/images/**.
 
 .. code-block:: shell
     
-    # [OCRopy OCR]  We defined a folder containing dictionary images for current process
+    # [OCRopy OCR]    We defined a folder containing dictionary images for current process
     
-    python runMetalex.py  -d 'test-files/images' -o ocropy -m modeldef -s 
-        # or metalex -d 'test-files/images' -o ocropy -m modeldef -s 
+    metalex -d 'test-files/images' -o ocropy -m modeldef -s 
     
     # [Tesserocr OCR] Or you can define a single dictionary image file
     
-    python runMetalex.py  -i 'test-files/images/LarClasIll_1911_gay-Trouin.jpg' -o tesserocr -m modeldef -s  
-        # or metalex -i 'test-files/images/LarClasIll_1911_gay-Trouin.jpg' -o tesserocr -m modeldef -s  
+    metalex  -i 'test-files/images/LarClasIll_1911_gay-Trouin.jpg' -o tesserocr -m modeldef -s  
 
 
 - Run your project with your own set of parameters and save results
 
 .. code-block:: shell
  
-    python runMetalex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'test-files/images' -r 'test-files/file_Rule.dic' -l 'fra' -o tesserocr -m modeldef -s
-        # metalex -p 'projectname' -c 'author' 'comment' 'contributors' -d 'test-files/images' -r 'test-files/file_Rule.dic' -l 'fra' -o tesserocr -m modeldef -s
+    metalex -p 'projectname' -c 'author' 'comment' 'contributors' -d 'test-files/images' -r 'test-files/file_Rule.dic' -l 'fra' -o tesserocr -m modeldef -s
 
 
 - **OUTPUT :** For the first command (without parameters), the result in the console will produce this. **NB :** With parameters, error and warning messages will disappear.
 
+.. code-block:: latex
 
-.. image:: ./docs/results_process.png
+    Open github project page
  
 
 Contributors
