@@ -44,12 +44,19 @@ import argparse
 import textwrap
 from termcolor import colored
 import sys 
-
-
+import urllib2
+import platform
 import metalex
 
 # ----Functions to run metalex in system args------------------------------------------------------
 
+class Printer():
+    """Print things to stdout on one line dynamically"""
+    def __init__(self,data):
+        sys.stdout.write("\r\x1b[K"+data.__str__())
+        sys.stdout.flush()
+        
+        
 class TestMetalex:
 
     def run_metalex_test (self):
@@ -86,6 +93,9 @@ class TestMetalex:
         metalexArgsParser.add_argument('-i', '--dicimage', dest='imageFile', action='append', nargs='?', 
                             help='Input one or multiple dictionary image(s) file(s) for current  %(prog)s project')
         
+        metalexArgsParser.add_argument('--dld', dest='download',  
+                            help='Download ocropy model from Github for current  %(prog)s project')
+         
         metalexArgsParser.add_argument('-o', '--ocrtype', dest='ocrType', choices=('ocropy', 'tesserocr'), 
                                        help='OCR type to use for current  %(prog)s project', type=str, default="tesserocr")
         
@@ -121,7 +131,46 @@ class TestMetalex:
         # ----Build contains args------------------------------------------------
         metalexArgs = metalexArgsParser.parse_args()
         
+        # ----- Download ocropy model file -----------------------------------
+        # -- https://stackoverflow.com/questions/3249524/print-in-one-line-dynamically
+        sysPl = platform.system()
+        home = ''
+        if sysPl == 'Linux': home = os.environ.get('HOME')
+        elif sysPl == 'Windows': home = os.environ.get('HOMEDRIVE')+os.environ.get('HOMEPATH')
+        modelOcropy = home+'/metalex/models/'
+        if not os.path.exists(modelOcropy): os.makedirs(modelOcropy)
         
+        if metalexArgs.download:
+            if metalexArgs.download == 'modeldef': 
+                url = "https://github.com/Levis0045/MetaLex/raw/master/"+\
+                      "metalex/plugins/ocropy/models/en-default.pyrnn.gz"
+
+                file_name, u = url.split('/')[-1], urllib2.urlopen(url)
+                save = modelOcropy+file_name
+                f = open(save, 'wb')
+                meta = u.info()
+                file_size = int(meta.getheaders("Content-Length")[0])
+                message = "Downloading ocropy model: %s | Bytes: %s" % (file_name,
+                                                                        file_size)
+                print('\n'+message+'\n')
+                
+                file_size_dl = 0
+                block_sz = 8192
+                while True:
+                    buffer = u.read(block_sz)
+                    if not buffer:
+                        break
+                
+                    file_size_dl += len(buffer)
+                    f.write(buffer)
+                    status = r"%10d  [%3.2f%%]" % (file_size_dl, 
+                                                   file_size_dl * 100. / file_size)
+                    status = "\tProcessing:"+status + chr(8)*(len(status)+1)
+                    Printer(status)
+    
+                f.close()
+                sys.exit('\n\nDownload complete [Save at $home/metalex/models/%s] \n' %file_name)
+            
         # ----Generate real path of images---------------------------------------
         imagelist = []
         
@@ -174,12 +223,17 @@ class TestMetalex:
         # ----Input dictionary images to project---------------------------------
         images  = project.metalex.get_images(imagelist)
               
-            
+        
+        
         # ----Enhance quality  and Start optical recognition of dictionary image files----------------
         model = ''
         if metalexArgs.modelRef != 'modeldef': model = metalexArgs.modelRef
-        elif metalexArgs.modelRef == 'modeldef': model = metalex.modelDef
-            
+        elif metalexArgs.modelRef == 'modeldef': 
+            modelpath = modelOcropy+'/en-default.pyrnn.gz'
+            if not os.path.exists(modelpath):
+                message = "Ocropy model not found : download it first with --dld" 
+                sys.exit(metalex.logs.manageLog.write_log(message, typ='warm'))
+            model = modelpath
             
         if metalexArgs.ocrType == 'tesserocr' and metalexArgs.save :
             execOcr = images.run_img_to_text(typ=metalexArgs.ocrType, save=True, 

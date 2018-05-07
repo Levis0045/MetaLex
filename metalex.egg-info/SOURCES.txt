@@ -43,7 +43,6 @@ metalex/plugins/ocropy/ocropus-visualize-results
 metalex/plugins/ocropy/requirements.txt
 metalex/plugins/ocropy/setup.py
 metalex/plugins/ocropy/models/README.md
-metalex/plugins/ocropy/models/en-default.pyrnn.gz
 metalex/plugins/ocropy/ocrolib/__init__.py
 metalex/plugins/ocropy/ocrolib/chars.py
 metalex/plugins/ocropy/ocrolib/common.py

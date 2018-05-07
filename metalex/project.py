@@ -84,8 +84,8 @@ class NewProject:
         self.lang = u""
         self.dicoType = u""
         self.project_folder()
-        print('\n %s %s %s \n\n' %('---', colored('Part 0: New project', 
-                                    attrs=['bold']), '--'*20))
+        print('\n %s %s %s \n\n' %('---', colored('Part 0 : Build project', 
+                                    attrs=['bold']), '--'*18))
 
         
     def project_folder(self):

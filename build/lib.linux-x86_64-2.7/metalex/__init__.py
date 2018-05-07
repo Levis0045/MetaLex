@@ -47,8 +47,8 @@ from .utils import *
 
 # -----Global Variables-----------------------------------------------------
 
-projectName = u''
-projectAuthor = u''
+projectName = ''
+projectAuthor = ''
 allProjectNames = [] 
 fileImages = []
 treatImages  = []

@@ -93,6 +93,12 @@ MetaLex is developed in **Python 2.7** environment, the following packages are r
     sudo pip install -r requirements.txt  # Install python module dependencies
 
 
+- Or merely use (the preferred option is to begin with the extra linux packages)
+
+.. code-block:: shell
+    
+    sudo pip install metalex
+
 
 How to run MetaLex ?
 ====================
@@ -102,18 +108,19 @@ How to run MetaLex ?
 .. code-block:: shell
     
     python runMetalex.py -h
-
+        # metalex -h
 
 .. code-block:: shell
     
-            ---------------------------------------------------------------
-            | * *    * *    * * *  * * *   * *     *      * * *   **   ** |
-            | *   * *  *   * *      *    * * *    *      * *        *     |
-            | *        *  * * *    *   *     *   * * *  * * *  **    **   |
-            ---------------------------------------------------------------
-    metalex is general tool for lexicographics and metalexicographics activities
-       
-
+                ---------------------------------------------------------------
+                | * *    * *    * * *  * * *   * *     *      * * *   **   ** |
+                | *   * *  *   * *      *    * * *    *      * *        *     |
+                | *        *  * * *    *   *     *   * * *  * * *  **    **   |
+                ---------------------------------------------------------------
+        metalex is general tool for lexicographics and metalexicographics activities
+    
+            
+    
     optional arguments:
       -h, --help            show this help message and exit
       -v, --version         show program's version number and exit
@@ -124,8 +131,12 @@ How to run MetaLex ?
       -i [IMAGEFILE], --dicimage [IMAGEFILE]
                             Input one or multiple dictionary image(s) file(s) for
                             current metalex project
+      --dld DOWNLOAD        Download ocropy model from Github for current metalex
+                            project
       -o {ocropy,tesserocr}, --ocrtype {ocropy,tesserocr}
                             OCR type to use for current metalex project
+      -m {modeldef,}, --model {modeldef,}
+                            OCR LSTM model to use for current metalex project
       -d IMAGESDIR, --imagedir IMAGESDIR
                             Input folder name of dictionary image files for
                             current metalex project
@@ -149,6 +160,7 @@ How to run MetaLex ?
 
 
 
+
 - Build the file rules of the project.
 
 MetaLex takes files using specific structure to enhance output text of OCR data (from dictionary image files). **\\W** for word replacement, **\\C** for character replacement and **\\R**  for regular expression replacement. The spaces between headers are used to to describe remplacement.
@@ -167,19 +179,29 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
     /a-z+/ij
     \END
     
+- If you want to use ocropy OCR, please download its models first : It is save at **$home/metalex/models**.
 
+.. code-block:: shell
+    
+    # from source file
+    python runMetalex.py  --dld modelDef
+    
+    # when metalex is installed
+    metalex --dld modelDef
 
 - Run your project with the default parameters except dictionary images data and save results. You must create a folder containing dictionary image files such as **test-files/images/**.
 
 .. code-block:: shell
     
-    # [OCRopy OCR]    We defined a folder containing dictionary images for current process
+    # [OCRopy OCR]  We defined a folder containing dictionary images for current process
     
     python runMetalex.py  -d 'test-files/images' -o ocropy -m modeldef -s 
+        # or metalex -d 'test-files/images' -o ocropy -m modeldef -s 
     
     # [Tesserocr OCR] Or you can define a single dictionary image file
     
     python runMetalex.py  -i 'test-files/images/LarClasIll_1911_gay-Trouin.jpg' -o tesserocr -m modeldef -s  
+        # or metalex -i 'test-files/images/LarClasIll_1911_gay-Trouin.jpg' -o tesserocr -m modeldef -s  
 
 
 - Run your project with your own set of parameters and save results
@@ -187,6 +209,7 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 .. code-block:: shell
  
     python runMetalex.py -p 'projectname' -c 'author' 'comment' 'contributors' -d 'test-files/images' -r 'test-files/file_Rule.dic' -l 'fra' -o tesserocr -m modeldef -s
+        # metalex -p 'projectname' -c 'author' 'comment' 'contributors' -d 'test-files/images' -r 'test-files/file_Rule.dic' -l 'fra' -o tesserocr -m modeldef -s
 
 
 - **OUTPUT :** For the first command (without parameters), the result in the console will produce this. **NB :** With parameters, error and warning messages will disappear.
