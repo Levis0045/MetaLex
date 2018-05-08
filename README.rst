@@ -215,7 +215,7 @@ MetaLex takes files using specific structure to enhance output text of OCR data 
 - **OUTPUT :** For the first command (without parameters), the result in the console will produce this. **NB :** With parameters, error and warning messages will disappear.
 
 
-.. image:: ./docs/ocropy.png
+.. image:: ./docs/tesserocr.png
  
 
 Contributors
