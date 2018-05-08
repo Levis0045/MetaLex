@@ -169,7 +169,8 @@ class TestMetalex:
                     Printer(status)
     
                 f.close()
-                return print('\n\nDownload complete [Save at $home/metalex/models/%s] \n' %file_name)
+                resp = '\n\nDownload complete [Save at $home/metalex/models/%s] \n' %file_name
+                return resp
             
         # ----Generate real path of images---------------------------------------
         imagelist = []
