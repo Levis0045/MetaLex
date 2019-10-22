@@ -7,7 +7,7 @@ html5lib==0.999999999
 imagesize==0.7.1
 lxml==4.1.0
 MarkupSafe==1.0
-Pillow==4.3.0
+Pillow==6.2.0
 Pygments==2.2.0
 pylint==1.7.4
 requests==2.18.4
