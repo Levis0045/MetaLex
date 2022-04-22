@@ -28,7 +28,7 @@ pdfminer==20140328
 pdfserenitynow==0.6.7
 Pygments==2.2.0
 pyparsing==2.2.0
-PyPDF2==1.26.0
+PyPDF2==1.27.5
 python-crfsuite==0.9.5
 regex==2017.4.5
 subprocess32==3.2.7
