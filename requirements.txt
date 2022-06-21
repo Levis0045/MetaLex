@@ -22,7 +22,7 @@ wrapt==1.10.11
 utilspie
 scipy
 msgpack-numpy==0.4.1
-numpy==1.13.3
+numpy==1.22.0
 pandas==0.21.0
 pdfminer==20140328
 pdfserenitynow==0.6.7
